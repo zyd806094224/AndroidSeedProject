@@ -19,3 +19,4 @@ rootProject.name = "AndroidSeedProject"
 include ':app'
 include ':lib_framework'
 include ':lib_network'
+include ':lib_common'
