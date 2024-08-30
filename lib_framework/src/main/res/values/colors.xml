@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="color_translucence">#90000000</color>
+    <color name="status_bar_bg">#27000000</color>
 </resources>

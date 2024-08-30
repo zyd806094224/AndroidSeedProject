@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">mod_main</string>
+    <string name="splash_time">跳过 %ss</string>
 </resources>
