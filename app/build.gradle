@@ -129,17 +129,8 @@ dependencies {
     implementation rootProject.depsLibs.rxjava
     implementation rootProject.depsLibs.rxandroid
 
-//    implementation project(path: ':mod_main')
-//    implementation project(path: ':mod_user')
-//    implementation project(path: ':mod_login')
-//    implementation project(path: ':mod_search')
-//    implementation project(path: ':mod_video')
-//    implementation project(path: ':mod_demo')
-//    implementation project(path: ':lib_framework')
-//    implementation project(path: ':lib_network')
-//    implementation project(path: ':lib_common')
-//    implementation project(path: ':lib_stater')
-//    implementation project(path: ':lib_banner')
-//    implementation project(path: ':lib_glide')
-//    implementation project(path: ':lib_room')
+    implementation project(path: ':mod_main')
+    implementation project(path: ':lib_framework')
+    implementation project(path: ':lib_network')
+    implementation project(path: ':lib_common')
 }
