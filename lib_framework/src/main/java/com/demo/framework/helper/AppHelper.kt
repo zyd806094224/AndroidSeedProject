@@ -1,4 +1,4 @@
-package com.demo.network.helper
+package com.demo.framework.helper
 
 import android.app.Application
 
