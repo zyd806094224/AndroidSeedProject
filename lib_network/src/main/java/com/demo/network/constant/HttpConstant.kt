@@ -11,4 +11,4 @@ package com.demo.network.constant
 /**
  * base_url
  */
-const val BASE_URL = ""
+const val BASE_URL = "http://baidu.com"

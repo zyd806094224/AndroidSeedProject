@@ -18,4 +18,15 @@ class HomeFragment : BaseMvvmFragment<FragmentHomeBinding,HomeViewModel>() {
 
     }
 
+    override fun initData() {
+        super.initData()
+        mViewModel.getDataList().observe(this){
+
+        }
+
+        mViewModel.getDataList2().observe(this){
+
+        }
+    }
+
 }
