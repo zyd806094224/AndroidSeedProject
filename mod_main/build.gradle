@@ -77,6 +77,7 @@ dependencies {
     compileOnly project(path: ':lib_framework')
     compileOnly project(path: ':lib_common')
     compileOnly project(path: ':lib_network')
+    compileOnly project(path: ':lib_room')
 
     // AOP 切面编程
     implementation 'org.aspectj:aspectjrt:1.9.5'

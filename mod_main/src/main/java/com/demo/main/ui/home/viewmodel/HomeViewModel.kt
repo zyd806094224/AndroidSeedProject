@@ -8,6 +8,8 @@ import com.demo.main.repository.HomeRepository
 import com.demo.network.flow.requestFlow
 import com.demo.network.manager.ApiManager
 import com.demo.network.viewmodel.BaseViewModel
+import com.demo.room.entity.DemoDataInfo
+import com.demo.room.manager.DemoDataManager
 import kotlinx.coroutines.launch
 
 /**
@@ -42,6 +44,25 @@ class HomeViewModel : BaseViewModel() {
                 //error
             }) {
                 homeRepository.getDataList()
+            }
+            emit(response)
+        }
+    }
+
+    fun getDataList3(): LiveData<MutableList<DemoDataInfo>?> {
+        return liveData {
+            val response = safeApiCall(errorBlock = { code, errorMsg ->
+
+            }) {
+                var list = homeRepository.getDemoDataListCache()
+                //缓存为空则创建
+                if (list.isNullOrEmpty()) {
+                    list = mutableListOf()
+                    val demoDataInfo = DemoDataInfo()
+                    list.add(demoDataInfo)
+                    DemoDataManager.saveDemoDataInfoList(list)
+                }
+                list
             }
             emit(response)
         }
