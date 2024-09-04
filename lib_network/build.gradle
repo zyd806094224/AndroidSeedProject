@@ -46,5 +46,5 @@ dependencies {
     compileOnly rootProject.depsLibs.viewModelKtx
 
     compileOnly project(path: ':lib_framework')
-//    compileOnly project(path: ':lib_common')
+    compileOnly project(path: ':lib_common')
 }
