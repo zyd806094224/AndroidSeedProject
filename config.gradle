@@ -3,9 +3,9 @@ ext {
     isModule = false
 
     signingConfig = [
-            storePassword: 'xxx',
-            keyAlias     : 'xxx',
-            keyPassword  : 'xxx'
+            storePassword: '000000dong',
+            keyAlias     : 'demo',
+            keyPassword  : '000000dong'
     ]
 
     android = [

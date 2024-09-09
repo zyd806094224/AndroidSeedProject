@@ -7,16 +7,16 @@ plugins {
 android {
     signingConfigs {
         debug {
-//            storeFile file('../SumTea.jks')
-//            storePassword '123456'
-//            keyAlias 'sumtea'
-//            keyPassword '123456'
+            storeFile file('../demoapk.jks')
+            storePassword '000000dong'
+            keyAlias 'demo'
+            keyPassword '000000dong'
         }
         release {
-//            storeFile file('../SumTea.jks')
-//            storePassword '123456'
-//            keyAlias 'sumtea'
-//            keyPassword '123456'
+            storeFile file('../demoapk.jks')
+            storePassword '000000dong'
+            keyAlias 'demo'
+            keyPassword '000000dong'
         }
     }
     compileSdk rootProject.android.compileSdk
