@@ -11,7 +11,7 @@
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/transparent">
+        android:background="#ff0000">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator"
@@ -32,7 +32,9 @@
                     app:contentScrim="@android:color/white"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
                     <!--app:layout_collapseMode="parallax"电影开屏效果-->
+                    <!--顶部轮播图banner区域-->
                     <View
+                        android:id="@+id/view_banner"
                         android:layout_width="match_parent"
                         android:layout_height="170dp"
                         android:background="#00ff00"
