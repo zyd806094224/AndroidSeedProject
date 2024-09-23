@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="chipCellBackgroundAngle">
+        <!--        从左到右侧-->
+        <enum name="LEFT_RIGHT" value="0"/>
+        <!--        从上到下-->
+        <enum name="TOP_BOTTOM" value="1"/>
+        <!--        从左上到右下-->
+        <enum name="LT_RB" value="2"/>
+        <!--        从左下到右上-->
+        <enum name="LB_RT" value="3"/>
+    </attr>
+    <attr format="color|reference" name="chipCellBackgroundColor"/>
+    <attr format="color|reference" name="chipCellBackgroundEndColor"/>
+    <attr format="color|reference" name="chipCellBackgroundStartColor"/>
+    <attr format="dimension|reference" name="chipCellRadius"/>
+    <attr format="color|reference" name="chipCellStrokeColor"/>
+    <attr format="dimension|reference" name="chipCellStrokeWidth"/>
+    <declare-styleable name="ChipCell">
+        <attr name="chipCellStrokeColor"/>
+        <attr name="chipCellStrokeWidth"/>
+        <attr name="chipCellRadius"/>
+        <attr name="chipCellBackgroundColor"/>
+        <attr name="chipCellBackgroundStartColor"/>
+        <attr name="chipCellBackgroundEndColor"/>
+        <attr name="chipCellBackgroundAngle"/>
+        <attr format="dimension|reference" name="chipCellTopLeftCornerRadius"/>
+        <attr format="dimension|reference" name="chipCellTopRightCornerRadius"/>
+        <attr format="dimension|reference" name="chipCellBottomLeftCornerRadius"/>
+        <attr format="dimension|reference" name="chipCellBottomRightCornerRadius"/>
+    </declare-styleable>
+</resources>
