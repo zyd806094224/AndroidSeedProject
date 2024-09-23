@@ -134,4 +134,5 @@ dependencies {
     implementation project(path: ':lib_network')
     implementation project(path: ':lib_common')
     implementation project(path: ':lib_room')
+    implementation project(path: ':lib_html')
 }

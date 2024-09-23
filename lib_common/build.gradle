@@ -57,4 +57,5 @@ dependencies {
     kapt rootProject.depsLibs.arouterCompiler
 
     compileOnly project(path: ':lib_framework')
+    implementation project(path: ':lib_html')
 }
