@@ -1,4 +1,4 @@
-package com.demo.common.utils
+package com.demo.framework.utils
 
 import android.content.Context
 import android.util.TypedValue

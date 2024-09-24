@@ -7,8 +7,8 @@ import android.widget.TextView;
 
 import com.demo.common.text.html.tag.MarginLeftTag;
 import com.demo.common.text.span.MarginLeftSpan;
-import com.demo.common.utils.DisplayUtils;
 import com.demo.framework.helper.AppHelper;
+import com.demo.framework.utils.DisplayUtils;
 import com.demo.html.html.ctrl.base.AbstractHtmlTagHandler;
 
 import org.xml.sax.XMLReader;
