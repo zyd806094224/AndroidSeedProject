@@ -57,6 +57,6 @@ dependencies {
     kapt rootProject.depsLibs.arouterCompiler
 
     compileOnly project(path: ':lib_framework')
-    compileOnly project(path: ':lib_glide')
+    implementation project(path: ':lib_glide')
     compileOnly project(path: ':lib_html')
 }

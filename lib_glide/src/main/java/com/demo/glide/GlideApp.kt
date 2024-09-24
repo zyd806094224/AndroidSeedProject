@@ -13,8 +13,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.demo.framework.helper.AppHelper
 import com.demo.framework.manager.ActivityManager
 import com.demo.framework.manager.AppManager
+import com.demo.glide.callback.LoadImageCallback
 import com.demo.glide.transformation.BlurTransformation
 import com.demo.glide.transformation.CircleBorderTransform
 import java.io.File
@@ -164,6 +166,26 @@ fun ImageView.setUrlAsBitmap(url: String?, callBack: (Bitmap) -> Unit) {
         })
 }
 
+fun loadBitmap(url: String, callback: LoadImageCallback<Bitmap>?) {
+    Glide.with(AppHelper.getApplication()).asBitmap().load(url)
+        .placeholder(R.mipmap.default_img)
+        .error(R.mipmap.default_img)
+        .into(object : CustomTarget<Bitmap>() {
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                callback?.onSuccess(url, resource)
+            }
+
+            override fun onLoadCleared(placeholder: Drawable?) {
+                callback?.onCancel(url)
+            }
+
+            override fun onLoadFailed(errorDrawable: Drawable?) {
+                super.onLoadFailed(errorDrawable)
+                callback?.onFailure(url, errorDrawable)
+            }
+        })
+}
+
 /**
  * 加载Gif图片
  * @param url
@@ -207,7 +229,10 @@ fun ImageView.setScanImage(url: String?) {
         .diskCacheStrategy(DiskCacheStrategy.DATA)
         .error(R.mipmap.default_img)
         .into(object : CustomTarget<Drawable?>() {
-            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable?>?) {
+            override fun onResourceReady(
+                resource: Drawable,
+                transition: Transition<in Drawable?>?
+            ) {
                 val width = resource.intrinsicWidth
                 val height = resource.intrinsicHeight
                 val lp = layoutParams

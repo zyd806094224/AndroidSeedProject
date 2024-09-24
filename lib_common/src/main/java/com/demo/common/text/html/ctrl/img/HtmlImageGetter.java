@@ -5,12 +5,16 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.Html;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
+
+import com.demo.glide.GlideAppKt;
+import com.demo.glide.callback.LoadImageCallback;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -36,7 +40,7 @@ public class HtmlImageGetter implements Html.ImageGetter {
 
     }
 
-    public Drawable getDrawable(String src,OnImageLoadComplete onImageLoadComplete, int width, int height){
+    public Drawable getDrawable(String src, OnImageLoadComplete onImageLoadComplete, int width, int height) {
         this.onImageLoadComplete = onImageLoadComplete;
         this.height = height;
         this.width = width;
@@ -59,9 +63,11 @@ public class HtmlImageGetter implements Html.ImageGetter {
         }
 
         final BitmapDrawable drawable = new BitmapDrawable();
-        /*HuangYeService.getImageService().loadBitmap(source, new LoadImageCallback<Bitmap>() {
+
+        GlideAppKt.loadBitmap(source, new LoadImageCallback<Bitmap>() {
+
             @Override
-            public void onSuccess(Uri uri, Bitmap bitmap1) {
+            public void onSuccess(@Nullable String url, Bitmap bitmap1) {
                 //bitmap即为下载所得图片
                 if (drawable != null && bitmap1 != null) {
                     if (getDrawableCache(source) == null) {
@@ -72,7 +78,7 @@ public class HtmlImageGetter implements Html.ImageGetter {
                     drawable.setBounds(0, 0, bitmap1.getWidth(), bitmap1.getHeight());
 
                     try {
-                        Method method = ReflectUtil.getDeclaredMethod(drawable, "setBitmap", Bitmap.class);
+                        Method method = getDeclaredMethod(drawable, "setBitmap", Bitmap.class);
                         method.invoke(drawable, bitmap1);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -85,18 +91,28 @@ public class HtmlImageGetter implements Html.ImageGetter {
             }
 
             @Override
-            public void onFailure(Uri uri, Throwable throwable) {
+            public void onFailure(@Nullable String url, @Nullable Drawable errorDrawable) {
 
             }
 
             @Override
-            public void onCancel(Uri uri) {
+            public void onCancel(@Nullable String url) {
 
             }
-        });*/
-
+        });
         return drawable;
 
+    }
+
+    private Method getDeclaredMethod(Object o, String name, Class<?>... parameterTypes) {
+        try {
+            Method method = o.getClass().getDeclaredMethod(name, parameterTypes);
+            method.setAccessible(true);
+            return method;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private Bitmap getDrawableCache(String source) {
