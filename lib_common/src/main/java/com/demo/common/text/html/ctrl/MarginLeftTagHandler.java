@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.demo.common.text.html.tag.MarginLeftTag;
 import com.demo.common.text.span.MarginLeftSpan;
+import com.demo.common.utils.DisplayUtils;
+import com.demo.framework.helper.AppHelper;
 import com.demo.html.html.ctrl.base.AbstractHtmlTagHandler;
 
 import org.xml.sax.XMLReader;
@@ -23,9 +25,11 @@ public class MarginLeftTagHandler extends AbstractHtmlTagHandler {
      * html 标签的开始下标
      */
     private Stack<Integer> startIndex;
+
     public MarginLeftTagHandler(TextView textView) {
         super(textView);
     }
+
     @Override
     public boolean processAble(String tag) {
         return MarginLeftTag.NAME.equalsIgnoreCase(tag);
@@ -64,8 +68,6 @@ public class MarginLeftTagHandler extends AbstractHtmlTagHandler {
         float dpFValue = Float.parseFloat(originSize) / 2;
 
         int dpValue = (int) dpFValue;
-//        return DpPxUtil.dip2px(dpValue);
-        return dpValue;
-
+        return DisplayUtils.INSTANCE.dpToPx(AppHelper.INSTANCE.getApplication(), dpValue);
     }
 }

@@ -6,6 +6,8 @@ import android.text.style.AbsoluteSizeSpan;
 import android.widget.TextView;
 
 import com.demo.common.text.html.tag.FontSizeTag;
+import com.demo.common.utils.DisplayUtils;
+import com.demo.framework.helper.AppHelper;
 import com.demo.html.html.ctrl.base.AbstractHtmlTagHandler;
 
 import org.xml.sax.XMLReader;
@@ -57,10 +59,9 @@ public class FontSizeHandler extends AbstractHtmlTagHandler {
 
     @Override
     public void handleEndTag(String tag, Editable output, XMLReader xmlReader) {
-        if(propertyValue != null && !propertyValue.isEmpty()){
+        if (propertyValue != null && !propertyValue.isEmpty()) {
             try {
-//                int fondSize = DpPxUtil.sp2px(this.getFontSize(propertyValue.pop()));
-                int fondSize = (int) this.getFontSize(propertyValue.pop());
+                int fondSize = DisplayUtils.INSTANCE.spToPx(AppHelper.INSTANCE.getApplication(), this.getFontSize(propertyValue.pop()));
                 int start = startIndex.pop();
                 int end = output.length();
                 output.setSpan(new AbsoluteSizeSpan(fondSize), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
