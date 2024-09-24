@@ -23,10 +23,10 @@ import java.util.List;
 /**
  * @Description:
  * @Date: 2023/5/16 8:08 下午
- * 
+ *
  * @version: 1.0
  */
-public class HYUIKitUtil {
+public class UIKitUtil {
 
     /**
      * 给 TextView 设置文本的同时设置前缀 span 文本，最终调用 HtmlTagCtrlFactory 对标签进行解析生成内容
