@@ -17,6 +17,9 @@ class MineFragment : BaseMvvmFragment<FragmentMineBinding, MineViewModel>() {
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         val icon = "https://wos.58cdn.com.cn/cDazYxWcDHJ/picasso/dohan5dj__w328_h80.png"
-        UIKitUtil.setPostTitle("测试测试测试测试测试测试测试测试测试", mBinding?.tv, icon, icon)
+        val text = "[1004040-安心投] <font color=#ff552e>收拾卫生</font>|<font color=#ff552e>打扫卫生</font>|兵哥佳正军人家政新房开荒高端家政商业保洁商铺保洁兼职司机搬家陪诊"
+        UIKitUtil.setPostTitle(text, mBinding?.tv, icon, icon)
+        UIKitUtil.setTextWidthSuffixIcon("q121212",mBinding?.tv2,icon,2f)
+
     }
 }
