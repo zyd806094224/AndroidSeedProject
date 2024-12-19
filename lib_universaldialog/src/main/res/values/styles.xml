@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="universal_general_style" parent="@style/Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+    </style>
+
+    <style name="universal_anim_bottom" parent="android:Animation">
+        <item name="android:windowExitAnimation">@anim/universal_anim_bottom_out</item>
+        <item name="android:windowEnterAnimation">@anim/universal_anim_bottom_in</item>
+    </style>
+    <style name="universal_anim_right" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/universal_anim_right_in</item>
+        <item name="android:windowExitAnimation">@anim/universal_anim_right_out</item>
+    </style>
+    <style name="universal_anim_top" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/universal_anim_top_in</item>
+        <item name="android:windowExitAnimation">@anim/universal_anim_top_out</item>
+    </style>
+    <style name="universal_anim_left" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/universal_anim_left_in</item>
+        <item name="android:windowExitAnimation">@anim/universal_anim_left_out</item>
+    </style>
+
+    <item name="universal_card_view" type="id"/>
+</resources>

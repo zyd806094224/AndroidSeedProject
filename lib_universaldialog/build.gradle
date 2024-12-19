@@ -14,13 +14,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-
-        //ARouter
-        kapt {
-            arguments {
-                arg("AROUTER_MODULE_NAME", project.getName())
-            }
-        }
     }
 
     buildTypes {
@@ -36,27 +29,22 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        dataBinding = true
-        viewBinding = true
-    }
 }
 
 dependencies {
+
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly rootProject.depsLibs.coreKtx
     implementation rootProject.depsLibs.appcompat
     compileOnly rootProject.depsLibs.material
-    compileOnly rootProject.depsLibs.constraintlayout
 
-    compileOnly rootProject.depsLibs.refreshLayout
-    compileOnly rootProject.depsLibs.refreshHeader
-    compileOnly rootProject.depsLibs.refreshFooter
+    compileOnly rootProject.depsLibs.gson
+    compileOnly rootProject.depsLibs.liveDataKtx
+    compileOnly rootProject.depsLibs.viewModelKtx
 
-    compileOnly rootProject.depsLibs.aroutreApi
-    kapt rootProject.depsLibs.arouterCompiler
+    compileOnly rootProject.depsLibs.roomKtx
+    kapt rootProject.depsLibs.roomCompiler
 
     compileOnly project(path: ':lib_framework')
-    implementation project(path: ':lib_glide')
-    compileOnly project(path: ':lib_html')
+    compileOnly project(path: ':lib_common')
 }

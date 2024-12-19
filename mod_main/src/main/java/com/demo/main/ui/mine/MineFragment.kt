@@ -1,11 +1,24 @@
 package com.demo.main.ui.mine
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.demo.common.utils.UIKitUtil
 import com.demo.framework.base.BaseMvvmFragment
 import com.demo.main.databinding.FragmentMineBinding
 import com.demo.main.ui.mine.viewmodel.MineViewModel
+import com.demo.universaldialog.UniversalDialog
+import com.demo.universaldialog.enums.ShowFrom
+import com.demo.universaldialog.enums.XLocation
+import com.demo.universaldialog.enums.YLocation
+import com.demo.universaldialog.interfaces.ContentViewCreator
+import com.demo.universaldialog.interfaces.DialogDataConfig
+import com.demo.universaldialog.interfaces.UniversalDialogCallback
+import io.reactivex.rxjava3.core.Observable
 
 /**
  * @Description:
@@ -20,6 +33,128 @@ class MineFragment : BaseMvvmFragment<FragmentMineBinding, MineViewModel>() {
         val text = "[1004040-安心投] <font color=#ff552e>收拾卫生</font>|<font color=#ff552e>打扫卫生</font>|兵哥佳正军人家政新房开荒高端家政商业保洁商铺保洁兼职司机搬家陪诊"
         UIKitUtil.setPostTitle(text, mBinding?.tv, icon, icon)
         UIKitUtil.setTextWidthSuffixIcon("q121212",mBinding?.tv2,icon,2f)
+        showDialog()
 
     }
+
+
+    private fun showDialog(){
+        var dialog : UniversalDialog?=null
+        dialog = this@MineFragment.activity?.let {
+            UniversalDialog.Builder(it)
+                .setDialogDataConfig(object : DialogDataConfig {
+                    override fun getShowX(): XLocation {
+                        return XLocation.CENTER
+                    }
+
+                    override fun getShowY(): YLocation {
+                        return YLocation.TOP
+                    }
+
+                    override fun getShowFrom(): ShowFrom {
+                        return ShowFrom.TOP
+                    }
+
+                    override fun getShowTime(): Int {
+                        return 10
+                    }
+
+                    override fun getOpacity(): Float {
+                        return 0.5f
+                    }
+
+                    override fun isModal(): Boolean {
+                        return false
+                    }
+
+                    override fun getMarginTop(): Int {
+                        return 0
+                    }
+
+                    override fun getMarginBottom(): Int {
+                        return 0
+                    }
+
+                    override fun getMarginLeft(): Int {
+                        return 0
+                    }
+
+                    override fun getMarginRight(): Int {
+                        return 0
+                    }
+
+                    override fun getContentWidth(): String? {
+                        return "100%"
+                    }
+
+                    override fun getContentHeight(): String? {
+                        return "100"
+                    }
+
+                    override fun isCardBackground(): Boolean {
+                        return true
+                    }
+
+                    override fun isGlobal(): Boolean {
+                        return true
+                    }
+
+                    override fun canSlideClose(): Boolean {
+                        return false
+                    }
+
+                    override fun isUseSystemFloatingWindow(): Boolean {
+                        return false
+                    }
+
+                }).setContentViewCreator(object : ContentViewCreator {
+                    override fun createContentView(context: Context, group: ViewGroup): View {
+                        var appContext = context.applicationContext
+                        val textView = TextView(appContext)
+                        textView.text = "wos弹窗"
+                        textView.setTextColor(Color.BLACK)
+                        val par = LinearLayout(appContext)
+                        par.addView(textView, -2, -2)
+                        par.setBackgroundColor(Color.parseColor("#ff552e"))
+                        par.setOnClickListener{
+                            dialog?.dialogClose()
+                        }
+                        return par
+                    }
+
+                }).setDialogCallBack(object : UniversalDialogCallback {
+                    override fun onCreateContentView(view: View) {
+
+                    }
+
+                    override fun onDialogClose() {
+
+                    }
+
+                    override fun onDialogShow() {
+
+                    }
+
+                }).build()
+        };
+        this@MineFragment.activity?.let { dialog?.dialogShow(it) }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+    fun rxJava3(){
+//        Observable.just("").
+
+    }
+
+
 }
