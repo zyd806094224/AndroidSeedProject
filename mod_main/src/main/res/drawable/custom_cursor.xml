@@ -1,0 +1,11 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 设置光标背景色 -->
+    <item>
+        <shape>
+            <solid android:color="#00C3A8" />
+            <size
+                android:width="2dp"
+                android:height="17dp" /> <!-- 设置光标宽度 -->
+        </shape>
+    </item>
+</layer-list>

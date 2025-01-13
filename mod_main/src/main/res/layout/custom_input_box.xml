@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:minHeight="69dp"
+    android:paddingLeft="12dp"
+    android:paddingTop="10dp"
+    android:paddingRight="12dp"
+    android:paddingBottom="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_comment_edit_text"
+        android:maxHeight="70dp"
+        android:minHeight="49dp">
+
+        <EditText
+            android:id="@+id/customEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="center_vertical|start"
+            android:hint="回复@博洛尼"
+            android:inputType="textMultiLine"
+            android:maxHeight="70dp"
+            android:minHeight="49dp"
+            android:overScrollMode="always"
+            android:paddingLeft="15dp"
+            android:paddingTop="14dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="14dp"
+            android:scrollbarThumbVertical="@android:color/transparent"
+            android:scrollbars="vertical"
+            android:text=""
+            android:textColor="#222222"
+            android:textColorHint="#95959C"
+            android:textCursorDrawable="@drawable/custom_cursor"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/iv_send"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_send"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="#00ff00"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

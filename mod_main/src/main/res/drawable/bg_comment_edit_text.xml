@@ -1,0 +1,12 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 设置圆角 -->
+    <corners android:radius="16dp" />
+
+    <!-- 设置背景颜色 -->
+    <solid android:color="#F5F5F8" />
+
+    <!-- 设置边框 -->
+    <!--<stroke
+        android:width="2dp"
+        android:color="#FF6200EE" />-->
+</shape>
