@@ -20,15 +20,16 @@ class SplashActivity : BaseDataBindActivity<ActivitySplashBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         StatusBarSettingHelper.setStatusBarTranslucent(this)
-        mBinding.tvSkip.onClick {
-            MainServiceProvider.toMain(this)
-        }
         //倒计时
-        countDownCoroutines(2, lifecycleScope, onTick = {
+        val timer = countDownCoroutines(2, lifecycleScope, onTick = {
             mBinding.tvSkip.text = getString(R.string.splash_time, it.plus(1).toString())
         }) {
             MainServiceProvider.toMain(this)
             finish()
+        }
+        mBinding.tvSkip.onClick {
+            timer.cancel()
+            MainServiceProvider.toMain(this)
         }
     }
 

@@ -3,10 +3,15 @@ package com.demo.main.ui.mine
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.demo.common.audio.AudioConstants
 import com.demo.common.audio.exception.AudioException
 import com.demo.common.audio.exception.AudioRecordCreateFileException
@@ -27,6 +32,16 @@ import com.demo.universaldialog.interfaces.ContentViewCreator
 import com.demo.universaldialog.interfaces.DialogDataConfig
 import com.demo.universaldialog.interfaces.UniversalDialogCallback
 import com.wuba.huangye.common.audio.AudioOutputFormat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
 
 /**
@@ -45,6 +60,47 @@ class MineFragment : BaseMvvmFragment<FragmentMineBinding, MineViewModel>() {
         UIKitUtil.setTextWidthSuffixIcon("q121212", mBinding?.tv2, icon, 2f)
 //        showDialog()
         //toAudio()
+
+        mBinding?.btn?.setOnClickListener {
+            test()
+        }
+
+        initTest()
+    }
+
+    private fun initTest() {
+
+//        lifecycleScope.launch {
+//            mViewModel.state.onEach {
+//                Log.e("zzz","state----$it")
+//            }.collect()
+//        }
+//        GlobalScope.launch {
+//            mViewModel.state.onEach {
+//                Log.e("zzz","state----$it")
+//            }.collect()
+//        }
+        mViewModel.viewModelScope.launch {
+            mViewModel.state.onEach {
+                Log.e("zzz","state----$it")
+            }.collect {
+                Log.e("zzz","collect--state----$it")
+            }
+        }
+
+        mViewModel.viewModelScope.launch {
+            mViewModel.shared.onEach {
+                Log.e("zzz","shared----$it")
+            }.collect {
+                Log.e("zzz","collect--shared----$it")
+            }
+        }
+    }
+
+
+    private fun test(){
+        mViewModel.changeState()
+        mViewModel.changeShared()
 
     }
 
