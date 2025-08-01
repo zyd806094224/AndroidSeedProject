@@ -98,7 +98,7 @@ ext {
 //            cameraX           : "androidx.camera:camera-camera2:${dependVersion["cameraxVersion"]}",
 
             //权限处理
-            rxPermission      : "com.github.tbruyelle:rxpermissions:${dependVersion["permissionsVersion"]}",
+//            rxPermission      : "com.github.tbruyelle:rxpermissions:${dependVersion["permissionsVersion"]}",
             rxjava            : "io.reactivex.rxjava3:rxjava:${dependVersion["rxjavaVersion"]}",
             rxandroid         : "io.reactivex.rxjava3:rxandroid:${dependVersion["rxandroidVersion"]}",
     ]
