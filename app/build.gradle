@@ -50,6 +50,20 @@ android {
                 arg("AROUTER_MODULE_NAME", project.getName())
             }
         }
+
+        flavorDimensions "app"
+    }
+
+    productFlavors {
+        huawei {
+            buildConfigField "String", "MODEL", "\"huawei\""
+            buildConfigField "boolean", "VA", "false"
+        }
+
+        xiaomi {
+            buildConfigField "String", "MODEL", "\"xiaomi\""
+            buildConfigField "boolean", "VA", "false"
+        }
     }
 
     buildTypes {
@@ -64,6 +78,21 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def buildType = variant.buildType.name
+            def flavor = ""
+            variant.productFlavors.each { product ->
+                flavor = product.name
+            }
+            if (buildType != "debug") {
+                def time = new Date().format("yyyyMMddHHmm", TimeZone.getDefault())
+                outputFileName = "Android_${flavor}_V${defaultConfig.versionName}_${buildType}_${time}.apk"
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
