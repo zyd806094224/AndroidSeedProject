@@ -7,13 +7,13 @@ plugins {
 android {
     signingConfigs {
         debug {
-            storeFile file('../demoapk.jks')
+            storeFile file('../demo.keystore')
             storePassword '000000dong'
             keyAlias 'demo'
             keyPassword '000000dong'
         }
         release {
-            storeFile file('../demoapk.jks')
+            storeFile file('../demo.keystore')
             storePassword '000000dong'
             keyAlias 'demo'
             keyPassword '000000dong'
@@ -53,6 +53,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
