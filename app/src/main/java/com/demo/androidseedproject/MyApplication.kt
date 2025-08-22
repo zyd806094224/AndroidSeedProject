@@ -48,6 +48,8 @@ class MyApplication : Application() {
         ARouter.init(AppHelper.getApplication())
         initRefreshLayoutTask()
         initHtmlText()
+        Log.e("zzz",BuildConfig.MODEL)
+        Log.e("zzz","${BuildConfig.VA}")
     }
 
     private fun initRefreshLayoutTask() {
