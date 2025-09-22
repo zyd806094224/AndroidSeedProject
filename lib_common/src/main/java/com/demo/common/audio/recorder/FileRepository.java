@@ -2,7 +2,7 @@ package com.demo.common.audio.recorder;
 
 import android.content.Context;
 
-import com.wuba.huangye.common.audio.AudioOutputFormat;
+import com.demo.common.audio.AudioOutputFormat;
 
 import java.io.File;
 

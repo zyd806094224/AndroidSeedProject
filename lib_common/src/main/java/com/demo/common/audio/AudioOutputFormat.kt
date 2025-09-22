@@ -1,4 +1,4 @@
-package com.wuba.huangye.common.audio
+package com.demo.common.audio
 
 /**
  * @Description:

@@ -3,14 +3,11 @@ package com.demo.main.ui.mine
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.demo.common.audio.AudioConstants
 import com.demo.common.audio.exception.AudioException
@@ -23,6 +20,7 @@ import com.demo.common.utils.UIKitUtil
 import com.demo.framework.base.BaseMvvmFragment
 import com.demo.framework.helper.AppHelper
 import com.demo.main.databinding.FragmentMineBinding
+import com.demo.main.ui.EditTextActivity
 import com.demo.main.ui.mine.viewmodel.MineViewModel
 import com.demo.universaldialog.UniversalDialog
 import com.demo.universaldialog.enums.ShowFrom
@@ -31,17 +29,10 @@ import com.demo.universaldialog.enums.YLocation
 import com.demo.universaldialog.interfaces.ContentViewCreator
 import com.demo.universaldialog.interfaces.DialogDataConfig
 import com.demo.universaldialog.interfaces.UniversalDialogCallback
-import com.wuba.huangye.common.audio.AudioOutputFormat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
+import com.demo.common.audio.AudioOutputFormat
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import java.io.File
 
 /**
@@ -62,7 +53,8 @@ class MineFragment : BaseMvvmFragment<FragmentMineBinding, MineViewModel>() {
         //toAudio()
 
         mBinding?.btn?.setOnClickListener {
-            test()
+            // test()
+            EditTextActivity.start(requireContext())
         }
 
         initTest()

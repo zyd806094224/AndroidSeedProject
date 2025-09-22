@@ -1,7 +1,7 @@
 package com.demo.common.audio.recorder;
 
 import com.demo.common.audio.exception.AudioException;
-import com.wuba.huangye.common.audio.AudioOutputFormat;
+import com.demo.common.audio.AudioOutputFormat;
 
 import java.io.File;
 

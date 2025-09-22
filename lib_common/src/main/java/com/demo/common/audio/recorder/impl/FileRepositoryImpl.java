@@ -6,7 +6,7 @@ import android.content.Context;
 import com.demo.common.audio.AudioConstants;
 import com.demo.common.audio.recorder.FileRepository;
 import com.demo.common.audio.utils.AudioFileUtil;
-import com.wuba.huangye.common.audio.AudioOutputFormat;
+import com.demo.common.audio.AudioOutputFormat;
 
 import java.io.File;
 import java.io.FileNotFoundException;

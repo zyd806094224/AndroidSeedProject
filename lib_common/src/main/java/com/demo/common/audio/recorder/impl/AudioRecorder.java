@@ -12,7 +12,7 @@ import com.demo.common.audio.exception.AudioRecordCreateFileException;
 import com.demo.common.audio.exception.AudioRecordException;
 import com.demo.common.audio.exception.AudioRecordStateException;
 import com.demo.common.audio.recorder.RecorderContract;
-import com.wuba.huangye.common.audio.AudioOutputFormat;
+import com.demo.common.audio.AudioOutputFormat;
 
 import java.io.File;
 import java.io.IOException;
