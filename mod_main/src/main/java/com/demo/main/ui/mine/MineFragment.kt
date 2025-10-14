@@ -30,9 +30,13 @@ import com.demo.universaldialog.interfaces.ContentViewCreator
 import com.demo.universaldialog.interfaces.DialogDataConfig
 import com.demo.universaldialog.interfaces.UniversalDialogCallback
 import com.demo.common.audio.AudioOutputFormat
+import com.demo.main.ui.WebViewActivity
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import java.io.File
 
 /**
@@ -54,10 +58,24 @@ class MineFragment : BaseMvvmFragment<FragmentMineBinding, MineViewModel>() {
 
         mBinding?.btn?.setOnClickListener {
             // test()
-            EditTextActivity.start(requireContext())
+            // EditTextActivity.start(requireContext())
+            // testInLine()
+            WebViewActivity.start(requireContext())
         }
 
         initTest()
+    }
+
+
+    private fun testInLine(){
+        val nums = arrayOf(1, 2, 3, 4, 5)
+        nums.forEach {
+            if(it == 3){
+                return@forEach
+            }
+            Log.e("zzz","nums----$it")
+        }
+        Log.e("zzz","end")
     }
 
     private fun initTest() {
