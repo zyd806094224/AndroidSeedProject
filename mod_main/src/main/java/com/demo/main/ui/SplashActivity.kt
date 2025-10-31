@@ -19,6 +19,11 @@ import com.demo.main.databinding.ActivitySplashBinding
 class SplashActivity : BaseDataBindActivity<ActivitySplashBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
+        //处理每次进入应用都会创建启动页的问题
+        if (!isTaskRoot) {
+            finish()
+            return
+        }
         StatusBarSettingHelper.setStatusBarTranslucent(this)
         //倒计时
         val timer = countDownCoroutines(2, lifecycleScope, onTick = {
