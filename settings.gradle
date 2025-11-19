@@ -4,17 +4,26 @@ pluginManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven {
+            url 'https://storage.googleapis.com/download.flutter.io'
+        }
     }
 }
 dependencyResolutionManagement {
-    //repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS) // AOP
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven {
+            url 'https://storage.googleapis.com/download.flutter.io'
+        }
     }
 }
+
+setBinding(new Binding([gradle: this]))
+evaluate(new File('/Users/zhaoyudong/FlutterProjects/lib_flutter/.android/include_flutter.groovy'))
+
 rootProject.name = "AndroidSeedProject"
 include ':app'
 include ':lib_framework'
@@ -25,3 +34,5 @@ include ':mod_main'
 include ':lib_html'
 include ':lib_glide'
 include ':lib_universaldialog'
+include ':lib_flutter'
+project(':lib_flutter').projectDir = new File('../../FlutterProjects/lib_flutter')

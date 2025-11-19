@@ -80,6 +80,7 @@ dependencies {
     implementation project(path: ':lib_room')
     implementation project(path: ':lib_html')
     implementation project(path: ':lib_universaldialog')
+    implementation project(':flutter')
 
     // AOP 切面编程
     implementation 'org.aspectj:aspectjrt:1.9.5'

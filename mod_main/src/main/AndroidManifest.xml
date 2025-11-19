@@ -25,6 +25,18 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
+        <!-- 注册自定义的 FlutterActivity 子类 -->
+        <activity
+            android:name=".flutter.ui.FlutterDemoActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <!-- 配置 Flutter 启动主题（可选，避免启动白屏） -->
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
+        </activity>
+
     </application>
 
 </manifest>

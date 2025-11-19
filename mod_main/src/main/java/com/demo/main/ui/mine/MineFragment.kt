@@ -20,7 +20,6 @@ import com.demo.common.utils.UIKitUtil
 import com.demo.framework.base.BaseMvvmFragment
 import com.demo.framework.helper.AppHelper
 import com.demo.main.databinding.FragmentMineBinding
-import com.demo.main.ui.EditTextActivity
 import com.demo.main.ui.mine.viewmodel.MineViewModel
 import com.demo.universaldialog.UniversalDialog
 import com.demo.universaldialog.enums.ShowFrom
@@ -30,13 +29,10 @@ import com.demo.universaldialog.interfaces.ContentViewCreator
 import com.demo.universaldialog.interfaces.DialogDataConfig
 import com.demo.universaldialog.interfaces.UniversalDialogCallback
 import com.demo.common.audio.AudioOutputFormat
-import com.demo.main.ui.WebViewActivity
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.coroutineScope
+import com.demo.main.flutter.ui.FlutterDemoActivity
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
 import java.io.File
 
 /**
@@ -60,7 +56,8 @@ class MineFragment : BaseMvvmFragment<FragmentMineBinding, MineViewModel>() {
             // test()
             // EditTextActivity.start(requireContext())
             // testInLine()
-            WebViewActivity.start(requireContext())
+            // WebViewActivity.start(requireContext())
+            FlutterDemoActivity.start(requireContext())
         }
 
         initTest()

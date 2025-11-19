@@ -8,4 +8,16 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <!-- 基础主题：继承自 AppCompat 主题，确保兼容性 -->
+    <style name="NormalTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- 窗口背景：设置为应用主色调或启动图，避免白屏 -->
+        <item name="android:windowBackground">@color/white</item>
+        <!-- 可选：设置状态栏颜色（与 Flutter 页面的状态栏样式统一） -->
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <!-- 可选：设置导航栏颜色 -->
+        <item name="android:navigationBarColor">@color/white</item>
+        <!-- 禁用窗口内容过渡动画（可选，减少启动闪烁） -->
+        <item name="android:windowContentTransitions">false</item>
+    </style>
+
 </resources>
