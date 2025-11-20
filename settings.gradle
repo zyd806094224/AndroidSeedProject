@@ -22,6 +22,7 @@ dependencyResolutionManagement {
 }
 
 setBinding(new Binding([gradle: this]))
+//flutter_module工程git地址 https://github.com/zyd806094224/lib_flutter
 evaluate(new File('/Users/zhaoyudong/FlutterProjects/lib_flutter/.android/include_flutter.groovy'))
 
 rootProject.name = "AndroidSeedProject"
