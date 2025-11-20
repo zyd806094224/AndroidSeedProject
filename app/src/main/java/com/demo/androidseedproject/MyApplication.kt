@@ -27,6 +27,9 @@ import com.demo.html.html.HtmlTagCtrlFactory
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.FlutterEngineCache
+import io.flutter.embedding.engine.dart.DartExecutor
 
 /**
  * @Description:
@@ -48,8 +51,22 @@ class MyApplication : Application() {
         ARouter.init(AppHelper.getApplication())
         initRefreshLayoutTask()
         initHtmlText()
-        Log.e("zzz",BuildConfig.MODEL)
-        Log.e("zzz","${BuildConfig.VA}")
+        Log.e("zzz", BuildConfig.MODEL)
+        Log.e("zzz", "${BuildConfig.VA}")
+
+        // 预加载并缓存Flutter引擎
+        preloadFlutterEngine()
+    }
+
+    private fun preloadFlutterEngine() {
+        val engineId = "main_flutter_engine"
+        if (!FlutterEngineCache.getInstance().contains(engineId)) {
+            val flutterEngine = FlutterEngine(this)
+            flutterEngine.dartExecutor.executeDartEntrypoint(
+                DartExecutor.DartEntrypoint.createDefault()
+            )
+            FlutterEngineCache.getInstance().put(engineId, flutterEngine)
+        }
     }
 
     private fun initRefreshLayoutTask() {
@@ -98,6 +115,7 @@ class MyApplication : Application() {
 
             override fun onActivitySaveInstanceState(activity: Activity, p1: Bundle) {
             }
+
 
             override fun onActivityStopped(activity: Activity) {
             }

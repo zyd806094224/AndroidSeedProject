@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.widget.Toast
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.plugin.common.MethodChannel
 
 class FlutterDemoActivity : FlutterActivity() {
 
     companion object {
+        private const val ENGINE_ID = "main_flutter_engine"
+
         fun start(context: Context) {
             val intent = Intent(context, FlutterDemoActivity::class.java)
             // 可以修改这里的路由和参数进行测试
@@ -30,10 +33,16 @@ class FlutterDemoActivity : FlutterActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 当使用缓存引擎时，我们需要手动设置路由
+        val route = intent.getStringExtra("initial_route")
+        if (!route.isNullOrEmpty()) {
+            flutterEngine?.navigationChannel?.pushRoute(route)
+        }
     }
 
-    override fun getInitialRoute(): String? {
-        return intent.getStringExtra("initial_route")
+    override fun provideFlutterEngine(context: Context): FlutterEngine? {
+        // 如果有缓存的Flutter引擎，则使用它来提高启动速度
+        return FlutterEngineCache.getInstance().get(ENGINE_ID) ?: super.provideFlutterEngine(context)
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
