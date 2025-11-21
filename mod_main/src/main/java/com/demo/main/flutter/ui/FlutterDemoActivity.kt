@@ -13,7 +13,7 @@ class FlutterDemoActivity : FlutterActivity() {
 
     companion object {
         private const val ENGINE_ID = "main_flutter_engine"
-
+        private const val CHANNEL = "com.example/custom_flutter_activity"
         fun start(context: Context) {
             val intent = Intent(context, FlutterDemoActivity::class.java)
             // 可以修改这里的路由和参数进行测试
@@ -29,15 +29,17 @@ class FlutterDemoActivity : FlutterActivity() {
         }
     }
 
-    private val CHANNEL = "com.example/custom_flutter_activity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 当使用缓存引擎时，我们需要手动设置路由
-        val route = intent.getStringExtra("initial_route")
+        val route = initialRoute
         if (!route.isNullOrEmpty()) {
             flutterEngine?.navigationChannel?.pushRoute(route)
         }
+    }
+
+    override fun getInitialRoute(): String? {
+        return intent.getStringExtra("initial_route")
     }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
