@@ -55,6 +55,7 @@ class MyApplication : Application() {
         Log.e("zzz", "${BuildConfig.VA}")
 
         // 预加载并缓存Flutter引擎
+        // 建议主线程初始化，商用场景可以考虑在合适的位置初始化，或者延时初始化
         preloadFlutterEngine()
     }
 
