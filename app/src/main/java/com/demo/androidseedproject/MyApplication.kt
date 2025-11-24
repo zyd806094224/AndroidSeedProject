@@ -45,11 +45,18 @@ class MyApplication : Application() {
         appFrontBackRegister()
         // App启动立即注册监听
         registerActivityLifecycle()
+
+        // 初始化ARouter，开启调试模式
+        if (BuildConfig.DEBUG) {
+            ARouter.openLog()     // 打印日志
+            ARouter.openDebug()   // 开启调试模式
+        }
         ARouter.init(AppHelper.getApplication())
+
         initRefreshLayoutTask()
         initHtmlText()
-        Log.e("zzz",BuildConfig.MODEL)
-        Log.e("zzz","${BuildConfig.VA}")
+        Log.e("zzz", BuildConfig.MODEL)
+        Log.e("zzz", "${BuildConfig.VA}")
     }
 
     private fun initRefreshLayoutTask() {

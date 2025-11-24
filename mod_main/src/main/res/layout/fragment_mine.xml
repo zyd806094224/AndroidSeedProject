@@ -35,5 +35,40 @@
             android:layout_height="40dp"
             android:text="测试按钮点击" />
 
+        <Button
+            android:id="@+id/btnWebView"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:text="跳转WebView页面" />
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:text="跳转编辑页面" />
+
+        <Button
+            android:id="@+id/btnMain"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:text="跳转到主页(我的Tab)" />
+
+        <Button
+            android:id="@+id/btnExternalUrl"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:text="测试外部URL跳转" />
+
+        <Button
+            android:id="@+id/btnTestAll"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:text="测试所有路由" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

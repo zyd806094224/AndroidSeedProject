@@ -16,6 +16,7 @@ import com.demo.common.audio.exception.AudioRecordNoStorageSpaceException
 import com.demo.common.audio.recorder.RecorderContract.RecorderCallback
 import com.demo.common.audio.recorder.impl.AudioRecorder
 import com.demo.common.audio.recorder.impl.FileRepositoryImpl
+import com.demo.common.utils.RouteUtils
 import com.demo.common.utils.UIKitUtil
 import com.demo.framework.base.BaseMvvmFragment
 import com.demo.framework.helper.AppHelper
@@ -61,6 +62,42 @@ class MineFragment : BaseMvvmFragment<FragmentMineBinding, MineViewModel>() {
             // EditTextActivity.start(requireContext())
             // testInLine()
             WebViewActivity.start(requireContext())
+        }
+
+        // WebView跳转测试
+        mBinding?.btnWebView?.setOnClickListener {
+            RouteUtils.toWebView(
+                requireContext(),
+                "https://www.baidu.com",
+                "百度搜索",
+                true
+            )
+        }
+
+        // 编辑页面跳转测试
+        mBinding?.btnEdit?.setOnClickListener {
+            RouteUtils.toEdit(
+                requireContext(),
+                "这是默认的编辑内容",
+                "请输入您的文字..."
+            )
+        }
+
+        // 主页跳转测试
+        mBinding?.btnMain?.setOnClickListener {
+            RouteUtils.toMain(requireContext(), 1) // 跳转到我的Tab
+        }
+
+        // 外部URL测试
+        mBinding?.btnExternalUrl?.setOnClickListener {
+            val externalUrl = "seedapp://web/activity?url=https://www.baidu.com&title=百度搜索&showShare=true"
+            RouteUtils.handleExternalUrl(requireContext(), externalUrl)
+        }
+
+        // 测试所有路由
+        mBinding?.btnTestAll?.setOnClickListener {
+            RouteUtils.logRouteConfig()
+            RouteUtils.testAllRoutes(requireContext())
         }
 
         initTest()
