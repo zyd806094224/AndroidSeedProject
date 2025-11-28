@@ -32,6 +32,10 @@ import com.demo.universaldialog.interfaces.DialogDataConfig
 import com.demo.universaldialog.interfaces.UniversalDialogCallback
 import com.demo.common.audio.AudioOutputFormat
 import com.demo.main.ui.WebViewActivity
+import com.hjq.permissions.OnPermissionCallback
+import com.hjq.permissions.XXPermissions
+import com.hjq.permissions.permission.PermissionLists
+import com.hjq.permissions.permission.base.IPermission
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collect
@@ -61,7 +65,8 @@ class MineFragment : BaseMvvmFragment<FragmentMineBinding, MineViewModel>() {
             // test()
             // EditTextActivity.start(requireContext())
             // testInLine()
-            WebViewActivity.start(requireContext())
+            // WebViewActivity.start(requireContext())
+            testPermission()
         }
 
         // WebView跳转测试
@@ -101,6 +106,35 @@ class MineFragment : BaseMvvmFragment<FragmentMineBinding, MineViewModel>() {
         }
 
         initTest()
+    }
+
+    /**
+     * 权限测试
+     */
+    private fun testPermission(){
+
+        XXPermissions.with(this)
+            // 申请多个权限
+            .permission(PermissionLists.getRecordAudioPermission())
+            .permission(PermissionLists.getCameraPermission())
+            // 设置不触发错误检测机制（局部设置）
+            //.unchecked()
+            .request(object : OnPermissionCallback {
+
+                override fun onResult(grantedList: MutableList<IPermission>, deniedList: MutableList<IPermission>) {
+                    val allGranted = deniedList.isEmpty()
+                    if (!allGranted) {
+                        // 判断请求失败的权限是否被用户勾选了不再询问的选项
+                        val doNotAskAgain = XXPermissions.isDoNotAskAgainPermissions(activity!!, deniedList)
+                        Log.e("zzz","doNotAskAgain----$doNotAskAgain")
+                        // 在这里处理权限请求失败的逻辑
+                        // ......
+                        return
+                    }
+                    // 在这里处理权限请求成功的逻辑
+                    // ......
+                }
+            })
     }
 
 
@@ -314,12 +348,5 @@ class MineFragment : BaseMvvmFragment<FragmentMineBinding, MineViewModel>() {
 
 
     }
-
-
-    fun rxJava3() {
-//        Observable.just("").
-
-    }
-
 
 }

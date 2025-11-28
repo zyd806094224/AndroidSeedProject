@@ -159,9 +159,7 @@ dependencies {
 
 //    implementation rootProject.depsLibs.cameraX
 
-//    implementation rootProject.depsLibs.rxPermission
-    implementation rootProject.depsLibs.rxjava
-    implementation rootProject.depsLibs.rxandroid
+    implementation rootProject.depsLibs.xxPermissions
 
     implementation project(path: ':mod_main')
     implementation project(path: ':lib_framework')
