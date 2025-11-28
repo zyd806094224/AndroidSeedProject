@@ -23,23 +23,14 @@ abstract class BaseMvvmActivity<DB : ViewBinding, VM : ViewModel> : BaseDataBind
 
     private fun initViewModel() {
         val argument = (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
-        mViewModel = ViewModelProvider(this).get(argument[1] as Class<VM>)
+        val viewModelClass = argument[1]
 
-        //兼容性优化
-//        val superclass = javaClass.superclass//超类
-//        if (superclass is ParameterizedType) {//参数泛型类型
-//            val arguments = superclass.actualTypeArguments//泛型参数集合
-//            for (argument in arguments) {
-//                //是否为class并且ViewModel是其超类
-//                if (argument is Class<*> && ViewModel::class.java.isAssignableFrom(argument)) {
-//                    kotlin.runCatching {
-//                        //通过反射构建ViewHolder实例
-//                        mViewModel = ViewModelProvider(this).get(argument as Class<VM>)
-//                    }.onFailure {
-//                        it.printStackTrace()
-//                    }
-//                }
-//            }
-//        }
+        // 添加类型安全检查
+        if (viewModelClass is Class<*> && ViewModel::class.java.isAssignableFrom(viewModelClass)) {
+            @Suppress("UNCHECKED_CAST")
+            mViewModel = ViewModelProvider(this).get(viewModelClass as Class<VM>)
+        } else {
+            throw IllegalArgumentException("ViewModel type must be a subclass of ViewModel, got: $viewModelClass")
+        }
     }
 }

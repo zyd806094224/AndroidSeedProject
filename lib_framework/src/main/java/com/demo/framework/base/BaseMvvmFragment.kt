@@ -24,7 +24,15 @@ abstract class BaseMvvmFragment<DB : ViewDataBinding, VM : ViewModel> : BaseData
 
     open fun initViewModel() {
         val argument = (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
-        mViewModel = ViewModelProvider(this).get(argument[1] as Class<VM>)
+        val viewModelClass = argument[1]
+
+        // 添加类型安全检查
+        if (viewModelClass is Class<*> && ViewModel::class.java.isAssignableFrom(viewModelClass)) {
+            @Suppress("UNCHECKED_CAST")
+            mViewModel = ViewModelProvider(this).get(viewModelClass as Class<VM>)
+        } else {
+            throw IllegalArgumentException("ViewModel type must be a subclass of ViewModel, got: $viewModelClass")
+        }
     }
 
 }
