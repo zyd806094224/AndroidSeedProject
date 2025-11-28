@@ -142,8 +142,59 @@ class HomeFragment : BaseMvvmFragment<FragmentHomeBinding, HomeViewModel>(), OnR
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        // 清理Fragment内存泄漏
+        clearFragmentReferences()
+
+        // 清理TabLayoutMediator
         mTabLayoutMediator?.detach()
+        mTabLayoutMediator = null
+
+        // 清理ViewPager和Adapter
+        mFragmentAdapter?.destroy() // 清理Fragment引用
+        mBinding?.viewPager?.adapter = null
+        mFragmentAdapter = null
+
+        // 清理TabLayout监听器
+        mBinding?.tabHome?.removeOnTabSelectedListener(tabSelectedCall)
+
+        // 清理SparseArray
+        mArrayTabFragments.clear()
+        mProjectTabs.clear()
+
+        super.onDestroy()
+    }
+
+    /**
+     * 清理Fragment引用，防止内存泄漏
+     */
+    private fun clearFragmentReferences() {
+        try {
+            // 清理SparseArray中的Fragment引用
+            for (i in 0 until mArrayTabFragments.size()) {
+                val fragment = mArrayTabFragments.valueAt(i)
+                fragment?.let {
+                    // 移除Fragment
+                    childFragmentManager.beginTransaction()
+                        .remove(it)
+                        .commitAllowingStateLoss()
+                }
+            }
+
+            // 清理ViewPager中的Fragment
+            mBinding?.viewPager?.let { viewPager ->
+                for (i in 0 until childFragmentManager.fragments.size) {
+                    val fragment = childFragmentManager.fragments[i]
+                    fragment?.let {
+                        childFragmentManager.beginTransaction()
+                            .remove(it)
+                            .commitAllowingStateLoss()
+                    }
+                }
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 }
