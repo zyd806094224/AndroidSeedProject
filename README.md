@@ -177,7 +177,7 @@ AndroidSeedProject
 
 1. **克隆项目**
    ```bash
-   git clone https://github.com/your-username/AndroidSeedProject.git
+   git clone https://github.com/zyd806094224/AndroidSeedProject.git
    cd AndroidSeedProject
    ```
 
