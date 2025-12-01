@@ -10,11 +10,9 @@ ext {
 
     android = [
             applicationId    : "com.demo.androidseedproject",
-            //使用exoPlayer编译版本需要到33，而33中有bug,xml写代码没有代码提示
-            compileSdk       : 33,
-            buildToolsVersion: '32.0.0',
-            minSdk           : 21,
-            targetSdk        : 32,
+            compileSdk       : 34,
+            minSdk           : 23,
+            targetSdk        : 34,
 
             versionCode      : 1,
             versionName      : "1.0.1",
@@ -44,11 +42,11 @@ ext {
             appcompat         : 'androidx.appcompat:appcompat:1.3.0',
             material          : 'com.google.android.material:material:1.4.0',
             constraintlayout  : 'androidx.constraintlayout:constraintlayout:2.0.4',
-            liveDataKtx       : 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1',
-            viewModelKtx      : 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1',
+            liveDataKtx       : 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0',
+            viewModelKtx      : 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0',
             navigationFragment: 'androidx.navigation:navigation-fragment-ktx:2.3.5',
             navigationUI      : 'androidx.navigation:navigation-ui-ktx:2.3.5',
-            lifecycleCommon   : 'androidx.lifecycle:lifecycle-common:2.5.0-beta01',
+            lifecycleCommon   : 'androidx.lifecycle:lifecycle-common:2.4.0',
 
             //room数据库
             roomKtx           : "androidx.room:room-ktx:${dependVersion["roomVersion"]}",
