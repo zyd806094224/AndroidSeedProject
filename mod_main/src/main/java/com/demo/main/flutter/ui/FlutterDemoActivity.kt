@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import com.alibaba.android.arouter.facade.annotation.Route
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.plugin.common.MethodChannel
 
+@Route(path = "/flutter/activity")
 class FlutterDemoActivity : FlutterActivity() {
 
     companion object {

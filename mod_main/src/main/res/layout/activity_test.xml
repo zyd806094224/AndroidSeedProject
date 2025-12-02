@@ -93,5 +93,21 @@
             android:text="弹窗测试"
             android:textAllCaps="false" />
 
+        <Button
+            android:id="@+id/btnFlutter"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:text="跳转Flutter页面"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btnFlutterUrl"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:text="通过URL跳转Flutter"
+            android:textAllCaps="false" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

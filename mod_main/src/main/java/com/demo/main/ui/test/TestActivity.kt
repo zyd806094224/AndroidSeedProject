@@ -122,6 +122,31 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
         mBinding.btnDialog.setOnClickListener {
             showTestDialog()
         }
+
+        // Flutter页面跳转测试
+        mBinding.btnFlutter.setOnClickListener {
+            // 测试不同的路由参数
+            val testRoute = "/custom_flutter_page?id=999&name=Android测试商品&desc=从TestActivity跳转"
+            RouteUtils.toFlutter(this, testRoute)
+        }
+
+        // 通过外部URL跳转Flutter测试
+        mBinding.btnFlutterUrl.setOnClickListener {
+            // 测试通过外部URL跳转到Flutter页面
+
+            // 直接测试简单参数
+            // val simpleFlutterUrl = "seedapp://flutter/activity?route=/custom_flutter_page?id=2000&name=TestName&source=ExternalLink"
+            // Log.e(TAG, "简单参数Flutter URL: $simpleFlutterUrl")
+            // RouteUtils.handleFlutterUrl(this, simpleFlutterUrl)
+
+            // 测试包含中文参数的情况
+            val chineseName = java.net.URLEncoder.encode("URL跳转测试", "UTF-8")
+            val chineseSource = java.net.URLEncoder.encode("外部链接", "UTF-8")
+            val chineseFlutterUrl = "seedapp://flutter/activity?route=/custom_flutter_page?id=3000&name=$chineseName&source=$chineseSource"
+            Log.e(TAG, "中文参数Flutter URL: $chineseFlutterUrl")
+            RouteUtils.handleFlutterUrl(this, chineseFlutterUrl)
+
+        }
     }
 
     /**

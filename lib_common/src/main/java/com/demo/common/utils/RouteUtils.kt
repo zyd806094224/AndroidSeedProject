@@ -62,6 +62,22 @@ object RouteUtils {
     }
 
     /**
+     * 跳转到Flutter页面
+     * @param context 上下文
+     * @param initialRoute 初始路由，格式如 "/custom_flutter_page?id=123&name=测试商品"
+     */
+    fun toFlutter(context: Context, initialRoute: String? = "/custom_flutter_page?id=123&name=测试商品") {
+        val postcard = ARouter.getInstance().build(FLUTTER_ACTIVITY)
+
+        // 传递初始路由参数给 FlutterDemoActivity
+        initialRoute?.let {
+            postcard.withString("initial_route", it)
+        }
+
+        postcard.navigation(context)
+    }
+
+    /**
      * 通过ARouter直接跳转
      * @param path 路由路径
      * @param params 参数
@@ -94,6 +110,67 @@ object RouteUtils {
     }
 
     /**
+     * 通过外部URL跳转到Flutter页面
+     * @param context 上下文
+     * @param url 外部URL，格式如 "seedapp://flutter/activity?route=/custom_flutter_page?id=123&name=测试商品"
+     * @return 是否成功处理
+     */
+    fun handleFlutterUrl(context: Context, url: String): Boolean {
+        return try {
+            if (url.startsWith("seedapp://flutter/activity")) {
+                android.util.Log.d("RouteUtils", "原始Flutter URL: $url")
+
+                // 手动解析URL，因为route参数值包含&符号会被getQueryParameter截断
+                val routeParam = extractRouteParam(url)
+
+                // 处理URL编码，确保中文等特殊字符正确传递
+                val initialRoute = if (!routeParam.isNullOrEmpty()) {
+                    java.net.URLDecoder.decode(routeParam, "UTF-8")
+                } else {
+                    "/custom_flutter_page?id=123&name=测试商品"
+                }
+
+                android.util.Log.d("RouteUtils", "Flutter URL解析结果: $initialRoute")
+                toFlutter(context, initialRoute)
+                true
+            } else {
+                false
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("RouteUtils", "Flutter URL解析失败: ${e.message}")
+            false
+        }
+    }
+
+    /**
+     * 从URL中提取route参数，处理包含&符号的情况
+     */
+    private fun extractRouteParam(url: String): String? {
+        return try {
+            // 移除协议和主机部分，只保留查询参数
+            val queryStart = url.indexOf('?')
+            if (queryStart == -1) return null
+
+            val queryString = url.substring(queryStart + 1)
+            android.util.Log.d("RouteUtils", "查询字符串: $queryString")
+
+            // 查找 route= 参数
+            val routePrefix = "route="
+            val routeIndex = queryString.indexOf(routePrefix)
+            if (routeIndex == -1) return null
+
+            // 获取route=后面的所有内容（包括&符号）
+            val routeValue = queryString.substring(routeIndex + routePrefix.length)
+            android.util.Log.d("RouteUtils", "Route参数值: $routeValue")
+
+            routeValue
+        } catch (e: Exception) {
+            android.util.Log.e("RouteUtils", "提取route参数失败: ${e.message}")
+            null
+        }
+    }
+
+    /**
      * 测试所有路由跳转
      */
     fun testAllRoutes(context: Context) {
@@ -122,6 +199,32 @@ object RouteUtils {
             val externalUrl = "seedapp://web/activity?url=https://github.com&title=GitHub"
             handleExternalUrl(context, externalUrl)
         }, 6000)
+
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            // 测试Flutter页面
+            android.util.Log.d("RouteUtils", "测试Flutter页面")
+            toFlutter(context, "/custom_flutter_page?id=777&name=自动测试&source=testAllRoutes")
+        }, 8000)
+
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            // 测试Flutter外部URL（简单参数）
+            android.util.Log.d("RouteUtils", "测试Flutter外部URL（简单参数）")
+            val simpleFlutterUrl = "seedapp://flutter/activity?route=/custom_flutter_page?id=888&name=TestName&source=AutoTest"
+            android.util.Log.d("RouteUtils", "简单参数Flutter URL: $simpleFlutterUrl")
+            handleFlutterUrl(context, simpleFlutterUrl)
+        }, 10000)
+
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            // 测试Flutter外部URL（中文参数）
+            android.util.Log.d("RouteUtils", "测试Flutter外部URL（中文参数）")
+
+            // 对中文参数进行URL编码
+            val encodedName = java.net.URLEncoder.encode("URL测试", "UTF-8")
+            val encodedSource = java.net.URLEncoder.encode("自动测试", "UTF-8")
+            val chineseFlutterUrl = "seedapp://flutter/activity?route=/custom_flutter_page?id=999&name=$encodedName&source=$encodedSource"
+            android.util.Log.d("RouteUtils", "中文参数Flutter URL: $chineseFlutterUrl")
+            handleFlutterUrl(context, chineseFlutterUrl)
+        }, 12000)
     }
 
     /**

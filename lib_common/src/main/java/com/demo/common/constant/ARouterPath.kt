@@ -29,6 +29,9 @@ const val SPLASH_ACTIVITY = "/splash/activity"
 // 测试页面
 const val TEST_ACTIVITY = "/test/activity"
 
+// Flutter页面
+const val FLUTTER_ACTIVITY = "/flutter/activity"
+
 //**********************Fragment路由**********************
 /**
  * Fragment路由
