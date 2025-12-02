@@ -54,6 +54,14 @@ object RouteUtils {
     }
 
     /**
+     * 跳转到测试页面
+     * @param context 上下文
+     */
+    fun toTest(context: Context) {
+        navigate(context, TEST_ACTIVITY)
+    }
+
+    /**
      * 通过ARouter直接跳转
      * @param path 路由路径
      * @param params 参数

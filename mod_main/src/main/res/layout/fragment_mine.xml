@@ -11,64 +11,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="16dp">
 
         <com.demo.html.HtmlTextView
             android:id="@+id/tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
             android:text="我的"
             android:textColor="#00FF00"
-            android:textSize="14sp"
+            android:textSize="16sp"
             tools:ignore="MissingConstraints" />
 
         <com.demo.html.HtmlTextView
             android:id="@+id/tv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
             android:textSize="14sp" />
 
         <Button
             android:id="@+id/btn"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="测试按钮点击" />
-
-        <Button
-            android:id="@+id/btnWebView"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:text="跳转WebView页面" />
-
-        <Button
-            android:id="@+id/btnEdit"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:text="跳转编辑页面" />
-
-        <Button
-            android:id="@+id/btnMain"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:text="跳转到主页(我的Tab)" />
-
-        <Button
-            android:id="@+id/btnExternalUrl"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:text="测试外部URL跳转" />
-
-        <Button
-            android:id="@+id/btnTestAll"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:text="测试所有路由" />
+            android:layout_height="48dp"
+            android:text="跳转到测试页面"
+            android:textAllCaps="false"
+            android:textSize="16sp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

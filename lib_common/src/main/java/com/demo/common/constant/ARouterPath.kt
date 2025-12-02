@@ -26,6 +26,9 @@ const val EDIT_ACTIVITY = "/edit/activity"
 // 启动页
 const val SPLASH_ACTIVITY = "/splash/activity"
 
+// 测试页面
+const val TEST_ACTIVITY = "/test/activity"
+
 //**********************Fragment路由**********************
 /**
  * Fragment路由
