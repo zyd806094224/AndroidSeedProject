@@ -122,6 +122,11 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
         mBinding.btnDialog.setOnClickListener {
             showTestDialog()
         }
+
+        // 跳转到Compose页面
+        mBinding.btnGoToCompose.setOnClickListener {
+            com.alibaba.android.arouter.launcher.ARouter.getInstance().build("/compose/helloWorld").navigation()
+        }
     }
 
     /**

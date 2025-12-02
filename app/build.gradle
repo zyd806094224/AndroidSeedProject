@@ -167,4 +167,5 @@ dependencies {
     implementation project(path: ':lib_common')
     implementation project(path: ':lib_room')
     implementation project(path: ':lib_html')
+    implementation project(path: ':mod_compose_feature')
 }

@@ -35,6 +35,8 @@ ext {
             permissionsVersion    : '26.8',
             roomVersion           : '2.5.0',
             cameraxVersion        : '1.3.0-alpha04',
+            composeVersion        : '1.6.7', // Compose UI libraries
+            composeCompilerVersion: '1.4.0', // Aligns with Kotlin 1.8.0
     ]
 
     depsLibs = [
@@ -47,6 +49,14 @@ ext {
             navigationFragment: 'androidx.navigation:navigation-fragment-ktx:2.3.5',
             navigationUI      : 'androidx.navigation:navigation-ui-ktx:2.3.5',
             lifecycleCommon   : 'androidx.lifecycle:lifecycle-common:2.4.0',
+
+            //Compose
+            activityCompose   : "androidx.activity:activity-compose:1.9.0",
+            composeUI         : "androidx.compose.ui:ui:${dependVersion["composeVersion"]}",
+            composeMaterial   : "androidx.compose.material:material:${dependVersion["composeVersion"]}",
+            composeTooling    : "androidx.compose.ui:ui-tooling:${dependVersion["composeVersion"]}",
+            composeToolingPreview : "androidx.compose.ui:ui-tooling-preview:${dependVersion["composeVersion"]}",
+            composeViewBinding: "androidx.compose.ui:ui-viewbinding:${dependVersion["composeVersion"]}",
 
             //room数据库
             roomKtx           : "androidx.room:room-ktx:${dependVersion["roomVersion"]}",
