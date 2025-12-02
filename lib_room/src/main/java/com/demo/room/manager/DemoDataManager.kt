@@ -3,7 +3,10 @@ package com.demo.room.manager
 import androidx.lifecycle.LiveData
 import com.demo.room.database.DemoDataBase
 import com.demo.room.entity.DemoDataInfo
-import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 /**
@@ -15,6 +18,16 @@ import kotlinx.coroutines.launch
 object DemoDataManager {
 
     private val demoDataDao by lazy { DemoDataBase.getInstance().demoDataDao() }
+
+    // 使用自定义作用域替代MainScope，避免内存泄漏
+    private val dataManagerScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    /**
+     * 清理资源，在Application退出时调用
+     */
+    fun destroy() {
+        dataManagerScope.cancel()
+    }
 
     /**
      * 保存列表数据
@@ -28,7 +41,7 @@ object DemoDataManager {
      * @param demoDataInfo
      */
     fun insertDemoDataInfo(demoDataInfo: DemoDataInfo) {
-        MainScope().launch {
+        dataManagerScope.launch {
             demoDataDao.insert(demoDataInfo)
         }
     }
@@ -38,7 +51,7 @@ object DemoDataManager {
      * @param id
      */
     fun deleteDemoDataItem(id: Long) {
-        MainScope().launch {
+        dataManagerScope.launch {
             demoDataDao.deleteById(id)
         }
     }
@@ -48,7 +61,7 @@ object DemoDataManager {
      * @param demoDataInfo
      */
     fun deleteDemoDataItem(demoDataInfo: DemoDataInfo) {
-        MainScope().launch {
+        dataManagerScope.launch {
             demoDataDao.delete(demoDataInfo)
         }
     }
@@ -58,7 +71,7 @@ object DemoDataManager {
      * @param demoDataInfo
      */
     fun updateDemoDataItem(demoDataInfo: DemoDataInfo) {
-        MainScope().launch {
+        dataManagerScope.launch {
             demoDataDao.update(demoDataInfo)
         }
     }
@@ -69,7 +82,7 @@ object DemoDataManager {
      * @param title
      */
     fun updateDemoDataItem(id: Long, title: String) {
-        MainScope().launch {
+        dataManagerScope.launch {
             demoDataDao.updateById(id, title)
         }
     }
@@ -102,7 +115,7 @@ object DemoDataManager {
      * @param callBack
      */
     fun clearDemoDataList(callBack: (String) -> Unit) {
-        MainScope().launch {
+        dataManagerScope.launch {
             demoDataDao.deleteAll()
             callBack("删除成功")
         }

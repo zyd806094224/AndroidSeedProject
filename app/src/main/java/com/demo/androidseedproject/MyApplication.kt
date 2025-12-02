@@ -48,6 +48,12 @@ class MyApplication : Application() {
         appFrontBackRegister()
         // App启动立即注册监听
         registerActivityLifecycle()
+
+        // 初始化ARouter，开启调试模式
+        if (BuildConfig.DEBUG) {
+            ARouter.openLog()     // 打印日志
+            ARouter.openDebug()   // 开启调试模式
+        }
         ARouter.init(AppHelper.getApplication())
         initRefreshLayoutTask()
         initHtmlText()
@@ -116,7 +122,6 @@ class MyApplication : Application() {
 
             override fun onActivitySaveInstanceState(activity: Activity, p1: Bundle) {
             }
-
 
             override fun onActivityStopped(activity: Activity) {
             }

@@ -11,29 +11,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="16dp">
 
         <com.demo.html.HtmlTextView
             android:id="@+id/tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
             android:text="我的"
             android:textColor="#00FF00"
-            android:textSize="14sp"
+            android:textSize="16sp"
             tools:ignore="MissingConstraints" />
 
         <com.demo.html.HtmlTextView
             android:id="@+id/tv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
             android:textSize="14sp" />
 
         <Button
             android:id="@+id/btn"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="测试按钮点击" />
+            android:layout_height="48dp"
+            android:text="跳转到测试页面"
+            android:textAllCaps="false"
+            android:textSize="16sp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -70,9 +70,7 @@ dependencies {
     kapt rootProject.depsLibs.arouterCompiler
 
     implementation rootProject.depsLibs.tbssdk
-//    implementation rootProject.depsLibs.rxPermission
-    implementation rootProject.depsLibs.rxjava
-    implementation rootProject.depsLibs.rxandroid
+    implementation rootProject.depsLibs.xxPermissions
 
     implementation project(path: ':lib_framework')
     implementation project(path: ':lib_common')
