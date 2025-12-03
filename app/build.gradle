@@ -161,6 +161,10 @@ dependencies {
 
     implementation rootProject.depsLibs.xxPermissions
 
+    // Koin
+    implementation rootProject.depsLibs.koinAndroid
+    implementation rootProject.depsLibs.koinCompose
+
     implementation project(path: ':mod_main')
     implementation project(path: ':lib_framework')
     implementation project(path: ':lib_network')
