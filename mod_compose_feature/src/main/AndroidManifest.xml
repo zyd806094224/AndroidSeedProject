@@ -6,6 +6,10 @@
         <activity
             android:name=".ComposeHelloWorldActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".feature.StickyListActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

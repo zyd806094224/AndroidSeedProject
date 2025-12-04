@@ -51,9 +51,28 @@ dependencies {
     // Compose Dependencies
     implementation rootProject.depsLibs.activityCompose
     implementation rootProject.depsLibs.composeUI
-    implementation rootProject.depsLibs.composeMaterial
     debugImplementation rootProject.depsLibs.composeTooling
     implementation rootProject.depsLibs.composeToolingPreview
+
+    // Compose 布局和动画
+    implementation rootProject.depsLibs.composeFoundation
+    implementation rootProject.depsLibs.composeFoundationLayout
+    implementation rootProject.depsLibs.composeAnimation
+    implementation rootProject.depsLibs.composeRuntime
+
+    // Material Icons (需要material图标库来访问扩展图标)
+    implementation rootProject.depsLibs.materialIconsCore
+    implementation rootProject.depsLibs.materialIconsExtended
+
+    // ViewModel for Compose
+    implementation rootProject.depsLibs.viewModelCompose
+
+    // Paging for Compose (上拉加载)
+    implementation rootProject.depsLibs.pagingCompose
+
+  
+    // Material3
+    implementation rootProject.depsLibs.material3
 
     // ARouter
     implementation rootProject.depsLibs.aroutreApi
