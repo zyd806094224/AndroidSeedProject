@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+    namespace 'com.demo.universaldialog'
     compileSdk rootProject.android.compileSdk
 
     defaultConfig {

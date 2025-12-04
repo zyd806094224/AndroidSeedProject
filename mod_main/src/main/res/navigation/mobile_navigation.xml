@@ -5,13 +5,13 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navi_home">
 
-    <selfFragment
+    <fragment
         android:id="@+id/navi_home"
         android:name="com.demo.main.ui.home.HomeFragment"
         android:label="@string/tab_home"
         tools:layout="@layout/fragment_home" />
 
-    <selfFragment
+    <fragment
         android:id="@+id/navi_mine"
         android:name="com.demo.main.ui.mine.MineFragment"
         android:label="@string/tab_mine"

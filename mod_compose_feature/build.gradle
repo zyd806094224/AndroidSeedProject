@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace 'com.demo.androidseedproject.compose.feature'
     compileSdk rootProject.android.compileSdk
 
     defaultConfig {

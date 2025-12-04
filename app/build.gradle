@@ -5,6 +5,10 @@ plugins {
 }
 
 android {
+    namespace "com.demo.androidseedproject"
+    buildFeatures {
+        buildConfig true
+    }
     signingConfigs {
         debug {
             storeFile file('../demo.keystore')

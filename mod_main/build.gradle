@@ -6,6 +6,7 @@ plugins {
 //apply plugin: 'android-aspectjx'
 
 android {
+    namespace 'com.demo.main'
     compileSdk rootProject.android.compileSdk
 
     defaultConfig {

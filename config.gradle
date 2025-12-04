@@ -33,23 +33,23 @@ ext {
             tbssdkVersion         : '44132',
             exoPlayerVersion      : '2.18.5',
             permissionsVersion    : '26.8',
-            roomVersion           : '2.5.0',
+            roomVersion           : '2.6.1',
             cameraxVersion        : '1.3.0-alpha04',
             composeVersion        : '1.6.7', // Compose UI libraries
-            composeCompilerVersion: '1.4.0', // Aligns with Kotlin 1.8.0
+            composeCompilerVersion: '1.5.8', // Aligns with Kotlin 1.9.22
             koinVersion           : '3.5.6',
     ]
 
     depsLibs = [
             coreKtx           : 'androidx.core:core-ktx:1.9.0',
-            appcompat         : 'androidx.appcompat:appcompat:1.3.0',
-            material          : 'com.google.android.material:material:1.4.0',
-            constraintlayout  : 'androidx.constraintlayout:constraintlayout:2.0.4',
-            liveDataKtx       : 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0',
-            viewModelKtx      : 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0',
-            navigationFragment: 'androidx.navigation:navigation-fragment-ktx:2.3.5',
-            navigationUI      : 'androidx.navigation:navigation-ui-ktx:2.3.5',
-            lifecycleCommon   : 'androidx.lifecycle:lifecycle-common:2.4.0',
+            appcompat         : 'androidx.appcompat:appcompat:1.6.1',
+            material          : 'com.google.android.material:material:1.11.0',
+            constraintlayout  : 'androidx.constraintlayout:constraintlayout:2.1.4',
+            liveDataKtx       : 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0',
+            viewModelKtx      : 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0',
+            navigationFragment: 'androidx.navigation:navigation-fragment-ktx:2.7.7',
+            navigationUI      : 'androidx.navigation:navigation-ui-ktx:2.7.7',
+            lifecycleCommon   : 'androidx.lifecycle:lifecycle-common-java8:2.7.0',
 
             //Compose
             activityCompose   : "androidx.activity:activity-compose:1.9.0",

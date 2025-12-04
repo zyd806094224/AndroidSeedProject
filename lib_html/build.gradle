@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace 'com.demo.html'
     compileSdk rootProject.android.compileSdk
 
     defaultConfig {
