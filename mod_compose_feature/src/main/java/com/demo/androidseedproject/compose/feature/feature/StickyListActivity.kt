@@ -7,23 +7,28 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material3.*
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.*
+import androidx.compose.material3.*
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.alibaba.android.arouter.facade.annotation.Route
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import com.demo.androidseedproject.compose.feature.components.*
+import com.demo.androidseedproject.compose.feature.mvi.ListIntent
+import kotlinx.coroutines.delay
 
 @Route(path = "/compose/stickyList")
 class StickyListActivity : ComponentActivity() {
@@ -35,30 +40,41 @@ class StickyListActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun StickyListScreen(
     viewModel: ListViewModel = viewModel(),
     onClose: () -> Unit = {}
 ) {
-    val state by remember { derivedStateOf { viewModel.state.value } }
+    // MVI 模式：使用 StateFlow 收集状态
+    val state by viewModel.state.collectAsState()
     val lazyListState = rememberLazyListState()
     val pullToRefreshState = rememberPullToRefreshState()
 
-    // 监听下拉刷新状态
-    if (pullToRefreshState.isRefreshing) {
-        LaunchedEffect(true) {
-            viewModel.refresh()
-            pullToRefreshState.endRefresh()
+    // 监听下拉刷新状态 - MVI 模式：发送 Intent
+    LaunchedEffect(pullToRefreshState.isRefreshing) {
+        if (pullToRefreshState.isRefreshing && !state.isRefreshing) {
+            viewModel.handleIntent(ListIntent.Refresh)
         }
     }
 
     // 监听ViewModel的刷新状态
     LaunchedEffect(state.isRefreshing) {
-        if (state.isRefreshing) {
-            pullToRefreshState.startRefresh()
-        } else {
+        if (!state.isRefreshing && pullToRefreshState.isRefreshing) {
+            // ViewModel 刷新已完成，结束下拉刷新状态
+            delay(500) // 延迟一点时间让用户看到刷新完成状态
             pullToRefreshState.endRefresh()
+        }
+    }
+
+    // 监听滚动到指定位置的请求
+    LaunchedEffect(state.scrollToIndex) {
+        state.scrollToIndex?.let { index ->
+            if (index >= 0 && index < state.items.size) {
+                lazyListState.animateScrollToItem(index)
+                // 滚动完成后重置请求
+                viewModel.handleIntent(ListIntent.ScrollToTab(state.selectedTabIndex))
+            }
         }
     }
 
@@ -71,42 +87,26 @@ fun StickyListScreen(
         lazyListState.firstVisibleItemIndex >= 1 || scrollOffset.value > 0
     } }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("吸顶列表") },
-                navigationIcon = {
-                    IconButton(onClick = onClose) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "返回")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { viewModel.refresh() }) {
-                        Icon(Icons.Default.Refresh, contentDescription = "刷新")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = if (isTabSticky.value) MaterialTheme.colorScheme.primary else Color.Transparent,
-                    titleContentColor = if (isTabSticky.value) Color.White else MaterialTheme.colorScheme.onSurface,
-                    navigationIconContentColor = if (isTabSticky.value) Color.White else MaterialTheme.colorScheme.onSurface,
-                    actionIconContentColor = if (isTabSticky.value) Color.White else MaterialTheme.colorScheme.onSurface
-                )
+    // 使用标准的下拉刷新布局
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        if (state.shouldShowError) {
+            ErrorContent(
+                error = state.error ?: "未知错误",
+                onRetry = {
+                    viewModel.handleIntent(ListIntent.Retry)
+                }
             )
-        }
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .padding(paddingValues)
-                .nestedScroll(pullToRefreshState.nestedScrollConnection)
-        ) {
-            if (state.isLoading && state.items.isEmpty()) {
-                LoadingContent()
-            } else if (state.error?.isNotEmpty() == true) {
-                ErrorContent(
-                    error = state.error!!,
-                    onRetry = { viewModel.retry() }
-                )
-            } else {
+        } else if (state.isLoading && state.items.isEmpty()) {
+            LoadingContent()
+        } else {
+            // 使用标准的下拉刷新容器
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(pullToRefreshState.nestedScrollConnection)
+            ) {
                 LazyColumn(
                     state = lazyListState,
                     modifier = Modifier.fillMaxSize(),
@@ -122,7 +122,9 @@ fun StickyListScreen(
                         TabBar(
                             tabs = defaultTabs,
                             selectedTabIndex = state.selectedTabIndex,
-                            onTabSelected = { viewModel.switchTab(it) }
+                            onTabSelected = { tabIndex ->
+                                viewModel.handleIntent(ListIntent.ScrollToTab(tabIndex))
+                            }
                         )
                     }
 
@@ -133,7 +135,9 @@ fun StickyListScreen(
                     ) { item ->
                         ListItem(
                             item = item,
-                            onItemClicked = { viewModel.onItemClick(it) }
+                            onItemClicked = { clickedItem ->
+                                viewModel.handleIntent(ListIntent.ItemClick(clickedItem))
+                            }
                         )
                     }
 
@@ -142,18 +146,20 @@ fun StickyListScreen(
                         LoadMoreContent(
                             isLoadingMore = state.isLoadingMore,
                             hasMore = state.hasMore,
-                            onLoadMore = { viewModel.loadMore() },
+                            onLoadMore = {
+                                viewModel.handleIntent(ListIntent.LoadMore)
+                            },
                             lazyListState = lazyListState
                         )
                     }
                 }
-            }
 
-            // 下拉刷新指示器
-            PullToRefreshContainer(
-                state = pullToRefreshState,
-                modifier = Modifier.align(Alignment.TopCenter)
-            )
+                // 标准的下拉刷新指示器
+                PullToRefreshContainer(
+                    state = pullToRefreshState,
+                    modifier = Modifier.align(Alignment.TopCenter)
+                )
+            }
         }
     }
 }
@@ -274,4 +280,3 @@ private fun LoadMoreContent(
         }
     }
 }
-
