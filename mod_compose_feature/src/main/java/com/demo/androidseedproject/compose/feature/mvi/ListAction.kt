@@ -59,6 +59,11 @@ sealed interface ListAction {
     data class ScrollToPosition(val index: Int) : ListAction
 
     /**
+     * 滚动到指定Tab位置并同时更新Tab状态
+     */
+    data class ScrollToTabPosition(val index: Int, val tabIndex: Int) : ListAction
+
+    /**
      * 更新选中的 Tab 索引
      */
     data class UpdateSelectedTab(val tabIndex: Int) : ListAction

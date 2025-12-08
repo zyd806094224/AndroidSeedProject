@@ -28,6 +28,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import com.demo.androidseedproject.compose.feature.components.*
 import com.demo.androidseedproject.compose.feature.mvi.ListIntent
+import com.demo.androidseedproject.compose.feature.mvi.TabAnchors
 import kotlinx.coroutines.delay
 
 @Route(path = "/compose/stickyList")
@@ -51,6 +52,9 @@ fun StickyListScreen(
     val lazyListState = rememberLazyListState()
     val pullToRefreshState = rememberPullToRefreshState()
 
+    // 记录是否是用户主动点击Tab，防止滚动监听器覆盖Tab状态
+    var isUserTabClick by remember { mutableStateOf(false) }
+
     // 监听下拉刷新状态 - MVI 模式：发送 Intent
     LaunchedEffect(pullToRefreshState.isRefreshing) {
         if (pullToRefreshState.isRefreshing && !state.isRefreshing) {
@@ -72,8 +76,38 @@ fun StickyListScreen(
         state.scrollToIndex?.let { index ->
             if (index >= 0 && index < state.items.size) {
                 lazyListState.animateScrollToItem(index)
-                // 滚动完成后重置请求
-                viewModel.handleIntent(ListIntent.ScrollToTab(state.selectedTabIndex))
+                // 滚动完成后重置用户点击标志
+                delay(300) // 等待滚动动画完成
+                isUserTabClick = false
+            }
+        }
+    }
+
+    // 监听列表滚动位置，自动切换Tab
+    LaunchedEffect(lazyListState.firstVisibleItemIndex, lazyListState.firstVisibleItemScrollOffset) {
+        // 只有在不是用户主动点击Tab时才进行Tab自动切换
+        if (!isUserTabClick) {
+            // 获取当前可见的第一个item的索引（考虑头部和Tab栏）
+            val firstVisibleIndex = lazyListState.firstVisibleItemIndex
+            val firstVisibleScrollOffset = lazyListState.firstVisibleItemScrollOffset
+
+            // 只有在列表内容区域滚动时才进行Tab切换（排除头部和Tab栏）
+            if (firstVisibleIndex >= 2) { // 0: header, 1: stickyHeader (tab), 2+: list items
+                // 计算实际的列表item索引（减去header和tab栏）
+                val actualItemIndex = firstVisibleIndex - 2
+
+                // 查找当前滚动位置应该对应的Tab
+                val currentTabAnchor = TabAnchors.getAllAnchors().findLast { anchor ->
+                    actualItemIndex >= anchor.anchorIndex
+                }
+
+                currentTabAnchor?.let { anchor ->
+                    // 如果当前选中的Tab与计算出的Tab不同，则切换Tab
+                    if (state.selectedTabIndex != anchor.tabIndex) {
+                        // 使用 UpdateSelectedTab 而不是 ScrollToTab，避免触发重新滚动
+                        viewModel.handleIntent(ListIntent.UpdateSelectedTab(anchor.tabIndex))
+                    }
+                }
             }
         }
     }
@@ -123,6 +157,8 @@ fun StickyListScreen(
                             tabs = defaultTabs,
                             selectedTabIndex = state.selectedTabIndex,
                             onTabSelected = { tabIndex ->
+                                // 标记为用户主动点击Tab
+                                isUserTabClick = true
                                 viewModel.handleIntent(ListIntent.ScrollToTab(tabIndex))
                             }
                         )

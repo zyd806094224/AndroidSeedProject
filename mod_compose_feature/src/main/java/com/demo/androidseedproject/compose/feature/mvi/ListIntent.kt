@@ -24,9 +24,14 @@ sealed interface ListIntent {
     data object LoadMore : ListIntent
 
     /**
-     * 滚动到指定 Tab 对应的位置
+     * 滚动到指定 Tab 对应的位置（用户主动点击Tab时使用）
      */
     data class ScrollToTab(val tabIndex: Int) : ListIntent
+
+    /**
+     * 更新选中的Tab（滚动列表时使用，只更新Tab状态，不触发滚动）
+     */
+    data class UpdateSelectedTab(val tabIndex: Int) : ListIntent
 
     /**
      * 点击列表项

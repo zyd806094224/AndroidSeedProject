@@ -75,6 +75,11 @@ object ListReducer {
                 scrollToIndex = action.index
             )
 
+            is ListAction.ScrollToTabPosition -> currentState.copy(
+                selectedTabIndex = action.tabIndex,
+                scrollToIndex = action.index
+            )
+
             is ListAction.UpdateSelectedTab -> currentState.copy(
                 selectedTabIndex = action.tabIndex,
                 scrollToIndex = null  // 重置滚动索引

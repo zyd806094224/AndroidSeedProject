@@ -60,10 +60,15 @@ class ListProcessor {
                 // 查找对应的锚定位置
                 val anchor = TabAnchors.getAnchorByIndex(intent.tabIndex)
                 if (anchor != null) {
-                    ListAction.ScrollToPosition(anchor.anchorIndex)
+                    ListAction.ScrollToTabPosition(anchor.anchorIndex, intent.tabIndex)
                 } else {
                     ListAction.UpdateSelectedTab(intent.tabIndex)
                 }
+            }
+
+            is ListIntent.UpdateSelectedTab -> {
+                // 只更新Tab状态，不触发滚动
+                ListAction.UpdateSelectedTab(intent.tabIndex)
             }
 
             is ListIntent.ItemClick -> {
