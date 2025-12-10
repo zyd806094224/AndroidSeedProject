@@ -57,13 +57,10 @@ class ListProcessor {
             }
 
             is ListIntent.ScrollToTab -> {
-                // 查找对应的锚定位置
-                val anchor = TabAnchors.getAnchorByIndex(intent.tabIndex)
-                if (anchor != null) {
-                    ListAction.ScrollToTabPosition(anchor.anchorIndex, intent.tabIndex)
-                } else {
-                    ListAction.UpdateSelectedTab(intent.tabIndex)
-                }
+                // 计算对应的滚动位置（简单平均分配策略）
+                val itemsPerTab = 10 // 每个Tab对应的item数量
+                val targetIndex = intent.tabIndex * itemsPerTab
+                ListAction.ScrollToTabPosition(targetIndex, intent.tabIndex)
             }
 
             is ListIntent.UpdateSelectedTab -> {

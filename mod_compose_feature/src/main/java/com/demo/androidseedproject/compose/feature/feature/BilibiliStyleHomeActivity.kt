@@ -110,7 +110,6 @@ fun BilibiliStyleHomeScreen(
         if (!isUserTabClick) {
             // 获取当前可见的第一个item的索引（考虑头部、快捷入口、Banner和Tab栏）
             val firstVisibleIndex = lazyListState.firstVisibleItemIndex
-            val firstVisibleScrollOffset = lazyListState.firstVisibleItemScrollOffset
 
             // 只有在列表内容区域滚动时才进行Tab切换（排除前面的固定内容）
             // 0: header, 1: quick_entry, 2: banner_section, 3: stickyHeader (tab), 4+: list items
