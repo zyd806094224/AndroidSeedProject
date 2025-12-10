@@ -55,7 +55,7 @@ fun BilibiliStyleHomeScreen(
     val lazyListState = rememberLazyListState()
     val pullToRefreshState = rememberPullToRefreshState()
 
-    // 初始化加载数据
+    // 初始化加载数据 相当于onCreate
     LaunchedEffect(Unit) {
         if (!state.isInitialized) {
             viewModel.handleIntent(ListIntent.LoadInitial)
@@ -79,13 +79,58 @@ fun BilibiliStyleHomeScreen(
     }
 
     // 计算下拉偏移量，实现"拉出"效果 - 刷新过程中也保持偏移
-    val pullOffset = remember { derivedStateOf {
-        when {
-            pullToRefreshState.isRefreshing -> 100f // 刷新时保持最大偏移
-            pullToRefreshState.progress > 0 -> pullToRefreshState.progress * 100 // 最多下拉100dp
-            else -> 0f
+    val pullOffset = remember {
+        derivedStateOf {
+            when {
+                pullToRefreshState.isRefreshing -> 100f // 刷新时保持最大偏移
+                pullToRefreshState.progress > 0 -> pullToRefreshState.progress * 100 // 最多下拉100dp
+                else -> 0f
+            }
         }
-    } }
+    }
+
+    // 记录是否是用户主动点击Tab，防止滚动监听器覆盖Tab状态
+    var isUserTabClick by remember { mutableStateOf(false) }
+
+    // 监听滚动到指定位置的请求
+    LaunchedEffect(state.scrollToIndex) {
+        state.scrollToIndex?.let { index ->
+            if (index >= 0 && index < state.items.size) {
+                lazyListState.animateScrollToItem(index)
+                // 滚动完成后重置用户点击标志
+                delay(300) // 等待滚动动画完成
+                isUserTabClick = false
+            }
+        }
+    }
+
+    // 监听列表滚动位置，自动切换Tab
+    LaunchedEffect(lazyListState.firstVisibleItemIndex, lazyListState.firstVisibleItemScrollOffset) {
+        // 只有在不是用户主动点击Tab时才进行Tab自动切换
+        if (!isUserTabClick) {
+            // 获取当前可见的第一个item的索引（考虑头部、快捷入口、Banner和Tab栏）
+            val firstVisibleIndex = lazyListState.firstVisibleItemIndex
+            val firstVisibleScrollOffset = lazyListState.firstVisibleItemScrollOffset
+
+            // 只有在列表内容区域滚动时才进行Tab切换（排除前面的固定内容）
+            // 0: header, 1: quick_entry, 2: banner_section, 3: stickyHeader (tab), 4+: list items
+            if (firstVisibleIndex >= 4) {
+                // 计算实际的列表item索引（减去header、quick_entry、banner和tab栏）
+                val actualItemIndex = firstVisibleIndex - 4
+
+                // 查找当前滚动位置应该对应的Tab（这里需要根据你的业务逻辑调整）
+                // 假设每个Tab对应一定数量的items
+                val itemsPerTab = 10 // 每个Tab对应的item数量
+                val currentTabFromScroll = (actualItemIndex / itemsPerTab).coerceAtMost(bilibiliTabs.size - 1)
+
+                // 如果计算出的Tab与当前选中的Tab不同，则切换Tab
+                if (state.selectedTabIndex != currentTabFromScroll) {
+                    // 使用 UpdateSelectedTab 而不是 ScrollToTab，避免触发重新滚动
+                    viewModel.handleIntent(ListIntent.UpdateSelectedTab(currentTabFromScroll))
+                }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -135,6 +180,8 @@ fun BilibiliStyleHomeScreen(
                             tabs = bilibiliTabs,
                             selectedTabIndex = state.selectedTabIndex,
                             onTabSelected = { tabIndex ->
+                                // 标记为用户主动点击Tab
+                                isUserTabClick = true
                                 viewModel.handleIntent(ListIntent.ScrollToTab(tabIndex))
                             }
                         )
@@ -696,6 +743,7 @@ fun BilibiliLoadMoreContent(
                     )
                 }
             }
+
             !hasMore -> {
                 Text(
                     text = "─ 没有更多内容了 ─",
