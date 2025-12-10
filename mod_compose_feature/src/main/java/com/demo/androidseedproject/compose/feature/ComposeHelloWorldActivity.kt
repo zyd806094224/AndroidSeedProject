@@ -42,55 +42,11 @@ fun HelloWorldScreen() {
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 Text(
-                    text = "Hello, I'm a Compose Page!",
+                    text = "Compose Page",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF333333)
                 )
-
-                Button(
-                    onClick = {
-                        ARouter.getInstance()
-                            .build("/compose/stickyList")
-                            .navigation()
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF6366F1)
-                    ),
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f)
-                        .height(48.dp)
-                ) {
-                    Text(
-                        text = "跳转到吸顶列表页面",
-                        color = Color.White,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
-
-                Button(
-                    onClick = {
-                        ARouter.getInstance()
-                            .build("/compose/pullToRefreshList")
-                            .navigation()
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFB7299)
-                    ),
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f)
-                        .height(48.dp)
-                ) {
-                    Text(
-                        text = "🚀 下拉刷新效果演示",
-                        color = Color.White,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
 
                 Button(
                     onClick = {

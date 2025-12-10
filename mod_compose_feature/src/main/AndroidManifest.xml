@@ -7,9 +7,13 @@
             android:name=".ComposeHelloWorldActivity"
             android:exported="false" />
 
+        <!-- Compose B站风格首页Activity -->
         <activity
-            android:name=".feature.StickyListActivity"
-            android:exported="false" />
+            android:name="com.demo.androidseedproject.compose.feature.feature.BilibiliStyleHomeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>
