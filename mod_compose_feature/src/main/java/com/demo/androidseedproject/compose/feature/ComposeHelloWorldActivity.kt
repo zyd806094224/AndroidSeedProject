@@ -70,6 +70,50 @@ fun HelloWorldScreen() {
                     )
                 }
 
+                Button(
+                    onClick = {
+                        ARouter.getInstance()
+                            .build("/compose/pullToRefreshList")
+                            .navigation()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFB7299)
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .height(48.dp)
+                ) {
+                    Text(
+                        text = "🚀 下拉刷新效果演示",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+
+                Button(
+                    onClick = {
+                        ARouter.getInstance()
+                            .build("/compose/bilibiliStyleHome")
+                            .navigation()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF00A1D6)
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .height(48.dp)
+                ) {
+                    Text(
+                        text = "🎬 B站风格首页",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+
                 Text(
                     text = "体验下拉刷新、上拉加载、吸顶Tab效果",
                     fontSize = 14.sp,
