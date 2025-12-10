@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
@@ -68,19 +69,21 @@ fun BilibiliStyleHomeScreen(
         }
     }
 
-    // 监听ViewModel的刷新状态
-    LaunchedEffect(state.isRefreshing) {
-        if (!state.isRefreshing && pullToRefreshState.isRefreshing) {
+    // 监听ViewModel的刷新状态 - 只有在刷新完成且有数据时才结束刷新
+    LaunchedEffect(state.isRefreshing, state.items.isNotEmpty()) {
+        if (!state.isRefreshing && pullToRefreshState.isRefreshing && state.items.isNotEmpty()) {
+            // 添加短暂延迟让用户看到刷新完成状态
+            delay(800)
             pullToRefreshState.endRefresh()
         }
     }
 
-    // 计算下拉偏移量，实现"拉出"效果
+    // 计算下拉偏移量，实现"拉出"效果 - 刷新过程中也保持偏移
     val pullOffset = remember { derivedStateOf {
-        if (pullToRefreshState.progress > 0) {
-            pullToRefreshState.progress * 100 // 最多下拉100dp
-        } else {
-            0f
+        when {
+            pullToRefreshState.isRefreshing -> 100f // 刷新时保持最大偏移
+            pullToRefreshState.progress > 0 -> pullToRefreshState.progress * 100 // 最多下拉100dp
+            else -> 0f
         }
     } }
 
@@ -163,11 +166,24 @@ fun BilibiliStyleHomeScreen(
                     }
                 }
 
-                // 刷新指示器 - 固定在顶部，不会被内容覆盖
+                // 自定义刷新指示器 - 固定在顶部，不会被内容覆盖
                 PullToRefreshContainer(
                     state = pullToRefreshState,
                     modifier = Modifier.align(Alignment.TopCenter)
                 )
+
+                // 额外的自定义刷新指示器（叠加在PullToRefreshContainer之上）
+                // BilibiliRefreshIndicator(
+                //     isRefreshing = pullToRefreshState.isRefreshing,
+                //     progress = pullToRefreshState.progress,
+                //     modifier = Modifier.align(Alignment.TopCenter)
+                // )
+
+                // SimpleCustomRefreshIndicator(
+                //     isRefreshing = pullToRefreshState.isRefreshing,
+                //     progress = pullToRefreshState.progress,
+                //     modifier = Modifier.align(Alignment.TopCenter)
+                // )
             }
         }
     }
@@ -712,3 +728,185 @@ private fun formatBilibiliTimestamp(timestamp: Long): String {
 val bilibiliTabs = listOf(
     "推荐", "关注", "热门", "影视", "游戏"
 )
+
+/**
+ * B站风格的自定义刷新指示器
+ */
+@Composable
+fun BilibiliRefreshIndicator(
+    isRefreshing: Boolean,
+    progress: Float,
+    modifier: Modifier = Modifier
+) {
+    // 旋转动画角度
+    val rotationAngle by animateFloatAsState(
+        targetValue = if (isRefreshing) 360f else progress * 360f,
+        animationSpec = if (isRefreshing) infiniteRepeatable(
+            animation = tween(1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ) else tween(300),
+        label = "rotation"
+    )
+
+    // 缩放动画
+    val scale by animateFloatAsState(
+        targetValue = when {
+            isRefreshing -> 1.2f
+            progress > 0 -> 0.8f + progress * 0.4f
+            else -> 0f
+        },
+        animationSpec = tween(300),
+        label = "scale"
+    )
+
+    // 透明度动画
+    val alpha by animateFloatAsState(
+        targetValue = when {
+            isRefreshing -> 1f
+            progress > 0 -> progress
+            else -> 0f
+        },
+        animationSpec = tween(300),
+        label = "alpha"
+    )
+
+    Box(
+        modifier = modifier
+            .size(56.dp)
+            .graphicsLayer {
+                this.alpha = alpha
+                this.scaleX = scale
+                this.scaleY = scale
+                rotationZ = rotationAngle
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        // B站风格的圆形背景
+        Box(
+            modifier = Modifier
+                .size(56.dp)
+                .background(
+                    color = Color(0xFFFB7299),
+                    shape = CircleShape
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            if (isRefreshing) {
+                // 刷新中的B站logo
+                Text(
+                    text = "B",
+                    color = Color.White,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.graphicsLayer {
+                        rotationZ = -rotationAngle // 反向旋转，保持文字正向
+                    }
+                )
+            } else {
+                // 下拉过程中的刷新图标
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "下拉刷新",
+                    tint = Color.White,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+        }
+
+        // 进度指示环（可选）
+        if (isRefreshing) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(64.dp),
+                strokeWidth = 3.dp,
+                color = Color(0xFFFB7299).copy(alpha = 0.3f)
+            )
+        }
+    }
+}
+
+/**
+ * 简单的自定义刷新指示器示例
+ */
+@Composable
+fun SimpleCustomRefreshIndicator(
+    isRefreshing: Boolean,
+    progress: Float,
+    modifier: Modifier = Modifier
+) {
+    val rotationAngle by animateFloatAsState(
+        targetValue = if (isRefreshing) 360f else progress * 360f,
+        animationSpec = if (isRefreshing) infiniteRepeatable(
+            animation = tween(1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ) else spring(),
+        label = "rotation"
+    )
+
+    Card(
+        modifier = modifier
+            .size(48.dp)
+            .graphicsLayer { rotationZ = rotationAngle },
+        shape = CircleShape,
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFFB7299)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            if (isRefreshing) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(24.dp),
+                    strokeWidth = 3.dp,
+                    color = Color.White
+                )
+            } else {
+                Icon(
+                    imageVector = Icons.Default.ArrowDownward,
+                    contentDescription = "下拉",
+                    tint = Color.White,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+    }
+}
+
+/**
+ * 文字类型的自定义刷新指示器
+ */
+@Composable
+fun TextRefreshIndicator(
+    isRefreshing: Boolean,
+    progress: Float,
+    modifier: Modifier = Modifier
+) {
+    val text = when {
+        isRefreshing -> "正在刷新..."
+        progress > 0.8f -> "松开刷新"
+        progress > 0 -> "下拉刷新"
+        else -> ""
+    }
+
+    val alpha by animateFloatAsState(
+        targetValue = if (text.isNotEmpty()) 1f else 0f,
+        animationSpec = tween(300),
+        label = "alpha"
+    )
+
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFFB7299).copy(alpha = alpha * 0.9f)
+        )
+    ) {
+        Text(
+            text = text,
+            color = Color.White.copy(alpha = alpha),
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        )
+    }
+}
