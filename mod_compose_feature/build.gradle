@@ -81,4 +81,11 @@ dependencies {
     // Koin
     implementation rootProject.depsLibs.koinAndroid
     implementation rootProject.depsLibs.koinCompose
+
+    // Coil 图片加载库
+    implementation rootProject.depsLibs.coilCompose
+
+    // Navigation Compose
+    implementation rootProject.depsLibs.navigationCompose
+
 }

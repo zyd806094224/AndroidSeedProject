@@ -70,12 +70,27 @@ fun HelloWorldScreen() {
                     )
                 }
 
-                Text(
-                    text = "体验下拉刷新、上拉加载、吸顶Tab效果",
-                    fontSize = 14.sp,
-                    color = Color(0xFF666666),
-                    modifier = Modifier.padding(horizontal = 32.dp)
-                )
+                Button(
+                    onClick = {
+                        ARouter.getInstance()
+                            .build("/xiaohongshu/ios")
+                            .navigation()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFF2442)
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .height(48.dp)
+                ) {
+                    Text(
+                        text = "📱 小红书瀑布流",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
             }
         }
     }
