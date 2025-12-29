@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.demo.common.audio.AudioConstants
 import com.demo.common.audio.exception.AudioException
 import com.demo.common.audio.exception.AudioRecordCreateFileException
@@ -32,9 +34,11 @@ import com.demo.universaldialog.interfaces.UniversalDialogCallback
 import com.demo.common.audio.AudioOutputFormat
 import com.hjq.permissions.XXPermissions
 import com.hjq.permissions.permission.PermissionLists
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import java.io.File
 
 /**
@@ -74,9 +78,15 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
 
         // WebView跳转测试
         mBinding.btnWebView.setOnClickListener {
+            // RouteUtils.toWebView(
+            //     this,
+            //     "https://www.baidu.com",
+            //     "百度搜索",
+            //     true
+            // )
             RouteUtils.toWebView(
                 this,
-                "https://www.baidu.com",
+                "http://192.168.213.9:3000",
                 "百度搜索",
                 true
             )
@@ -128,25 +138,52 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
      * 观察ViewModel数据变化
      */
     private fun observeViewModel() {
+        /*// 方式1：直接使用 lifecycleScope
+        lifecycleScope.launch {
+            viewModel.data.collect { data ->
+                binding.textView.text = data
+            }
+        }
+
+        // 方式2：使用 repeatOnLifecycle（推荐）
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(STARTED) {
+                viewModel.data.collect { data ->
+                    binding.textView.text = data
+                }
+            }
+        }
+
+        // 方式3：使用 launchWhenStarted（已废弃，不推荐）
+        lifecycleScope.launchWhenStarted {
+            // 已废弃，使用 repeatOnLifecycle 代替
+        }*/
+
         // 观察状态流
         lifecycleScope.launch {
-            mViewModel.state.onEach { state ->
-                Log.e(TAG, "State变化: $state")
-            }.collect()
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mViewModel.state.onEach { state ->
+                    Log.e(TAG, "State变化: $state")
+                }.collect()
+            }
         }
 
         // 观察共享流
         lifecycleScope.launch {
-            mViewModel.shared.onEach { shared ->
-                Log.e(TAG, "SharedFlow数据: $shared")
-            }.collect()
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mViewModel.shared.onEach { shared ->
+                    Log.e(TAG, "SharedFlow数据: $shared")
+                }.collect()
+            }
         }
 
         // 观察权限测试结果
         lifecycleScope.launch {
-            mViewModel.permissionResult.onEach { result ->
-                Log.e(TAG, "权限测试结果观察: $result")
-            }.collect()
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mViewModel.permissionResult.onEach { result ->
+                    Log.e(TAG, "权限测试结果观察: $result")
+                }.collect()
+            }
         }
     }
 
