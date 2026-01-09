@@ -42,4 +42,8 @@ dependencies {
 
     compileOnly rootProject.depsLibs.refreshLayout
     compileOnly rootProject.depsLibs.tbssdk
+
+    //RxJava
+    api rootProject.depsLibs.rxjava2
+    api rootProject.depsLibs.rxandroid2
 }

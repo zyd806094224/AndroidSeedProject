@@ -1,9 +1,15 @@
 package com.demo.framework.ext
 
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.observers.DisposableObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -40,3 +46,36 @@ fun countDownCoroutines(
         .onEach { onTick.invoke(it) }
         .launchIn(scope)
 }
+
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun <T : Any> Observable<T>.asFlow(): Flow<RequestState<T>> {
+    return callbackFlow {
+        val disposable: DisposableObserver<T> =
+            object : DisposableObserver<T>() {
+                override fun onStart() {
+                    trySend(RequestState.RequestStart<T>())
+                }
+
+                override fun onNext(t: T) {
+                    trySend(RequestState.RequestSuccess<T>(t))
+                }
+
+                override fun onError(e: Throwable) {
+                    trySend(RequestState.RequestError<T>(-1, "网络错误，请重试", e))
+                }
+
+                override fun onComplete() {
+                    trySend(RequestState.RequestCompleted<T>())
+                }
+            }.apply {
+                this@asFlow.subscribe(this)
+            }
+        awaitClose { // 取消网络请求
+            if (!disposable.isDisposed) {
+                disposable.dispose()
+            }
+        }
+    }
+}
+

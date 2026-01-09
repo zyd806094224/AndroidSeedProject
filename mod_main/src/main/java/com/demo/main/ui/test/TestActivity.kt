@@ -32,9 +32,14 @@ import com.demo.universaldialog.interfaces.ContentViewCreator
 import com.demo.universaldialog.interfaces.DialogDataConfig
 import com.demo.universaldialog.interfaces.UniversalDialogCallback
 import com.demo.common.audio.AudioOutputFormat
+import com.demo.framework.ext.RequestState
+import com.demo.framework.ext.asFlow
 import com.hjq.permissions.XXPermissions
 import com.hjq.permissions.permission.PermissionLists
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -121,6 +126,11 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
         // Flow状态测试
         mBinding.btnFlowTest.setOnClickListener {
             testFlow()
+        }
+
+        mBinding.btnRxjavaFlowTest.setOnClickListener {
+            // 测试RxJava转Flow
+            testRxJavaToFlow()
         }
 
         // 录音测试
@@ -223,6 +233,48 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
 
         // 测试SharedFlow
         mViewModel.changeShared()
+    }
+
+    /**
+     * 测试RxJava转换为Flow
+     */
+    private fun testRxJavaToFlow() {
+        lifecycleScope.launch {
+            // 调用testCallBackFlow方法获取Flow
+            testCallBackFlow().collect { state ->
+                when (state) {
+                    is RequestState.RequestStart<String> -> {
+                        Log.e(TAG, "RxJava转Flow: 请求开始")
+                    }
+                    is RequestState.RequestSuccess<String> -> {
+                        Log.e(TAG, "RxJava转Flow: 请求成功 - ${state.result}")
+                    }
+                    is RequestState.RequestError<String> -> {
+                        Log.e(TAG, "RxJava转Flow: 请求错误 - ${state.message}")
+                    }
+                    is RequestState.RequestCompleted<String> -> {
+                        Log.e(TAG, "RxJava转Flow: 请求完成")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun testCallBackFlow(): Flow<RequestState<String>> {
+        // 创建一个RxJava的Observable，模拟网络请求
+        val observable = Observable.create<String> { emitter ->
+            // 模拟网络请求延迟
+            Thread.sleep(1000)
+
+            // 发送成功数据
+            emitter.onNext("RxJava转换为Flow成功！")
+
+            // 完成请求
+            emitter.onComplete()
+        }.subscribeOn(Schedulers.io())
+
+        // 使用asFlow扩展函数将RxJava的Observable转换为Kotlin的Flow
+        return observable.asFlow()
     }
 
     /**
