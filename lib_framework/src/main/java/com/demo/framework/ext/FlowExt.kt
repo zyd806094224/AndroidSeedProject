@@ -1,5 +1,6 @@
 package com.demo.framework.ext
 
+import android.util.Log
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.observers.DisposableObserver
 import kotlinx.coroutines.CoroutineScope
@@ -63,15 +64,20 @@ fun <T : Any> Observable<T>.asFlow(): Flow<RequestState<T>> {
 
                 override fun onError(e: Throwable) {
                     trySend(RequestState.RequestError<T>(-1, "网络错误，请重试", e))
+                    // 可选择发送完主动关闭 ，也可以不加这个close等协程作用域结束后自动关闭  看具体场景
+                    // close()
                 }
 
                 override fun onComplete() {
                     trySend(RequestState.RequestCompleted<T>())
+                    // 可选择发送完主动关闭 ，也可以不加这个close等协程作用域结束后自动关闭  看具体场景
+                    // close()
                 }
             }.apply {
                 this@asFlow.subscribe(this)
             }
         awaitClose { // 取消网络请求
+            Log.e("zzz","awaitClose")
             if (!disposable.isDisposed) {
                 disposable.dispose()
             }

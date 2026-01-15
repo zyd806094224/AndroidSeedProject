@@ -257,6 +257,7 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
                     }
                 }
             }
+            Log.e("zzz","TestActivity执行了")
         }
     }
 
