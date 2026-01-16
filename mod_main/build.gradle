@@ -72,6 +72,8 @@ dependencies {
     implementation rootProject.depsLibs.tbssdk
     implementation rootProject.depsLibs.xxPermissions
 
+    implementation rootProject.depsLibs.repluginHostLib
+
     implementation project(path: ':lib_framework')
     implementation project(path: ':lib_common')
     implementation project(path: ':lib_network')

@@ -1,7 +1,6 @@
 package com.demo.main.ui.test
 
 import android.content.Context
-import com.alibaba.android.arouter.facade.annotation.Route
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -9,10 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.demo.common.audio.AudioConstants
+import com.demo.common.audio.AudioOutputFormat
 import com.demo.common.audio.exception.AudioException
 import com.demo.common.audio.exception.AudioRecordCreateFileException
 import com.demo.common.audio.exception.AudioRecordNoStorageSpaceException
@@ -21,6 +23,8 @@ import com.demo.common.audio.recorder.impl.AudioRecorder
 import com.demo.common.audio.recorder.impl.FileRepositoryImpl
 import com.demo.common.utils.RouteUtils
 import com.demo.framework.base.BaseMvvmActivity
+import com.demo.framework.ext.RequestState
+import com.demo.framework.ext.asFlow
 import com.demo.framework.helper.AppHelper
 import com.demo.main.databinding.ActivityTestBinding
 import com.demo.main.ui.test.viewmodel.TestViewModel
@@ -31,20 +35,20 @@ import com.demo.universaldialog.enums.YLocation
 import com.demo.universaldialog.interfaces.ContentViewCreator
 import com.demo.universaldialog.interfaces.DialogDataConfig
 import com.demo.universaldialog.interfaces.UniversalDialogCallback
-import com.demo.common.audio.AudioOutputFormat
-import com.demo.framework.ext.RequestState
-import com.demo.framework.ext.asFlow
 import com.hjq.permissions.XXPermissions
 import com.hjq.permissions.permission.PermissionLists
+import com.qihoo360.replugin.RePlugin
+import com.qihoo360.replugin.model.PluginInfo
+import com.qihoo360.replugin.utils.FileUtils
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
 import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 /**
  * @Description: 测试页面Activity
@@ -141,6 +145,71 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
         // 弹窗测试
         mBinding.btnDialog.setOnClickListener {
             showTestDialog()
+        }
+
+        //插件化测试 安装插件包 并跳转至插件页面
+        mBinding.btnInstallPlugin.setOnClickListener {
+            simulateInstallExternalPlugin()
+        }
+    }
+
+    /**
+     * 模拟安装或升级（覆盖安装）外置插件
+     * 注意：为方便演示，外置插件临时放置到Host的assets/external目录下，具体说明见README
+     */
+    private fun simulateInstallExternalPlugin() {
+        val rePluginApk = "app-debug.apk"
+        val rePluginApkPath = "external" + File.separator + rePluginApk
+
+        // 文件是否已经存在？直接删除重来
+        val pluginFilePath = filesDir.absolutePath + File.separator + rePluginApk
+        val pluginFile = File(pluginFilePath)
+        if (pluginFile.exists()) {
+            FileUtils.deleteQuietly(pluginFile)
+        }
+
+        // 开始复制
+        copyAssetsFileToAppFiles(rePluginApkPath, rePluginApk)
+        var info: PluginInfo? = null
+        if (pluginFile.exists()) {
+            info = RePlugin.install(pluginFilePath)
+        }
+
+        if (info != null) {
+            RePlugin.startActivity(this@TestActivity, RePlugin.createIntent(info.name, "com.example.repluginapp.MainActivity"))
+        } else {
+            Toast.makeText(this@TestActivity, "install external plugin failed", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * 从assets目录中复制某文件内容
+     * @param  assetFileName assets目录下的Apk源文件路径
+     * @param  newFileName 复制到/data/data/package_name/files/目录下文件名
+     */
+    private fun copyAssetsFileToAppFiles(assetFileName: String, newFileName: String) {
+        var `is`: InputStream? = null
+        var fos: FileOutputStream? = null
+        val buffsize = 1024
+
+        try {
+            `is` = this.assets.open(assetFileName)
+            fos = this.openFileOutput(newFileName, MODE_PRIVATE)
+            var byteCount = 0
+            val buffer = ByteArray(buffsize)
+            while ((`is`.read(buffer).also { byteCount = it }) != -1) {
+                fos.write(buffer, 0, byteCount)
+            }
+            fos.flush()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            try {
+                `is`!!.close()
+                fos!!.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -246,18 +315,21 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
                     is RequestState.RequestStart<String> -> {
                         Log.e(TAG, "RxJava转Flow: 请求开始")
                     }
+
                     is RequestState.RequestSuccess<String> -> {
                         Log.e(TAG, "RxJava转Flow: 请求成功 - ${state.result}")
                     }
+
                     is RequestState.RequestError<String> -> {
                         Log.e(TAG, "RxJava转Flow: 请求错误 - ${state.message}")
                     }
+
                     is RequestState.RequestCompleted<String> -> {
                         Log.e(TAG, "RxJava转Flow: 请求完成")
                     }
                 }
             }
-            Log.e("zzz","TestActivity执行了")
+            Log.e("zzz", "TestActivity执行了")
         }
     }
 

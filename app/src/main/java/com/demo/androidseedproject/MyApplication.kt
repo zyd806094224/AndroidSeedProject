@@ -1,10 +1,11 @@
 package com.demo.androidseedproject
 
 import android.app.Activity
-import android.app.Application
 import android.os.Bundle
 import android.util.Log
 import com.alibaba.android.arouter.launcher.ARouter
+import com.demo.androidseedproject.callback.HostCallbacks
+import com.demo.androidseedproject.callback.HostEventCallbacks
 import com.demo.common.text.html.ctrl.FontSizeHandler
 import com.demo.common.text.html.ctrl.HYImageTagHandler
 import com.demo.common.text.html.ctrl.HYSuffixTagHandler
@@ -24,6 +25,9 @@ import com.demo.framework.manager.AppFrontBackListener
 import com.demo.framework.manager.AppManager
 import com.demo.framework.utils.DeviceInfoUtils
 import com.demo.html.html.HtmlTagCtrlFactory
+import com.qihoo360.replugin.RePluginApplication
+import com.qihoo360.replugin.RePluginCallbacks
+import com.qihoo360.replugin.RePluginConfig
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -34,7 +38,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  * @author:  zhaoyudong
  * @version: 1.0
  */
-class MyApplication : Application() {
+class MyApplication : RePluginApplication() {
 
     override fun onCreate() {
         super.onCreate()
@@ -131,4 +135,29 @@ class MyApplication : Application() {
         HtmlTagCtrlFactory.getInstance()
             .addHandlerCtrl(NoColorUrlTag.NAME, NoColorUrlHandler::class.java)
     }
+
+
+    /**
+     * RePlugin允许提供各种“自定义”的行为，让您“无需修改源代码”，即可实现相应的功能
+     */
+    override fun createConfig(): RePluginConfig {
+        val c = RePluginConfig()
+        // 允许“插件使用宿主类”。默认为“关闭”
+        c.setUseHostClassIfNotFound(true)
+        // FIXME RePlugin默认会对安装的外置插件进行签名校验，这里先关掉，避免调试时出现签名错误
+        c.setVerifySign(!BuildConfig.DEBUG)
+        // 针对“安装失败”等情况来做进一步的事件处理
+        c.setEventCallbacks(HostEventCallbacks(this))
+        // FIXME 若宿主为Release，则此处应加上您认为"合法"的插件的签名，例如，可以写上"宿主"自己的。
+        // RePlugin.addCertSignature("AAAAAAAAA");
+
+        // 在Art上，优化第一次loadDex的速度
+        // c.setOptimizeArtLoadDex(true);
+        return c
+    }
+
+    override fun createCallbacks(): RePluginCallbacks {
+        return HostCallbacks(this)
+    }
+
 }

@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'replugin-host-gradle'
 }
 
 android {
@@ -111,6 +112,13 @@ android {
     }
 }
 
+repluginHostConfig {
+    useAppCompat = true
+    useAndroidX = true
+    // 可以在这里自定义常驻进程的名字
+    // persistentName = ":XXXXService"
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation rootProject.depsLibs.coreKtx
@@ -160,6 +168,8 @@ dependencies {
 //    implementation rootProject.depsLibs.cameraX
 
     implementation rootProject.depsLibs.xxPermissions
+
+    implementation rootProject.depsLibs.repluginHostLib
 
     implementation project(path: ':mod_main')
     implementation project(path: ':lib_framework')

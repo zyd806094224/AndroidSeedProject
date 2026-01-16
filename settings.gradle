@@ -4,6 +4,20 @@ pluginManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven {
+            allowInsecureProtocol = true
+            url "http://maven.geelib.360.cn/nexus/repository/replugin/"
+        }
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == 'com.qihoo360.replugin.replugin-host-gradle') {
+                useModule('com.qihoo360.replugin:replugin-host-gradle:' + requested.version)
+            }
+            if (requested.id.id == 'com.github.dcendents.android-maven-plugin'){
+                useModule('com.github.dcendents:android-maven-plugin:' + requested.version)
+            }
+        }
     }
 }
 dependencyResolutionManagement {
@@ -13,6 +27,10 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven {
+            allowInsecureProtocol = true
+            url "http://maven.geelib.360.cn/nexus/repository/replugin/"
+        }
     }
 }
 rootProject.name = "AndroidSeedProject"

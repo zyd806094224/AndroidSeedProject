@@ -37,6 +37,7 @@ ext {
             cameraxVersion        : '1.3.0-alpha04',
             rxjavaVersion         : '3.1.6',
             rxandroidVersion      : '3.0.2',
+            repluginVersion       : '3.1.0',
     ]
 
     depsLibs = [
@@ -101,6 +102,9 @@ ext {
             //RxJava
             rxjava2           : "io.reactivex.rxjava3:rxjava:${dependVersion["rxjavaVersion"]}",
             rxandroid2        : "io.reactivex.rxjava3:rxandroid:${dependVersion["rxandroidVersion"]}",
+
+            //RePlugin插件化
+            repluginHostLib   : "com.qihoo360.replugin:replugin-host-lib:${dependVersion["repluginVersion"]}",
     ]
 
 }
