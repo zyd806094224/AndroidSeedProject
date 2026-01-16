@@ -357,6 +357,112 @@ adb shell am start -W -a android.intent.action.VIEW \
   com.demo.androidseedproject
 ```
 
+## 🌿 分支说明
+
+本项目包含多个功能分支，用于演示不同的 Android 技术和开发模式：
+
+### 分支列表
+
+| 分支名称 | 功能描述 | 状态 | 学习价值 |
+|---------|---------|------|---------|
+| **master** | 主分支，基于传统 View 系统的完整 MVVM 架构应用 | ✅ 稳定 | 生产级项目架构参考 |
+| **flutter-hybrid-development** | Flutter 混合开发示例 | ✅ 可用 | Flutter 与 Android 原生混合开发技术 |
+| **android-compose-dev** | Jetpack Compose UI 相关开发示例 | ✅ 可用 | 现代声明式 UI 开发模式 |
+| **360-replugin-dev** | 基于 360 RePlugin 的插件化使用示例 | ⚠️ 已停止维护 | 了解插件化机制和实现原理 |
+
+### 分支详细说明
+
+#### 1️⃣ flutter-hybrid-development - Flutter 混合开发
+
+**技术栈：**
+- Flutter SDK
+- Flutter Engine 嵌入
+- Flutter Boost 混合栈框架
+- Platform Channel 通信
+
+**核心特性：**
+- Flutter 页面嵌入 Android 原生项目
+- 原生与 Flutter 页面无缝跳转
+- 数据双向通信机制
+- 生命周期管理
+- 混合栈路由管理
+
+**适用场景：**
+- 需要快速开发复杂 UI 页面
+- 跨平台复用 Flutter 代码
+- 渐进式 Flutter 接入
+
+**切换分支：**
+```bash
+git checkout flutter-hybrid-development
+```
+
+#### 2️⃣ android-compose-dev - Jetpack Compose 开发
+
+**技术栈：**
+- Jetpack Compose (现代化 UI 框架)
+- Material Design 3
+- Compose Navigation
+- Compose ViewModel
+
+**核心特性：**
+- 声明式 UI 编程
+- 状态管理最佳实践
+- 自定义 Compose 组件
+- 动画和手势处理
+- Compose 与传统 View 混用
+
+**适用场景：**
+- 新项目使用现代化 UI 框架
+- 学习声明式编程范式
+- 提升 UI 开发效率
+
+**切换分支：**
+```bash
+git checkout android-compose-dev
+```
+
+#### 3️⃣ 360-replugin-dev - 插件化开发（学习用途）
+
+**⚠️ 重要提示：** 360 RePlugin 已停止维护，不建议在生产环境使用。此分支仅用于学习和了解插件化机制。
+
+**技术栈：**
+- 360 RePlugin 框架
+- 插件加载机制
+- 宿主-插件通信
+- 资源隔离
+
+**核心特性：**
+- 插件独立编译和部署
+- 插件热更新能力
+- 宿主与插件隔离
+- 插件生命周期管理
+-四大组件插件化支持
+
+**学习价值：**
+- 理解 Android 插件化原理
+- 了解 ClassLoader 机制
+- 学习资源冲突解决方案
+- 掌握插件化架构设计思路
+
+**技术替代方案：**
+- Dynamic Feature Modules (官方推荐)
+- App Bundles (动态分发)
+- Modular Architecture (模块化架构)
+
+**切换分支：**
+```bash
+git checkout 360-replugin-dev
+```
+
+### 如何选择分支
+
+**根据项目需求选择：**
+- 🏢 **生产项目** → 使用 `master` 分支（稳定、成熟）
+- 🚀 **新 UI 开发** → 使用 `android-compose-dev`（现代化）
+- 🔗 **混合开发** → 使用 `flutter-hybrid-development`（跨平台）
+- 📚 **学习研究** → 使用 `360-replugin-dev`（了解插件化）
+
 ## 📦 构建与发布
 
 ### 🔨 构建配置
