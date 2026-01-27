@@ -1,6 +1,9 @@
 package com.demo.androidseedproject
 
 import android.database.Observable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -112,9 +115,31 @@ class ExampleUnitTest {
         }
     }
 
-    fun tet(){
+    @Test
+    fun testAsync() = runBlocking {
+        println("开始-------")
+        // 使用当前协程作用域，而不是创建新的
+        val deferred1 = async { fetchData1() }
+        val deferred2 = async { fetchData2() }
 
+        println("async执行完-------")
 
+        // val res1 = deferred1.await()
+        // val res2 = deferred2.await()
+        //println("结果: $res1, $res2")
+        println("结束-------")
+    }
+
+    private suspend fun fetchData2() : Int{
+        delay(5000)
+        println("fetchData2执行了")
+        return 22
+    }
+
+    private suspend fun fetchData1() : Int{
+        delay(2000)
+        println("fetchData1执行了")
+        return 11
     }
 
     @Test
