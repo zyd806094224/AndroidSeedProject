@@ -5,6 +5,9 @@ import android.app.Application
 import android.os.Bundle
 import android.util.Log
 import com.alibaba.android.arouter.launcher.ARouter
+import com.demo.androidseedproject.task.TaskA
+import com.demo.androidseedproject.task.TaskB
+import com.demo.androidseedproject.task.TaskC
 import com.demo.common.text.html.ctrl.FontSizeHandler
 import com.demo.common.text.html.ctrl.HYImageTagHandler
 import com.demo.common.text.html.ctrl.HYSuffixTagHandler
@@ -22,6 +25,7 @@ import com.demo.framework.manager.ActivityManager
 import com.demo.framework.manager.AppFrontBack
 import com.demo.framework.manager.AppFrontBackListener
 import com.demo.framework.manager.AppManager
+import com.demo.framework.task.schedulingtask.TaskLaunch
 import com.demo.framework.utils.DeviceInfoUtils
 import com.demo.html.html.HtmlTagCtrlFactory
 import com.scwang.smart.refresh.footer.ClassicsFooter
@@ -57,6 +61,11 @@ class MyApplication : Application() {
         initHtmlText()
         Log.e("zzz", BuildConfig.MODEL)
         Log.e("zzz", "${BuildConfig.VA}")
+        TaskLaunch.getInstance().init(this)
+        TaskLaunch.getInstance()
+            .addTasks(listOf(TaskA(), TaskB(), TaskC()))
+            .start()
+        Log.e("zzzz","application执行完了")
     }
 
     private fun initRefreshLayoutTask() {
