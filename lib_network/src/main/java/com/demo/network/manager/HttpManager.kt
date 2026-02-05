@@ -4,6 +4,7 @@ import android.util.Log
 import com.demo.framework.helper.AppHelper
 import com.demo.framework.utils.NetworkUtil
 import com.demo.network.constant.BASE_URL
+import com.demo.network.dns.HttpDns
 import com.demo.network.error.ERROR
 import com.demo.network.error.NoNetWorkException
 import com.demo.network.interceptor.CookiesInterceptor
@@ -75,6 +76,7 @@ object HttpManager {
                 }
             }
         })
+        build.dns(HttpDns())
         return build.build()
     }
 }
