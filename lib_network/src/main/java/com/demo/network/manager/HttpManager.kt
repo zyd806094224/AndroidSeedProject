@@ -9,6 +9,7 @@ import com.demo.network.error.ERROR
 import com.demo.network.error.NoNetWorkException
 import com.demo.network.interceptor.CookiesInterceptor
 import com.demo.network.interceptor.HeaderInterceptor
+import com.demo.network.interceptor.NetworkMonitorInterceptor
 import com.demo.network.interceptor.NetworkRetryInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -78,6 +79,7 @@ object HttpManager {
             }
         })
         build.addInterceptor(NetworkRetryInterceptor())
+        build.addNetworkInterceptor(NetworkMonitorInterceptor())
         build.dns(HttpDns())
         return build.build()
     }
