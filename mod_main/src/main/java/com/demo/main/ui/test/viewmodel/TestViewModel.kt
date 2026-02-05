@@ -2,6 +2,8 @@ package com.demo.main.ui.test.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.demo.network.flow.requestFlow
+import com.demo.network.manager.ApiManager
 import com.demo.network.viewmodel.BaseViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -55,5 +57,27 @@ class TestViewModel : BaseViewModel() {
     fun updatePermissionResult(granted: Boolean) {
         _permissionResult.value = granted
         Log.e("TestViewModel", "权限测试结果: $granted")
+    }
+
+    fun testNetWorkRequest(){
+        viewModelScope.launch {
+            val data = requestFlow<String?>(requestCall = {
+                ApiManager.api.testRequest()
+            }, errorBlock = { code, error ->
+                null
+            })
+            Log.e("zzz",data.toString())
+        }
+    }
+
+    fun testNetWorkRequest2(){
+        viewModelScope.launch {
+            val data = requestFlow<String?>(requestCall = {
+                ApiManager.api.test2Request()
+            }, errorBlock = { code, error ->
+                null
+            })
+            Log.e("zzz",data.toString())
+        }
     }
 }

@@ -9,6 +9,7 @@ import com.demo.network.error.ERROR
 import com.demo.network.error.NoNetWorkException
 import com.demo.network.interceptor.CookiesInterceptor
 import com.demo.network.interceptor.HeaderInterceptor
+import com.demo.network.interceptor.NetworkRetryInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -47,9 +48,9 @@ object HttpManager {
      */
     private fun initOkHttpClient(): OkHttpClient {
         val build = OkHttpClient.Builder()
-            .connectTimeout(12, TimeUnit.SECONDS)
-            .writeTimeout(12, TimeUnit.SECONDS)
-            .readTimeout(12, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
         // 添加参数拦截器
         val interceptors = mutableListOf<Interceptor>()
         build.addInterceptor(CookiesInterceptor())
@@ -76,6 +77,7 @@ object HttpManager {
                 }
             }
         })
+        build.addInterceptor(NetworkRetryInterceptor())
         build.dns(HttpDns())
         return build.build()
     }

@@ -1,7 +1,9 @@
 package com.demo.network.api
 
+import com.demo.network.interceptor.NetworkRetryInterceptor
 import com.demo.network.response.BaseResponse
 import retrofit2.http.GET
+import retrofit2.http.Headers
 
 /**
  * @Description:
@@ -13,5 +15,13 @@ interface ApiInterface {
 
     @GET("/dataList")
     suspend fun getDataList(): BaseResponse<MutableList<String>>?
+
+    @Headers(NetworkRetryInterceptor.RETRY_TIME_HEADER)
+    @GET("http://192.168.213.9:8060/user/test")
+    suspend fun testRequest(): BaseResponse<String>?
+
+
+    @GET("http://192.168.213.9:8060/user/test2")
+    suspend fun test2Request(): BaseResponse<String>?
 
 }

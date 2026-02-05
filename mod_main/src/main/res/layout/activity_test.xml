@@ -7,99 +7,121 @@
 
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="测试页面"
-            android:textColor="#333333"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btnPermission"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="权限测试"
-            android:textAllCaps="false" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <Button
-            android:id="@+id/btnWebView"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
-            android:text="跳转WebView页面"
-            android:textAllCaps="false" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="测试页面"
+                android:textColor="#333333"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnEdit"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
-            android:text="跳转编辑页面"
-            android:textAllCaps="false" />
+            <Button
+                android:id="@+id/btnPermission"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="权限测试"
+                android:textAllCaps="false" />
 
-        <Button
-            android:id="@+id/btnMain"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
-            android:text="跳转到主页(我的Tab)"
-            android:textAllCaps="false" />
+            <Button
+                android:id="@+id/btnWebView"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="跳转WebView页面"
+                android:textAllCaps="false" />
 
-        <Button
-            android:id="@+id/btnExternalUrl"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
-            android:text="测试外部URL跳转"
-            android:textAllCaps="false" />
+            <Button
+                android:id="@+id/btnEdit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="跳转编辑页面"
+                android:textAllCaps="false" />
 
-        <Button
-            android:id="@+id/btnTestAll"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
-            android:text="测试所有路由"
-            android:textAllCaps="false" />
+            <Button
+                android:id="@+id/btnMain"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="跳转到主页(我的Tab)"
+                android:textAllCaps="false" />
 
-        <Button
-            android:id="@+id/btnFlowTest"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
-            android:text="Flow状态测试"
-            android:textAllCaps="false" />
+            <Button
+                android:id="@+id/btnExternalUrl"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="测试外部URL跳转"
+                android:textAllCaps="false" />
 
-        <Button
-            android:id="@+id/btnRxjavaFlowTest"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
-            android:text="RxJava转Flow测试"
-            android:textAllCaps="false" />
+            <Button
+                android:id="@+id/btnTestAll"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="测试所有路由"
+                android:textAllCaps="false" />
 
-        <Button
-            android:id="@+id/btnAudio"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
-            android:text="录音测试"
-            android:textAllCaps="false" />
+            <Button
+                android:id="@+id/btnFlowTest"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="Flow状态测试"
+                android:textAllCaps="false" />
 
-        <Button
-            android:id="@+id/btnDialog"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
-            android:text="弹窗测试"
-            android:textAllCaps="false" />
+            <Button
+                android:id="@+id/btnRxjavaFlowTest"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="RxJava转Flow测试"
+                android:textAllCaps="false" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <Button
+                android:id="@+id/btnAudio"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="录音测试"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/btnDialog"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="弹窗测试"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/btnNetWork"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="网络请求测试"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/btnNetWork2"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="网络请求测试2"
+                android:textAllCaps="false" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </ScrollView>
 </layout>

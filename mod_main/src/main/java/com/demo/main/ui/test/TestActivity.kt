@@ -142,6 +142,14 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
         mBinding.btnDialog.setOnClickListener {
             showTestDialog()
         }
+
+        mBinding.btnNetWork.setOnClickListener {
+            mViewModel.testNetWorkRequest()
+        }
+
+        mBinding.btnNetWork2.setOnClickListener {
+            mViewModel.testNetWorkRequest2()
+        }
     }
 
     /**
@@ -246,18 +254,21 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
                     is RequestState.RequestStart<String> -> {
                         Log.e(TAG, "RxJava转Flow: 请求开始")
                     }
+
                     is RequestState.RequestSuccess<String> -> {
                         Log.e(TAG, "RxJava转Flow: 请求成功 - ${state.result}")
                     }
+
                     is RequestState.RequestError<String> -> {
                         Log.e(TAG, "RxJava转Flow: 请求错误 - ${state.message}")
                     }
+
                     is RequestState.RequestCompleted<String> -> {
                         Log.e(TAG, "RxJava转Flow: 请求完成")
                     }
                 }
             }
-            Log.e("zzz","TestActivity执行了")
+            Log.e("zzz", "TestActivity执行了")
         }
     }
 
