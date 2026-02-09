@@ -74,7 +74,7 @@ object HttpManager {
                     val request = chain.request()
                     return chain.proceed(request)
                 } else {
-                    throw NoNetWorkException(ERROR.NETWORD_ERROR)
+                    throw NoNetWorkException(ERROR.NETWORK_ERROR)
                 }
             }
         })

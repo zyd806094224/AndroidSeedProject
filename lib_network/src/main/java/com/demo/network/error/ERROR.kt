@@ -64,7 +64,7 @@ enum class ERROR(val code: Int, val errMsg: String) {
     /**
      * 网络错误
      */
-    NETWORD_ERROR(1002, "网络异常，请尝试刷新"),
+    NETWORK_ERROR(1002, "网络异常，请尝试刷新"),
 
     /**
      * 协议出错

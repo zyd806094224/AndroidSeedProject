@@ -24,7 +24,7 @@ object ExceptionHandler {
                 //登录失效
             }
         } else if (e is NoNetWorkException) {
-            ex = ApiException(ERROR.NETWORD_ERROR, e)
+            ex = ApiException(ERROR.NETWORK_ERROR, e)
         } else if (e is HttpException) {
             ex = when (e.code()) {
                 ERROR.UNAUTHORIZED.code -> ApiException(ERROR.UNAUTHORIZED, e)
@@ -44,7 +44,7 @@ object ExceptionHandler {
         ) {
             ex = ApiException(ERROR.PARSE_ERROR, e)
         } else if (e is ConnectException) {
-            ex = ApiException(ERROR.NETWORD_ERROR, e)
+            ex = ApiException(ERROR.NETWORK_ERROR, e)
         } else if (e is javax.net.ssl.SSLException) {
             ex = ApiException(ERROR.SSL_ERROR, e)
         } else if (e is java.net.SocketException) {
