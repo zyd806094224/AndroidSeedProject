@@ -35,9 +35,17 @@
             android:id="@+id/btn"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="跳转到测试页面"
+            android:text="跳转到测试页面ComponentActivity"
             android:textAllCaps="false"
-            android:textSize="16sp" />
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn2"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="跳转到测试页面android.app.Activity"
+            android:textAllCaps="false"
+            android:textSize="12sp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

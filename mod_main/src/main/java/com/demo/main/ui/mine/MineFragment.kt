@@ -27,6 +27,10 @@ class MineFragment : BaseMvvmFragment<FragmentMineBinding, MineViewModel>() {
         mBinding?.btn?.setOnClickListener {
             RouteUtils.toTest(requireContext())
         }
+
+        mBinding?.btn2?.setOnClickListener {
+            RouteUtils.navigate(requireContext(),"/test2/activity")
+        }
     }
 
 }
