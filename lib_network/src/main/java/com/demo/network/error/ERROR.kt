@@ -82,6 +82,11 @@ enum class ERROR(val code: Int, val errMsg: String) {
     TIMEOUT_ERROR(1006, "连接超时"),
 
     /**
+     * 协程超时
+     */
+    TIMEOUT_COROUTINE_ERROR(1008, "协程超时"),
+
+    /**
      * 未登录
      */
     UNLOGIN(-1001, "未登录"),

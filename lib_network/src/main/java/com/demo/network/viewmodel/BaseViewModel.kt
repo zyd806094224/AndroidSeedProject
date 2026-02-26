@@ -8,7 +8,9 @@ import com.demo.network.error.ERROR
 import com.demo.network.error.ExceptionHandler
 import com.demo.network.flow.requestFlow
 import com.demo.network.response.BaseResponse
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
@@ -42,6 +44,9 @@ open class BaseViewModel : ViewModel() {
     ): T? {
         try {
             return responseBlock()
+        } catch (e: CancellationException) {
+            // 协程取消异常,不处理,直接抛出,让协程正常取消
+            throw e
         } catch (e: Exception) {
             e.printStackTrace()
             val exception = ExceptionHandler.handleException(e)
@@ -87,6 +92,15 @@ open class BaseViewModel : ViewModel() {
                 throw ApiException(response.errorCode, response.errorMsg)
             }
             return response.data
+        } catch (e: TimeoutCancellationException) {
+            // withTimeout 超时异常,转换为业务超时错误
+            e.printStackTrace()
+            val exception = ExceptionHandler.handleException(e)
+            errorCall?.onError(exception.errCode, exception.errMsg)
+        } catch (e: CancellationException) {
+            // 协程取消异常(不包含超时,因为上面已经处理了)
+            // 不处理,直接抛出,让协程正常取消
+            throw e
         } catch (e: Exception) {
             e.printStackTrace()
             val exception = ExceptionHandler.handleException(e)

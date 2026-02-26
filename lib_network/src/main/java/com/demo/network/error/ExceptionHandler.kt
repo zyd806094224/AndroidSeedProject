@@ -3,6 +3,7 @@ package com.demo.network.error
 import android.net.ParseException
 import com.google.gson.JsonParseException
 import com.google.gson.stream.MalformedJsonException
+import kotlinx.coroutines.TimeoutCancellationException
 import org.json.JSONException
 import retrofit2.HttpException
 import java.net.ConnectException
@@ -23,6 +24,9 @@ object ExceptionHandler {
             if (ex.errCode == ERROR.UNLOGIN.code) {
                 //登录失效
             }
+        } else if (e is TimeoutCancellationException) {
+            // 协程超时异常
+            ex = ApiException(ERROR.TIMEOUT_COROUTINE_ERROR, e)
         } else if (e is NoNetWorkException) {
             ex = ApiException(ERROR.NETWORK_ERROR, e)
         } else if (e is HttpException) {
