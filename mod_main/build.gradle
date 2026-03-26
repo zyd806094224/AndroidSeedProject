@@ -1,6 +1,6 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
     id 'kotlin-kapt'
 }
 //apply plugin: 'android-aspectjx'
@@ -45,32 +45,32 @@ android {
 dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation rootProject.depsLibs.coreKtx
-    implementation rootProject.depsLibs.appcompat
-    implementation rootProject.depsLibs.material
-    implementation rootProject.depsLibs.constraintlayout
-    implementation rootProject.depsLibs.liveDataKtx
-    implementation rootProject.depsLibs.viewModelKtx
-    implementation rootProject.depsLibs.navigationFragment
-    implementation rootProject.depsLibs.navigationUI
+    implementation libs.coreKtx
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.constraintlayout
+    implementation libs.liveDataKtx
+    implementation libs.viewModelKtx
+    implementation libs.navigationFragment
+    implementation libs.navigationUI
 
-    testCompileOnly rootProject.depsLibs.junit
-    androidTestCompileOnly rootProject.depsLibs.extJunit
-    androidTestCompileOnly rootProject.depsLibs.espressoCore
+    testCompileOnly libs.junit
+    androidTestCompileOnly libs.extJunit
+    androidTestCompileOnly libs.espressoCore
 
-    implementation rootProject.depsLibs.gson
-    implementation rootProject.depsLibs.flexbox
-    implementation rootProject.depsLibs.mmkv
+    implementation libs.gson
+    implementation libs.flexbox
+    implementation libs.mmkv
 
-    implementation rootProject.depsLibs.refreshLayout
-    implementation rootProject.depsLibs.refreshHeader
-    implementation rootProject.depsLibs.refreshFooter
+    implementation libs.refreshLayout
+    implementation libs.refreshHeader
+    implementation libs.refreshFooter
 
-    implementation rootProject.depsLibs.aroutreApi
-    kapt rootProject.depsLibs.arouterCompiler
+    implementation libs.aroutreApi
+    kapt libs.arouterCompiler
 
-    implementation rootProject.depsLibs.tbssdk
-    implementation rootProject.depsLibs.xxPermissions
+    implementation libs.tbssdk
+    implementation libs.xxPermissions
 
     implementation project(path: ':lib_framework')
     implementation project(path: ':lib_common')
@@ -80,5 +80,5 @@ dependencies {
     implementation project(path: ':lib_universaldialog')
 
     // AOP 切面编程
-    implementation 'org.aspectj:aspectjrt:1.9.5'
+    implementation libs.aspectjrt
 }

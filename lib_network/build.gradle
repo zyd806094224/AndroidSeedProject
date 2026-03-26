@@ -1,6 +1,6 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
 }
 
 android {
@@ -31,19 +31,19 @@ android {
 
 dependencies {
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly rootProject.depsLibs.coreKtx
-    compileOnly rootProject.depsLibs.appcompat
-    compileOnly rootProject.depsLibs.material
+    compileOnly libs.coreKtx
+    compileOnly libs.appcompat
+    compileOnly libs.material
 
-    compileOnly rootProject.depsLibs.retrofit2
-    compileOnly rootProject.depsLibs.retrofit2Gson
-    compileOnly rootProject.depsLibs.loggingInterceptor
+    compileOnly libs.retrofit2
+    compileOnly libs.retrofit2Gson
+    compileOnly libs.loggingInterceptor
 
-    compileOnly rootProject.depsLibs.mmkv
+    compileOnly libs.mmkv
 
-    compileOnly rootProject.depsLibs.gson
-    compileOnly rootProject.depsLibs.liveDataKtx
-    compileOnly rootProject.depsLibs.viewModelKtx
+    compileOnly libs.gson
+    compileOnly libs.liveDataKtx
+    compileOnly libs.viewModelKtx
 
     compileOnly project(path: ':lib_framework')
     compileOnly project(path: ':lib_common')

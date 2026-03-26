@@ -1,6 +1,6 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlinAndroid)
     id 'kotlin-kapt'
 }
 
@@ -113,53 +113,53 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation rootProject.depsLibs.coreKtx
-    implementation rootProject.depsLibs.appcompat
-    implementation rootProject.depsLibs.material
-    implementation rootProject.depsLibs.constraintlayout
-    implementation rootProject.depsLibs.liveDataKtx
-    implementation rootProject.depsLibs.viewModelKtx
-    implementation rootProject.depsLibs.navigationFragment
-    implementation rootProject.depsLibs.navigationUI
-    implementation rootProject.depsLibs.lifecycleCommon
+    implementation libs.coreKtx
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.constraintlayout
+    implementation libs.liveDataKtx
+    implementation libs.viewModelKtx
+    implementation libs.navigationFragment
+    implementation libs.navigationUI
+    implementation libs.lifecycleCommon
 
-    implementation rootProject.depsLibs.roomKtx
-    kapt rootProject.depsLibs.roomCompiler
+    implementation libs.roomKtx
+    kapt libs.roomCompiler
 
-    testImplementation rootProject.depsLibs.junit
-    androidTestImplementation rootProject.depsLibs.extJunit
-    androidTestImplementation rootProject.depsLibs.espressoCore
+    testImplementation libs.junit
+    androidTestImplementation libs.extJunit
+    androidTestImplementation libs.espressoCore
 
-    implementation rootProject.depsLibs.multidex
+    implementation libs.multidex
 
-    implementation rootProject.depsLibs.retrofit2
-    implementation rootProject.depsLibs.retrofit2Gson
-    implementation rootProject.depsLibs.loggingInterceptor
+    implementation libs.retrofit2
+    implementation libs.retrofit2Gson
+    implementation libs.loggingInterceptor
 
-    implementation rootProject.depsLibs.gson
+    implementation libs.gson
 
-//    implementation rootProject.depsLibs.xlog
+//    implementation libs.xlog
 
-    implementation rootProject.depsLibs.mmkv
+    implementation libs.mmkv
 
-    implementation rootProject.depsLibs.refreshLayout
-    implementation rootProject.depsLibs.refreshHeader
-    implementation rootProject.depsLibs.refreshFooter
+    implementation libs.refreshLayout
+    implementation libs.refreshHeader
+    implementation libs.refreshFooter
 
-    implementation rootProject.depsLibs.glide
-    kapt rootProject.depsLibs.glideCompiler
+    implementation libs.glide
+    kapt libs.glideCompiler
 
-    implementation rootProject.depsLibs.flexbox
+    implementation libs.flexbox
 
-    implementation rootProject.depsLibs.aroutreApi
-    kapt rootProject.depsLibs.arouterCompiler
+    implementation libs.aroutreApi
+    kapt libs.arouterCompiler
 
-    implementation rootProject.depsLibs.tbssdk
-    implementation rootProject.depsLibs.exoPlayer
+    implementation libs.tbssdk
+    implementation libs.exoPlayer
 
-//    implementation rootProject.depsLibs.cameraX
+//    implementation libs.cameraX
 
-    implementation rootProject.depsLibs.xxPermissions
+    implementation libs.xxPermissions
 
     implementation project(path: ':mod_main')
     implementation project(path: ':lib_framework')

@@ -1,6 +1,6 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
     id 'kotlin-kapt'
 }
 
@@ -32,13 +32,13 @@ android {
 
 dependencies {
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly rootProject.depsLibs.coreKtx
-    compileOnly rootProject.depsLibs.appcompat
-    compileOnly rootProject.depsLibs.material
-    compileOnly rootProject.depsLibs.constraintlayout
+    compileOnly libs.coreKtx
+    compileOnly libs.appcompat
+    compileOnly libs.material
+    compileOnly libs.constraintlayout
 
-    compileOnly rootProject.depsLibs.glide
-    kapt rootProject.depsLibs.glideCompiler
+    compileOnly libs.glide
+    kapt libs.glideCompiler
 
     compileOnly project(path: ':lib_framework')
 }

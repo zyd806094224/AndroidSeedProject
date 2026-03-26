@@ -1,6 +1,6 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
 }
 
 android {
@@ -35,17 +35,17 @@ android {
 
 dependencies {
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly rootProject.depsLibs.coreKtx
-    compileOnly rootProject.depsLibs.appcompat
-    compileOnly rootProject.depsLibs.material
-    compileOnly rootProject.depsLibs.gson
+    compileOnly libs.coreKtx
+    compileOnly libs.appcompat
+    compileOnly libs.material
+    compileOnly libs.gson
 
-    compileOnly rootProject.depsLibs.refreshLayout
-    compileOnly rootProject.depsLibs.tbssdk
+    compileOnly libs.refreshLayout
+    compileOnly libs.tbssdk
 
-    api rootProject.depsLibs.datastore
+    api libs.datastore
 
     //RxJava
-    api rootProject.depsLibs.rxjava2
-    api rootProject.depsLibs.rxandroid2
+    api libs.rxjava2
+    api libs.rxandroid2
 }

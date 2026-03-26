@@ -1,6 +1,6 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
 }
@@ -44,17 +44,17 @@ android {
 
 dependencies {
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly rootProject.depsLibs.coreKtx
-    implementation rootProject.depsLibs.appcompat
-    compileOnly rootProject.depsLibs.material
-    compileOnly rootProject.depsLibs.constraintlayout
+    compileOnly libs.coreKtx
+    implementation libs.appcompat
+    compileOnly libs.material
+    compileOnly libs.constraintlayout
 
-    compileOnly rootProject.depsLibs.refreshLayout
-    compileOnly rootProject.depsLibs.refreshHeader
-    compileOnly rootProject.depsLibs.refreshFooter
+    compileOnly libs.refreshLayout
+    compileOnly libs.refreshHeader
+    compileOnly libs.refreshFooter
 
-    compileOnly rootProject.depsLibs.aroutreApi
-    kapt rootProject.depsLibs.arouterCompiler
+    compileOnly libs.aroutreApi
+    kapt libs.arouterCompiler
 
     compileOnly project(path: ':lib_framework')
     implementation project(path: ':lib_glide')

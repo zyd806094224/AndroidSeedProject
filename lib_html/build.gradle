@@ -1,6 +1,6 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
     id 'maven-publish'
 }
 
@@ -69,6 +69,6 @@ afterEvaluate {
 
 dependencies {
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly rootProject.depsLibs.coreKtx
-    compileOnly rootProject.depsLibs.appcompat
+    compileOnly libs.coreKtx
+    compileOnly libs.appcompat
 }
