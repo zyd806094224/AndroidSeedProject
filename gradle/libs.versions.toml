@@ -33,6 +33,9 @@ rxandroid = "3.0.2"
 aspectjrt = "1.9.5"
 # KMP shared module 依赖（kotlinx-coroutines 版本需匹配 Kotlin 1.8.0）
 kotlinxCoroutines = "1.6.4"
+# Ktor 2.3.0 是最后支持 Kotlin 1.8.x 的稳定版；serialization 1.5.0 是 Ktor 2.3.0 期望版本
+ktor = "2.3.0"
+kotlinxSerializationJson = "1.5.0"
 
 [libraries]
 coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -74,9 +77,21 @@ rxandroid2 = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandro
 aspectjrt = { module = "org.aspectj:aspectjrt", version.ref = "aspectjrt" }
 # KMP shared module：跨平台协程
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+# KMP shared module：JSON 序列化
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+# Ktor 跨平台网络栈
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+# Android 端 Ktor 引擎
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+# iOS 端 Ktor 引擎
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

@@ -1,10 +1,11 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.androidLibrary)
 }
 
-// KMP shared module：承载跨平台（Android / iOS）的纯 Kotlin 数据模型与业务逻辑。
-// 阶段 1 只下沉数据模型，网络层/Room 暂不迁移。
+// KMP shared module：承载跨平台（Android / iOS）的纯 Kotlin 数据模型、业务逻辑与 Ktor 网络栈。
+// 与 lib_network（Retrofit）并行共存：老代码继续用 lib_network，新跨平台代码用 shared。
 kotlin {
     // ---- Android target ----
     android()
@@ -27,14 +28,30 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                // 跨平台协程（commonMain 只能用带 -core 后缀的多平台库）
+                // 跨平台协程
                 implementation(libs.kotlinx.coroutines.core)
+                // JSON 序列化（替代 Gson，KMP 原生支持）
+                implementation(libs.kotlinx.serialization.json)
+                // Ktor 跨平台网络栈
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.ktor.client.logging)
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                // Android 端 Ktor 引擎（基于 OkHttp）
+                implementation(libs.ktor.client.okhttp)
+            }
+        }
         // 把三个 iOS 源集归并到 iosMain，避免重复实现
         val iosMain by creating {
             dependsOn(commonMain)
+            dependencies {
+                // iOS 端 Ktor 引擎（基于 NSURLSession）
+                implementation(libs.ktor.client.darwin)
+            }
         }
         val iosArm64Main by getting { dependsOn(iosMain) }
         val iosX64Main by getting { dependsOn(iosMain) }
