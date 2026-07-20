@@ -38,21 +38,44 @@ dependencies {
 }
 ```
 
-### 2. 初始化 Context
+### 2. 初始化 Context + Debug 标志（必须）
 
 ```kotlin
 // MyApplication.kt
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        SharedAndroidContext.init(this)  // Ktor 网络状态检测需要
+        // 必须调用：传入 BuildConfig.DEBUG 控制 SSL 策略
+        //   - Debug：信任所有证书（便于 Charles/Fiddler 抓包）
+        //   - Release：仅信任内置的自签名证书（shared/res/raw/server_cert.pem）
+        // 不调用会导致首次网络请求抛 IllegalStateException
+        SharedAndroidContext.init(this, BuildConfig.DEBUG)
     }
 }
 ```
 
-### 3. 调用
+> 注意：`BuildConfig` 是接入方 app 模块自动生成的，不是 shared 的。
 
-直接 import `com.demo.shared.*` 即可，无需任何额外配置。详见 [KMP_网络层使用指南.md](./KMP_网络层使用指南.md)。
+### 3. SSL 证书适配（自签名证书场景）
+
+**shared 模块已自包含证书适配**，证书文件 `server_cert.pem` 打包在 `shared/src/androidMain/res/raw/`，随 AAR 分发。
+
+- **Ktor 请求**（`Api.xxx()`）：SSL pinning 在 shared 内部自动生效，接入方无需任何配置 ✅
+- **WebView / 系统网络 / 图片库等非 Ktor 链路**：shared 的 pinning 管不到。如果接入方也需要访问自签名 HTTPS 服务，需在 app 的 `network_security_config.xml` 自行信任证书：
+
+```xml
+<!-- 接入方的 app/src/main/res/xml/network_security_config.xml -->
+<trust-anchors>
+    <certificates src="system" />
+    <certificates src="@raw/server_cert"/>  <!-- 接入方需自己放一份证书 -->
+</trust-anchors>
+```
+
+> 注意：证书资源是 shared 自己的，app 的 NetworkSecurityConfig 无法引用 shared 的 `@raw/server_cert`，接入方需在自己的 `app/res/raw/` 再放一份。本工程（AndroidSeedProject）已经这么做了。
+
+### 4. 调用
+
+直接 import `com.demo.shared.*` 即可。详见 [KMP_网络层使用指南.md](./KMP_网络层使用指南.md)。
 
 ## 三、iOS 接入（待实跑验证）
 
