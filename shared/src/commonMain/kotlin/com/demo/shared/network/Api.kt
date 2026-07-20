@@ -50,7 +50,7 @@ object Api {
      */
     suspend fun testRequest(): BaseResponse<String> {
         ensureNetworkAvailable()
-        return httpClient.get("http://192.168.213.9:8060/user/test").body()
+        return httpClient.get("https://106.15.7.132:8443/user/test").body()
     }
 
     /**
@@ -58,6 +58,6 @@ object Api {
      */
     suspend fun test2Request(): BaseResponse<String> {
         ensureNetworkAvailable()
-        return httpClient.get("http://192.168.213.9:8060/user/test2").body()
+        return httpClient.get("https://106.15.7.132:8443/user/test2").body()
     }
 }

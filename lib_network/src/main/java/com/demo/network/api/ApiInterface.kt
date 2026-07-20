@@ -17,11 +17,11 @@ interface ApiInterface {
     suspend fun getDataList(): BaseResponse<MutableList<String>>?
 
     @Headers(NetworkRetryInterceptor.RETRY_TIME_HEADER)
-    @GET("http://192.168.213.9:8060/user/test")
+    @GET("https://106.15.7.132:8443/user/test")
     suspend fun testRequest(): BaseResponse<String>?
 
 
-    @GET("http://192.168.213.9:8060/user/test2")
+    @GET("https://106.15.7.132:8443/user/test2")
     suspend fun test2Request(): BaseResponse<String>?
 
 }
