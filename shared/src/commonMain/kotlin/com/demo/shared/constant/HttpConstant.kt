@@ -13,9 +13,9 @@ package com.demo.shared.constant
 const val BASE_URL = "http://baidu.com"
 
 /**
- * 请求超时时间（毫秒），与 BaseRepository/FlowExt 统一为 10s
+ * 请求超时时间（毫秒），与 BaseRepository/FlowExt 统一为 30s
  */
-const val DEFAULT_TIMEOUT_MILLIS = 10_000L
+const val DEFAULT_TIMEOUT_MILLIS = 30_000L
 
 /**
  * Flow 请求超时时间（毫秒）

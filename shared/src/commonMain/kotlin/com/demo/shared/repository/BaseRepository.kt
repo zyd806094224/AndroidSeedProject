@@ -9,7 +9,7 @@ import kotlinx.coroutines.withTimeout
 
 /**
  * @Description: 跨平台基础仓库（从 lib_network 下沉，纯 Kotlin 协程实现）
- *               超时时间统一为 [DEFAULT_TIMEOUT_MILLIS]（原 lib_network 版本也是 10s）。
+ *               超时时间统一为 [DEFAULT_TIMEOUT_MILLIS]（原 lib_network 版本也是 30s）。
  * @Date: 2024/8/29 17:14
  * @author:  zhaoyudong
  * @version: 1.0
