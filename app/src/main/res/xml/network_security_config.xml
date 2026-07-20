@@ -6,6 +6,8 @@
             <certificates
                     src="user"
                     tools:ignore="AcceptsUserCertificates" />
+            <!-- 信任自签名证书（106.15.7.132:8443） -->
+            <certificates src="@raw/server_cert"/>
         </trust-anchors>
     </base-config>
     <!-- 支持 Android 7.0 以上调试时，信任 Charles 和 Fiddler 等用户信任的证书 -->
@@ -13,6 +15,8 @@
         <trust-anchors>
             <certificates src="system" />
             <certificates src="user" />
+            <!-- 信任自签名证书（106.15.7.132:8443） -->
+            <certificates src="@raw/server_cert"/>
         </trust-anchors>
     </debug-overrides>
 </network-security-config>

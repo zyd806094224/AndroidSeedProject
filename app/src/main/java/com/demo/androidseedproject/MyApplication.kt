@@ -69,8 +69,9 @@ class MyApplication : Application() {
         Log.e("zzz", "KMP shared: ${com.demo.shared.SharedSdk.getGreeting()}")
         Log.e("zzz", "KMP shared model: ${com.demo.shared.model.BaseResponse(data = "hello", errorCode = 0)}")
         Log.e("zzz", "KMP shared model: ${com.demo.shared.model.ProjectTabItem(id = 1, name = "tab1")}")
-        // 初始化 KMP shared 的 Android Context（Ktor 网络状态检测需要）
-        com.demo.shared.network.SharedAndroidContext.init(this)
+        // 初始化 KMP shared 的 Android Context（Ktor 网络状态检测 + SSL 证书策略需要）
+        // 传入 BuildConfig.DEBUG：Debug 信任所有证书（便于抓包），Release 仅信任内置证书
+        com.demo.shared.network.SharedAndroidContext.init(this, BuildConfig.DEBUG)
         Log.e("zzzz","application执行完了")
     }
 

@@ -19,8 +19,15 @@ object SharedAndroidContext {
     @Volatile
     private var appContext: Context? = null
 
-    fun init(context: Context) {
+    /**
+     * 是否 Debug 构建（用于 SSL 证书策略：Debug 信任所有，Release 仅信任内置证书）。
+     */
+    @Volatile
+    var isDebug: Boolean = true
+
+    fun init(context: Context, isDebug: Boolean = true) {
         appContext = context.applicationContext
+        this.isDebug = isDebug
     }
 
     internal fun get(): Context =
