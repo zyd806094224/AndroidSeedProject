@@ -37,6 +37,7 @@ import com.demo.framework.ext.asFlow
 import com.demo.shared.SharedSdk
 import com.demo.shared.model.BaseResponse
 import com.demo.shared.model.ProjectTabItem
+import com.demo.shared.network.Api
 import com.hjq.permissions.XXPermissions
 import com.hjq.permissions.permission.PermissionLists
 import io.reactivex.rxjava3.core.Observable
@@ -158,6 +159,11 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
         mBinding.btnKmp.setOnClickListener {
             testKmpShared()
         }
+
+        // KMP Ktor 网络请求：用跨平台 Ktor 栈发起请求（替代 Retrofit）
+        mBinding.btnKmpNetwork.setOnClickListener {
+            testKmpNetwork()
+        }
     }
 
     /**
@@ -243,6 +249,35 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
 
         mBinding.tvKmpResult.text = result
         Log.e(TAG, result)
+    }
+
+    /**
+     * KMP Ktor 网络请求测试
+     * 通过 shared 模块的 [Api]（Ktor 实现）发起跨平台网络请求，
+     * 与原有 Retrofit（lib_network.ApiManager）形成对比验证。
+     *
+     * 注意：请求在 IO 协程发起，结果回主线程更新 UI。
+     */
+    private fun testKmpNetwork() {
+        mBinding.tvKmpNetworkResult.text = "请求中..."
+        lifecycleScope.launch {
+            val result = buildString {
+                appendLine("== KMP Ktor 网络请求 ==")
+                try {
+                    val response = Api.testRequest()
+                    appendLine("请求成功 ✅")
+                    appendLine("errorCode: ${response.errorCode}")
+                    appendLine("errorMsg: ${response.errorMsg}")
+                    appendLine("data: ${response.data}")
+                } catch (e: Exception) {
+                    appendLine("请求失败 ❌")
+                    appendLine("异常: ${e::class.simpleName}: ${e.message}")
+                    Log.e(TAG, "Ktor 请求失败", e)
+                }
+            }
+            mBinding.tvKmpNetworkResult.text = result
+            Log.e(TAG, result)
+        }
     }
 
     /**

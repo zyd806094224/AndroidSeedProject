@@ -1,6 +1,8 @@
 package com.demo.androidseedproject
 
 import com.demo.shared.SharedSdk
+import com.demo.shared.constant.BASE_URL
+import com.demo.shared.error.ERROR
 import com.demo.shared.model.BaseResponse
 import com.demo.shared.model.ProjectTabItem
 import org.junit.Assert.assertEquals
@@ -55,5 +57,20 @@ class SharedModuleTest {
         val greeting = SharedSdk.getGreeting()
         // expect platformName 在 Android target 下 actual 返回 "Android"
         assertTrue("期望包含 platform=Android，实际：$greeting", greeting.contains("platform=Android"))
+    }
+
+    // ============ 阶段 2/3：Repository / 异常体系 / Ktor 网络栈 ============
+
+    @Test
+    fun `ERROR 枚举关键错误码正确`() {
+        assertEquals(401, ERROR.UNAUTHORIZED.code)
+        assertEquals(500, ERROR.INTERNAL_SERVER_ERROR.code)
+        assertEquals(-1001, ERROR.UNLOGIN.code)
+    }
+
+    @Test
+    fun `BASE_URL 是 http 明文地址`() {
+        // 确认配置基线，便于排查 cleartextTraffic 问题
+        assertTrue(BASE_URL.startsWith("http://"))
     }
 }

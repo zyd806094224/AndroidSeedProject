@@ -141,6 +141,26 @@
                 android:textColor="#333333"
                 android:textSize="13sp" />
 
+            <Button
+                android:id="@+id/btnKmpNetwork"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="KMP Ktor网络请求"
+                android:textAllCaps="false" />
+
+            <TextView
+                android:id="@+id/tvKmpNetworkResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#FFF8E1"
+                android:minHeight="80dp"
+                android:padding="12dp"
+                android:text="点击上方按钮通过 Ktor 发起跨平台网络请求"
+                android:textColor="#333333"
+                android:textSize="13sp" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </ScrollView>

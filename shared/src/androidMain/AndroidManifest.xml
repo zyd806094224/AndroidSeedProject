@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 网络状态检测：用于 isNetworkAvailable() -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Ktor OkHttp 引擎发起网络请求 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+</manifest>
