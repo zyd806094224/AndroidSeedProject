@@ -1,5 +1,9 @@
 pluginManagement {
     repositories {
+        // 阿里云镜像：Gradle Plugin Portal 国内 TLS 握手经常失败，优先走镜像
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
         gradlePluginPortal()
         google()
         mavenCentral()
