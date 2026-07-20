@@ -38,6 +38,8 @@ import com.demo.shared.SharedSdk
 import com.demo.shared.model.BaseResponse
 import com.demo.shared.model.ProjectTabItem
 import com.demo.shared.network.Api
+import com.demo.shared.repository.LoginRepository
+import com.demo.shared.usecase.LoginUseCase
 import com.hjq.permissions.XXPermissions
 import com.hjq.permissions.permission.PermissionLists
 import io.reactivex.rxjava3.core.Observable
@@ -164,6 +166,11 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
         mBinding.btnKmpNetwork.setOnClickListener {
             testKmpNetwork()
         }
+
+        // KMP 业务逻辑示例：演示 Repository + UseCase 的用法
+        mBinding.btnKmpLogin.setOnClickListener {
+            testKmpLogin()
+        }
     }
 
     /**
@@ -276,6 +283,67 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
                 }
             }
             mBinding.tvKmpNetworkResult.text = result
+            Log.e(TAG, result)
+        }
+    }
+
+    /**
+     * KMP 业务逻辑示例：演示跨平台 Repository + UseCase 的用法
+     *
+     * 展示 KMP 业务逻辑的三种典型用法：
+     * 1. 入参校验（不调网络，纯逻辑）—— 用错误入参触发校验，看异常信息
+     * 2. 登录状态判断（调本地 TokenManager）—— 演示 expect/actual 存储抽象
+     * 3. 完整登录流程（调 UseCase）—— 演示业务编排层
+     */
+    private fun testKmpLogin() {
+        // 复用同一个 UseCase 实例，演示它的状态保持（token 会被存下来）
+        val loginUseCase = LoginUseCase()
+
+        lifecycleScope.launch {
+            val result = buildString {
+                appendLine("== KMP 业务逻辑示例 ==")
+
+                // —— 用法 1：入参校验（不调网络，跨平台纯逻辑）——
+                appendLine("\n[1] 入参校验演示：")
+                val validateResult = runCatching {
+                    loginUseCase.execute(username = "ab", password = "123")  // 故意用错误入参
+                }
+                validateResult.onSuccess { /* 不会走到这 */ }
+                    .onFailure { e ->
+                        // 注意：UseCase 内部已经把 ApiException 包成 LoginResult.Fail，
+                        // 这里展示 Repository 直接抛异常的形态（如果绕过 UseCase）
+                        appendLine("  校验结果: ${e.message}")
+                    }
+
+                // —— 用法 2：登录状态判断（调本地存储）——
+                appendLine("\n[2] 登录状态（执行前）:")
+                appendLine("  isLoggedIn = ${LoginRepository().isLoggedIn()}")
+
+                // —— 用法 3：完整登录流程（调 UseCase，会发真实网络请求）——
+                appendLine("\n[3] 执行登录:")
+                val loginResult = loginUseCase.execute(
+                    username = "demo_user",
+                    password = "demo123456",
+                    deviceId = android.os.Build.DEVICE
+                )
+                when (loginResult) {
+                    is LoginUseCase.LoginResult.Success -> {
+                        appendLine("  ✅ 登录成功")
+                        appendLine("  userId: ${loginResult.loginInfo.userId}")
+                        appendLine("  nickname: ${loginResult.loginInfo.nickname}")
+                        appendLine("  token: ${loginResult.loginInfo.token.take(10)}...")
+                        appendLine("  needGuide: ${loginResult.needGuide}")
+                    }
+                    is LoginUseCase.LoginResult.Fail -> {
+                        appendLine("  ❌ 登录失败: [${loginResult.errCode}] ${loginResult.errMsg}")
+                    }
+                }
+
+                // —— 再次判断登录状态 ——
+                appendLine("\n[4] 登录状态（执行后）:")
+                appendLine("  isLoggedIn = ${LoginRepository().isLoggedIn()}")
+            }
+            mBinding.tvKmpLoginResult.text = result
             Log.e(TAG, result)
         }
     }

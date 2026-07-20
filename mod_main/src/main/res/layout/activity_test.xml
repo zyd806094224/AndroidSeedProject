@@ -161,6 +161,26 @@
                 android:textColor="#333333"
                 android:textSize="13sp" />
 
+            <Button
+                android:id="@+id/btnKmpLogin"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="KMP业务逻辑示例(登录)"
+                android:textAllCaps="false" />
+
+            <TextView
+                android:id="@+id/tvKmpLoginResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#E8F5E9"
+                android:minHeight="80dp"
+                android:padding="12dp"
+                android:text="点击上方按钮演示 KMP 业务逻辑（Repository + UseCase）"
+                android:textColor="#333333"
+                android:textSize="13sp" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </ScrollView>

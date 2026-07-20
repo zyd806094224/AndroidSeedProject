@@ -1,9 +1,13 @@
 package com.demo.shared.network
 
 import com.demo.shared.model.BaseResponse
+import com.demo.shared.model.LoginInfo
+import com.demo.shared.model.LoginRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 
 /**
  * @Description: Ktor 版网络接口（替代 lib_network 的 ApiInterface + ApiManager）。
@@ -58,6 +62,19 @@ object Api {
      */
     suspend fun test2Request(): BaseResponse<String> {
         ensureNetworkAvailable()
-        return httpClient.get("https://106.15.7.132:8443/user/test2").body()
+        return httpClient.get("http://192.168.213.9:8060/user/test2").body()
+    }
+
+    /**
+     * 登录接口（业务示例）
+     *
+     * @param request 登录请求参数
+     * @return 登录成功后的用户信息（含 token）
+     */
+    suspend fun login(request: LoginRequest): BaseResponse<LoginInfo> {
+        ensureNetworkAvailable()
+        return httpClient.post("https://106.15.7.132:8443/user/login") {
+            setBody(request)
+        }.body()
     }
 }
