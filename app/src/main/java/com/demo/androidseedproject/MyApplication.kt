@@ -67,7 +67,7 @@ class MyApplication : Application() {
             .start()
         // KMP shared module 验证：调用跨平台代码，确认 expect/actual 在 Android 端正确解析
         Log.e("zzz", "KMP shared: ${com.demo.shared.SharedSdk.getGreeting()}")
-        Log.e("zzz", "KMP shared model: ${com.demo.shared.model.BaseResponse(data = "hello", errorCode = 0)}")
+        Log.e("zzz", "KMP shared model: ${com.demo.shared.model.BaseResponse(data = "hello", code = 200)}")
         Log.e("zzz", "KMP shared model: ${com.demo.shared.model.ProjectTabItem(id = 1, name = "tab1")}")
         // 初始化 KMP shared 的 Android Context（Ktor 网络状态检测 + SSL 证书策略需要）
         // 传入 BuildConfig.DEBUG：Debug 信任所有证书（便于抓包），Release 仅信任内置证书

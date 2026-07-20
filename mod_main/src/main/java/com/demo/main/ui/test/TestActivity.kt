@@ -242,8 +242,8 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
             ProjectTabItem(id = 1, name = "首页"),
             ProjectTabItem(id = 2, name = "我的")
         )
-        val response = BaseResponse(data = tabs, errorCode = 0, errorMsg = "")
-        val statusText = if (response.isFailed()) "失败: ${response.errorMsg}" else "成功"
+        val response = BaseResponse(data = tabs, code = 200, msg = "")
+        val statusText = if (response.isFailed()) "失败: ${response.msg}" else "成功"
 
         // 3. 组装展示文本
         val result = buildString {
@@ -273,8 +273,9 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
                 try {
                     val response = Api.testRequest()
                     appendLine("请求成功 ✅")
-                    appendLine("errorCode: ${response.errorCode}")
-                    appendLine("errorMsg: ${response.errorMsg}")
+                    appendLine("code: ${response.code}")
+                    appendLine("msg: ${response.msg}")
+                    appendLine("total: ${response.total}")
                     appendLine("data: ${response.data}")
                 } catch (e: Exception) {
                     appendLine("请求失败 ❌")

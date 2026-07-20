@@ -29,7 +29,7 @@ open class BaseRepository {
         } ?: return null
 
         if (response.isFailed()) {
-            throw ApiException(response.errorCode, response.errorMsg)
+            throw ApiException(response.code, response.msg)
         }
         return response.data
     }

@@ -80,10 +80,11 @@ fun createSharedHttpClient(enableLogging: Boolean = true): HttpClient {
         }
 
         // 5. 日志（替代 HttpLoggingInterceptor + NetworkMonitorInterceptor）
+        //     LogLevel.HEADERS 只打 header；排查响应体用 LogLevel.ALL（含 body），线上建议改回 HEADERS
         if (enableLogging) {
             install(Logging) {
                 logger = SharedHttpLogger
-                level = LogLevel.HEADERS
+                level = LogLevel.ALL
             }
         }
 

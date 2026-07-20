@@ -24,24 +24,25 @@ class SharedModuleTest {
 
     @Test
     fun `BaseResponse 成功时 isFailed 返回 false`() {
-        val response = BaseResponse(data = "ok", errorCode = 0, errorMsg = "")
+        // 服务端 Result.success() 返回 code=200
+        val response = BaseResponse(data = "ok", code = 200, msg = "成功")
         assertEquals("ok", response.data)
         assertFalse(response.isFailed())
     }
 
     @Test
     fun `BaseResponse 失败时 isFailed 返回 true`() {
-        val response = BaseResponse<String>(data = null, errorCode = 1001, errorMsg = "token 失效")
+        val response = BaseResponse<String>(data = null, code = 1001, msg = "token 失效")
         assertTrue(response.isFailed())
-        assertEquals(1001, response.errorCode)
-        assertEquals("token 失效", response.errorMsg)
+        assertEquals(1001, response.code)
+        assertEquals("token 失效", response.msg)
     }
 
     @Test
     fun `BaseResponse 泛型支持 List`() {
         val response = BaseResponse(
             data = listOf(ProjectTabItem(1, "首页"), ProjectTabItem(2, "我的")),
-            errorCode = 0
+            code = 200
         )
         assertEquals(2, response.data?.size)
         assertEquals("首页", response.data?.first()?.name)

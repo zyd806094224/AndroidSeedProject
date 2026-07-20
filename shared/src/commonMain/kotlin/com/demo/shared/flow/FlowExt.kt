@@ -62,7 +62,7 @@ suspend fun <T> requestFlowResponse(
         }
 
         if (response?.isFailed() == true) {
-            throw ApiException(response.errorCode, response.errorMsg)
+            throw ApiException(response.code, response.msg)
         }
         //2.发送网络请求结果回调
         emit(response)
