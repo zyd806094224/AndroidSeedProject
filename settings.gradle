@@ -7,8 +7,11 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    //repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS) // AOP
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    // 注：原先使用 FAIL_ON_PROJECT_REPOS，但 Kotlin 1.8.0 的 KMP 插件会在 project 级动态注入
+    // Kotlin/Native 所需的 ivy 仓库，与该模式冲突（Kotlin 1.9+ 才修复，见 KT-58125）。
+    // 当前项目各模块本来就没有 project 级依赖解析仓库（lib_html 的 repositories 属于 publishing 发布配置），
+    // 因此移除 repositoriesMode 改用 Gradle 默认行为，对现有模块零影响，同时让 KMP 正常工作。
+    //repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
@@ -25,3 +28,4 @@ include ':mod_main'
 include ':lib_html'
 include ':lib_glide'
 include ':lib_universaldialog'
+include ':shared'

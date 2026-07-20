@@ -78,6 +78,7 @@ dependencies {
     implementation project(path: ':lib_room')
     implementation project(path: ':lib_html')
     implementation project(path: ':lib_universaldialog')
+    implementation project(path: ':shared')
 
     // AOP 切面编程
     implementation libs.aspectjrt

@@ -121,6 +121,26 @@
                 android:text="网络请求测试2"
                 android:textAllCaps="false" />
 
+            <Button
+                android:id="@+id/btnKmp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="KMP共享模块测试"
+                android:textAllCaps="false" />
+
+            <TextView
+                android:id="@+id/tvKmpResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#F5F5F5"
+                android:minHeight="80dp"
+                android:padding="12dp"
+                android:text="点击上方按钮查看 KMP shared 模块调用结果"
+                android:textColor="#333333"
+                android:textSize="13sp" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </ScrollView>

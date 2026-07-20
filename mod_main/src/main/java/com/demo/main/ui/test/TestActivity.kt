@@ -34,6 +34,9 @@ import com.demo.universaldialog.interfaces.UniversalDialogCallback
 import com.demo.common.audio.AudioOutputFormat
 import com.demo.framework.ext.RequestState
 import com.demo.framework.ext.asFlow
+import com.demo.shared.SharedSdk
+import com.demo.shared.model.BaseResponse
+import com.demo.shared.model.ProjectTabItem
 import com.hjq.permissions.XXPermissions
 import com.hjq.permissions.permission.PermissionLists
 import io.reactivex.rxjava3.core.Observable
@@ -150,6 +153,11 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
         mBinding.btnNetWork2.setOnClickListener {
             mViewModel.testNetWorkRequest2()
         }
+
+        // KMP shared module 测试：调用跨平台代码，验证 expect/actual 与下沉的数据模型
+        mBinding.btnKmp.setOnClickListener {
+            testKmpShared()
+        }
     }
 
     /**
@@ -203,6 +211,38 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
                 }.collect()
             }
         }
+    }
+
+    /**
+     * KMP shared module 测试
+     * 验证 shared 模块的 commonMain 代码能在 Android 端正常运行：
+     *  - [SharedSdk.getGreeting]：expect/actual 平台差异，Android 端返回 platform=Android
+     *  - [BaseResponse]：下沉的网络响应模型
+     *  - [ProjectTabItem]：下沉的业务模型
+     */
+    private fun testKmpShared() {
+        // 1. expect/actual：在 Android 端 actual 返回 "Android"，iOS 端返回 "iOS x.x"
+        val greeting = SharedSdk.getGreeting()
+
+        // 2. 下沉的数据模型：模拟一个接口响应
+        val tabs = listOf(
+            ProjectTabItem(id = 1, name = "首页"),
+            ProjectTabItem(id = 2, name = "我的")
+        )
+        val response = BaseResponse(data = tabs, errorCode = 0, errorMsg = "")
+        val statusText = if (response.isFailed()) "失败: ${response.errorMsg}" else "成功"
+
+        // 3. 组装展示文本
+        val result = buildString {
+            appendLine("== KMP shared 调用结果 ==")
+            appendLine("平台标识: $greeting")
+            appendLine("BaseResponse 状态: $statusText")
+            append("数据列表: ")
+            response.data?.joinToString { it.name }?.let { append(it) }
+        }
+
+        mBinding.tvKmpResult.text = result
+        Log.e(TAG, result)
     }
 
     /**

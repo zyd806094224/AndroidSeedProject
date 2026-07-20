@@ -65,6 +65,10 @@ class MyApplication : Application() {
         TaskLaunch.getInstance()
             .addTasks(listOf(TaskA(), TaskB(), TaskC()))
             .start()
+        // KMP shared module 验证：调用跨平台代码，确认 expect/actual 在 Android 端正确解析
+        Log.e("zzz", "KMP shared: ${com.demo.shared.SharedSdk.getGreeting()}")
+        Log.e("zzz", "KMP shared model: ${com.demo.shared.model.BaseResponse(data = "hello", errorCode = 0)}")
+        Log.e("zzz", "KMP shared model: ${com.demo.shared.model.ProjectTabItem(id = 1, name = "tab1")}")
         Log.e("zzzz","application执行完了")
     }
 

@@ -31,6 +31,8 @@ camerax = "1.3.0-alpha04"
 rxjava = "3.1.6"
 rxandroid = "3.0.2"
 aspectjrt = "1.9.5"
+# KMP shared module 依赖（kotlinx-coroutines 版本需匹配 Kotlin 1.8.0）
+kotlinxCoroutines = "1.6.4"
 
 [libraries]
 coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -70,8 +72,11 @@ xxPermissions = { module = "com.github.getActivity:XXPermissions", version.ref =
 rxjava2 = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 rxandroid2 = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
 aspectjrt = { module = "org.aspectj:aspectjrt", version.ref = "aspectjrt" }
+# KMP shared module：跨平台协程
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

@@ -8,3 +8,16 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# 所有模块的构建产物（含 KMP shared module 的 build/）
+**/build/
+
+# APK 打包输出目录
+app/huawei/
+app/xiaomi/
+
+# Kotlin/Native / KMP 本地缓存
+.kotlin/
+
+# ZCode 工具缓存
+.zcode/
