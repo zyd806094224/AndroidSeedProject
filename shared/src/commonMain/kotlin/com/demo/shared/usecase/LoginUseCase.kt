@@ -1,7 +1,6 @@
 package com.demo.shared.usecase
 
 import com.demo.shared.error.ApiException
-import com.demo.shared.model.LoginInfo
 import com.demo.shared.repository.LoginRepository
 
 /**
@@ -29,10 +28,8 @@ class LoginUseCase(
      */
     suspend fun execute(username: String, password: String, deviceId: String = ""): LoginResult {
         return try {
-            val loginInfo = loginRepository.login(username, password, deviceId)
-            // 场景化逻辑：根据本地状态判断是否首次登录（演示用，实际看业务）
-            val isFirstLogin = loginInfo.nickname.isEmpty()
-            LoginResult.Success(loginInfo = loginInfo, needGuide = isFirstLogin)
+            val token = loginRepository.login(username, password, deviceId)
+            LoginResult.Success(token = token)
         } catch (e: ApiException) {
             LoginResult.Fail(errCode = e.errCode, errMsg = e.errMsg)
         }
@@ -44,9 +41,8 @@ class LoginUseCase(
      */
     sealed class LoginResult {
         data class Success(
-            val loginInfo: LoginInfo,
-            /** 是否需要展示引导页（业务场景化标志） */
-            val needGuide: Boolean
+            /** 登录 token（已自动持久化到 TokenManager） */
+            val token: String
         ) : LoginResult()
 
         data class Fail(

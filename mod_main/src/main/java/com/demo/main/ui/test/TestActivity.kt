@@ -39,6 +39,8 @@ import com.demo.shared.model.BaseResponse
 import com.demo.shared.model.ProjectTabItem
 import com.demo.shared.network.Api
 import com.demo.shared.repository.LoginRepository
+import com.demo.shared.repository.TokenManager
+import com.demo.shared.usecase.ChatUseCase
 import com.demo.shared.usecase.LoginUseCase
 import com.hjq.permissions.XXPermissions
 import com.hjq.permissions.permission.PermissionLists
@@ -170,6 +172,11 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
         // KMP 业务逻辑示例：演示 Repository + UseCase 的用法
         mBinding.btnKmpLogin.setOnClickListener {
             testKmpLogin()
+        }
+
+        // KMP IM 聊天：演示 WebSocket 实时通信（登录→建连→收发消息）
+        mBinding.btnKmpIm.setOnClickListener {
+            testKmpIm()
         }
     }
 
@@ -323,17 +330,14 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
                 // —— 用法 3：完整登录流程（调 UseCase，会发真实网络请求）——
                 appendLine("\n[3] 执行登录:")
                 val loginResult = loginUseCase.execute(
-                    username = "demo_user",
-                    password = "demo123456",
+                    username = "admin",
+                    password = "admin123",
                     deviceId = android.os.Build.DEVICE
                 )
                 when (loginResult) {
                     is LoginUseCase.LoginResult.Success -> {
                         appendLine("  ✅ 登录成功")
-                        appendLine("  userId: ${loginResult.loginInfo.userId}")
-                        appendLine("  nickname: ${loginResult.loginInfo.nickname}")
-                        appendLine("  token: ${loginResult.loginInfo.token.take(10)}...")
-                        appendLine("  needGuide: ${loginResult.needGuide}")
+                        appendLine("  token: ${loginResult.token.take(10)}...")
                     }
                     is LoginUseCase.LoginResult.Fail -> {
                         appendLine("  ❌ 登录失败: [${loginResult.errCode}] ${loginResult.errMsg}")
@@ -346,6 +350,75 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
             }
             mBinding.tvKmpLoginResult.text = result
             Log.e(TAG, result)
+        }
+    }
+
+    /**
+     * KMP IM 聊天示例：演示 WebSocket 实时通信
+     *
+     * 流程：登录拿 token → 建 WebSocket 连接 → 订阅消息流 → 给指定用户发一条文本消息。
+     * 需要服务端（SpringBootServiceSeedProject 的 seed-im 模块）已启动。
+     *
+     * 注意： RECEIVER_USER_ID 需改成你测试环境里真实存在的另一个用户ID。
+     */
+    private val chatUseCase = ChatUseCase()
+
+    private fun testKmpIm() {
+        // 对方用户ID——改成你测试库 sys_user 里真实存在的 userId（与当前登录账号不同）
+        val receiverId = 2L
+
+        mBinding.tvKmpImResult.text = "IM 流程执行中..."
+        lifecycleScope.launch {
+            val sb = StringBuilder("== KMP IM 聊天 ==\n")
+
+            // 1. 取本地 token（先点过「KMP业务逻辑示例(登录)」按钮拿到 token）
+            val token = TokenManager.getToken()
+            if (token.isEmpty()) {
+                sb.append("❌ 未登录，请先点「KMP业务逻辑示例(登录)」完成登录")
+                mBinding.tvKmpImResult.text = sb.toString()
+                return@launch
+            }
+            sb.append("[1] 已登录，token: ${token.take(10)}...\n")
+
+            // 2. 建立 WebSocket 连接
+            sb.append("[2] 建立 WebSocket 连接...\n")
+            mBinding.tvKmpImResult.text = sb.toString()
+            try {
+                chatUseCase.start(token)
+                // 等待连接建立（最多等 3s）
+                kotlinx.coroutines.delay(3000)
+            } catch (e: Exception) {
+                sb.append("❌ 连接失败: ${e.message}")
+                mBinding.tvKmpImResult.text = sb.toString()
+                return@launch
+            }
+            val state = chatUseCase.observeConnectionState().value
+            sb.append("  连接状态: $state\n")
+
+            // 3. 订阅实时消息（后续对方回复会出现在日志里）
+            lifecycleScope.launch {
+                chatUseCase.observeMessages().collect { msg ->
+                    val line = "📨 收到消息: from=${msg.senderId}, content=${msg.content}"
+                    Log.e(TAG, line)
+                    runOnUiThread { mBinding.tvKmpImResult.append("\n$line") }
+                }
+            }
+
+            // 4. 发送一条文本消息
+            sb.append("[3] 发送消息给 userId=$receiverId...\n")
+            mBinding.tvKmpImResult.text = sb.toString()
+            val sendResult = chatUseCase.sendMessage(receiverId, 1, "你好，这是一条 KMP IM 测试消息")
+            when (sendResult) {
+                is ChatUseCase.SendResult.Success -> {
+                    sb.append("  ✅ 发送成功，服务端 msgId=${sendResult.msgId}\n")
+                    sb.append("[4] 等待对方回复（查看日志cat Tag=TestActivity）")
+                }
+                is ChatUseCase.SendResult.Fail -> {
+                    sb.append("  ❌ 发送失败: [${sendResult.errCode}] ${sendResult.errMsg}\n")
+                }
+            }
+            mBinding.tvKmpImResult.text = sb.toString()
+            Log.e(TAG, sb.toString())
         }
     }
 

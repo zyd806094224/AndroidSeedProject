@@ -181,6 +181,26 @@
                 android:textColor="#333333"
                 android:textSize="13sp" />
 
+            <Button
+                android:id="@+id/btnKmpIm"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="KMP IM聊天(WebSocket)"
+                android:textAllCaps="false" />
+
+            <TextView
+                android:id="@+id/tvKmpImResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#E3F2FD"
+                android:minHeight="80dp"
+                android:padding="12dp"
+                android:text="点击上方按钮演示 IM 聊天（登录→建连→收发消息）"
+                android:textColor="#333333"
+                android:textSize="13sp" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </ScrollView>

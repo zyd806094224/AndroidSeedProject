@@ -37,7 +37,25 @@ data class LoginRequest(
 @Serializable
 data class LoginInfo(
     val token: String,
-    val userId: String,
+    val userId: String = "",
     val nickname: String = "",
     val expireTime: Long = 0L
 )
+
+/**
+ * 若依标准登录接口 /login 的响应结构
+ *
+ * 服务端返回的是 AjaxResult（HashMap），token 与 code/msg 平级（不在 data 里）：
+ * { "code": 200, "msg": "操作成功", "token": "xxx" }
+ * 用单独的模型映射，避免改动通用的 [BaseResponse]。
+ *
+ * @author zhaoyudong
+ */
+@Serializable
+data class RuoYiLoginResponse(
+    val code: Int = 0,
+    val msg: String = "",
+    val token: String = ""
+) {
+    fun isFailed(): Boolean = code != 200
+}

@@ -2,7 +2,6 @@ package com.demo.shared.repository
 
 import com.demo.shared.error.ApiException
 import com.demo.shared.error.ERROR
-import com.demo.shared.model.LoginInfo
 import com.demo.shared.model.LoginRequest
 import com.demo.shared.network.Api
 
@@ -33,22 +32,25 @@ class LoginRepository : BaseRepository() {
      * @return 登录成功后的用户信息（token 已自动持久化到 [TokenManager]）
      * @throws ApiException 入参校验失败 / 网络失败 / 业务状态码非 0
      */
-    suspend fun login(username: String, password: String, deviceId: String = ""): LoginInfo {
+     suspend fun login(username: String, password: String, deviceId: String = ""): String {
         // —— 业务逻辑 1：入参校验（平台无关，两端共用同一套规则）——
         validateCredentials(username, password)
 
-        // —— 业务逻辑 2：组装请求 + 调接口（requestResponse 自动处理超时和 errorCode 校验）——
-        val result = requestResponse {
-            Api.login(LoginRequest(username = username, password = password, deviceId = deviceId))
+        // —— 业务逻辑 2：组装请求 + 调接口（若依标准 /login，返回 token 与 code/msg 平级）——
+        val response = Api.login(LoginRequest(username = username, password = password, deviceId = deviceId))
+
+        // —— 业务逻辑 3：响应处理——
+        if (response.isFailed()) {
+            throw ApiException(response.code, response.msg)
+        }
+        if (response.token.isEmpty()) {
+            throw ApiException(ERROR.PARSE_ERROR)
         }
 
-        // —— 业务逻辑 3：响应处理（理论上有数据，防御性判空）——
-        val loginInfo = result ?: throw ApiException(ERROR.PARSE_ERROR)
-
         // —— 业务逻辑 4：副作用——持久化 token（调 expect/actual 的 TokenManager）——
-        TokenManager.saveToken(loginInfo.token)
+        TokenManager.saveToken(response.token)
 
-        return loginInfo
+        return response.token
     }
 
     /**

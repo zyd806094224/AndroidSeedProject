@@ -1,11 +1,18 @@
 package com.demo.shared.network
 
+import com.demo.shared.constant.SERVER_BASE_URL
 import com.demo.shared.model.BaseResponse
-import com.demo.shared.model.LoginInfo
+import com.demo.shared.model.CreateConversationRequest
+import com.demo.shared.model.ImConversation
+import com.demo.shared.model.ImMessage
 import com.demo.shared.model.LoginRequest
+import com.demo.shared.model.MarkReadRequest
+import com.demo.shared.model.RuoYiLoginResponse
+import com.demo.shared.model.UnreadCount
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 
@@ -66,15 +73,81 @@ object Api {
     }
 
     /**
-     * 登录接口（业务示例）
+     * 登录接口（若依标准 /login）
      *
-     * @param request 登录请求参数
-     * @return 登录成功后的用户信息（含 token）
+     * 对接服务端 [SysLoginController.login]，返回 token 与 code/msg 平级（AjaxResult）。
+     * 验证码已关闭时只需传 username + password。
+     *
+     * @param request 登录请求参数（username/password）
+     * @return 登录响应，成功时含 token
      */
-    suspend fun login(request: LoginRequest): BaseResponse<LoginInfo> {
+    suspend fun login(request: LoginRequest): RuoYiLoginResponse {
         ensureNetworkAvailable()
-        return httpClient.post("https://106.15.7.132:8443/user/login") {
+        return httpClient.post("$SERVER_BASE_URL/login") {
             setBody(request)
         }.body()
+    }
+
+    // ==================== IM 聊天接口 ====================
+
+    /**
+     * 获取/创建会话（登录后发起聊天前调用）
+     *
+     * @param targetId 对方用户ID
+     * @return 当前用户视角的会话
+     */
+    suspend fun getOrCreateConversation(targetId: Long): BaseResponse<ImConversation> {
+        ensureNetworkAvailable()
+        return httpClient.post("$SERVER_BASE_URL/chat/conversation") {
+            setBody(CreateConversationRequest(targetId))
+        }.body()
+    }
+
+    /**
+     * 会话列表（含对方昵称/头像、最后消息摘要、未读数）
+     */
+    suspend fun getConversations(): BaseResponse<List<ImConversation>> {
+        ensureNetworkAvailable()
+        return httpClient.get("$SERVER_BASE_URL/chat/conversations").body()
+    }
+
+    /**
+     * 历史消息分页（基于 msgId 游标向前翻）
+     *
+     * @param conversationId 会话ID
+     * @param lastMsgId 游标（上一页最后一条 msgId），null 则查最新一页
+     * @param size 每页条数
+     */
+    suspend fun getHistoryMessages(
+        conversationId: Long,
+        lastMsgId: Long? = null,
+        size: Int = 20
+    ): BaseResponse<List<ImMessage>> {
+        ensureNetworkAvailable()
+        return httpClient.get("$SERVER_BASE_URL/chat/history") {
+            parameter("conversationId", conversationId)
+            if (lastMsgId != null) {
+                parameter("lastMsgId", lastMsgId)
+            }
+            parameter("size", size)
+        }.body()
+    }
+
+    /**
+     * 标记会话已读（清零未读数）
+     */
+    suspend fun markRead(conversationId: Long): BaseResponse<Unit> {
+        ensureNetworkAvailable()
+        return httpClient.post("$SERVER_BASE_URL/chat/read") {
+            setBody(MarkReadRequest(conversationId))
+        }.body()
+    }
+
+    /**
+     * 未读消息总数
+     */
+    suspend fun getUnreadCount(): BaseResponse<UnreadCount> {
+        ensureNetworkAvailable()
+        return httpClient.get("$SERVER_BASE_URL/chat/unread/count").body()
     }
 }

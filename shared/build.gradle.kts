@@ -37,6 +37,8 @@ kotlin {
                 implementation(libs.ktor.client.content.negotiation)
                 implementation(libs.ktor.serialization.kotlinx.json)
                 implementation(libs.ktor.client.logging)
+                // Ktor WebSocket（IM 实时通信）
+                implementation(libs.ktor.client.websockets)
             }
         }
         val androidMain by getting {

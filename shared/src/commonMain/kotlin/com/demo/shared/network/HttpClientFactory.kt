@@ -3,8 +3,6 @@ package com.demo.shared.network
 import com.demo.shared.constant.BASE_URL
 import com.demo.shared.constant.DEFAULT_RETRY_COUNT
 import com.demo.shared.constant.DEFAULT_TIMEOUT_MILLIS
-import com.demo.shared.error.NoNetWorkException
-import com.demo.shared.error.ERROR
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpRequestRetry
@@ -60,10 +58,16 @@ fun createSharedHttpClient(enableLogging: Boolean = true): HttpClient {
         }
 
         // 2. 默认请求配置：baseUrl + Content-type header（替代 HeaderInterceptor）
+        //    Token 通过 [AuthHeadersPlugin] 在每次请求时动态注入（DefaultRequest 配置是静态的，
+        //    无法在登录后变化时刷新）。
         install(DefaultRequest) {
             url(BASE_URL)
             header(HttpHeaders.ContentType, ContentType.Application.Json.toString())
         }
+
+        // 2.1 动态注入 Authorization header：从 TokenManager 读取当前 token。
+        //     用自定义 BaseClientPlugin，在每个请求发出前回调，保证 token 是最新值。
+        install(AuthHeadersPlugin)
 
         // 3. 超时（替代 OkHttp 的 connect/write/read timeout）
         install(HttpTimeout) {
