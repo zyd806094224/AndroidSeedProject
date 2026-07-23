@@ -39,6 +39,9 @@ actual fun newHttpClientEngine(): HttpClientEngine = OkHttp.create {
             val sslContext = SSLContext.getInstance("TLS")
             sslContext.init(null, arrayOf(trustManager), null)
             sslSocketFactory(sslContext.socketFactory, trustManager)
+            // 自签名证书的 CN 是 IP 但没有 SAN 扩展，OkHttp 默认 hostname 校验会失败。
+            // 证书本身已通过 pinning 校验，这里放宽 hostname 校验。
+            hostnameVerifier { _, _ -> true }
         }
     }
 }
