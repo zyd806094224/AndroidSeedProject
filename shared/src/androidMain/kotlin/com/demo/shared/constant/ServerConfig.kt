@@ -12,13 +12,13 @@ import com.demo.shared.network.SharedAndroidContext
  * @author zhaoyudong
  */
 
-/** 开发环境（本机局域网） */
+/** 开发环境（本机局域网，明文） */
 private const val DEV_BASE_URL = "http://192.168.213.145:8066"
 private const val DEV_WS_URL = "ws://192.168.213.145:8066/ws"
 
-/** 生产环境 */
-private const val PROD_BASE_URL = "http://106.15.7.132:8066"
-private const val PROD_WS_URL = "ws://106.15.7.132:8066/ws"
+/** 生产环境（Nginx 在 8443 端口终止 TLS，反代到 8066） */
+private const val PROD_BASE_URL = "https://106.15.7.132:8443"
+private const val PROD_WS_URL = "wss://106.15.7.132:8443/ws"
 
 actual val SERVER_BASE_URL: String
     get() = if (SharedAndroidContext.isDebug) DEV_BASE_URL else PROD_BASE_URL
