@@ -8,6 +8,8 @@ import com.demo.shared.model.ImMessage
 import com.demo.shared.model.LoginRequest
 import com.demo.shared.model.MarkReadRequest
 import com.demo.shared.model.RuoYiLoginResponse
+import com.demo.shared.model.SimpleUser
+import com.demo.shared.model.RuoYiUserInfo
 import com.demo.shared.model.UnreadCount
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -88,6 +90,16 @@ object Api {
         }.body()
     }
 
+    /**
+     * 获取当前登录用户信息（若依标准 /getInfo）
+     *
+     * 登录成功后调用，取 userId 用于 IM。
+     */
+    suspend fun getUserInfo(): RuoYiUserInfo {
+        ensureNetworkAvailable()
+        return httpClient.get("$SERVER_BASE_URL/getInfo").body()
+    }
+
     // ==================== IM 聊天接口 ====================
 
     /**
@@ -112,9 +124,9 @@ object Api {
     }
 
     /**
-     * 历史消息分页（基于 msgId 游标向前翻）
+     * 历史消息分页（基于 msgId 游标向前翻，按 conversation_id 查）
      *
-     * @param conversationId 会话ID
+     * @param conversationId 会话ID（通过 getOrCreateConversation 获取）
      * @param lastMsgId 游标（上一页最后一条 msgId），null 则查最新一页
      * @param size 每页条数
      */
@@ -149,5 +161,13 @@ object Api {
     suspend fun getUnreadCount(): BaseResponse<UnreadCount> {
         ensureNetworkAvailable()
         return httpClient.get("$SERVER_BASE_URL/chat/unread/count").body()
+    }
+
+    /**
+     * IM 用户列表（排除自己，用于发起聊天时选择联系人）
+     */
+    suspend fun getChatUsers(): BaseResponse<List<SimpleUser>> {
+        ensureNetworkAvailable()
+        return httpClient.get("$SERVER_BASE_URL/chat/users").body()
     }
 }

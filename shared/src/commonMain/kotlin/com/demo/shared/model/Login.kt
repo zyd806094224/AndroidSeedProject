@@ -59,3 +59,23 @@ data class RuoYiLoginResponse(
 ) {
     fun isFailed(): Boolean = code != 200
 }
+
+/**
+ * 若依 /getInfo 返回的用户精简信息（只取 IM 需要的字段）
+ */
+@Serializable
+data class RuoYiUserInfo(
+    val code: Int = 0,
+    val msg: String = "",
+    val user: RuoYiUser? = null
+) {
+    fun isFailed(): Boolean = code != 200
+}
+
+@Serializable
+data class RuoYiUser(
+    val userId: Long = 0L,
+    val userName: String = "",
+    val nickName: String = "",
+    val avatar: String = ""
+)

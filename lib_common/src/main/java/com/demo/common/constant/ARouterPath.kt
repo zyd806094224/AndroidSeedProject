@@ -29,6 +29,12 @@ const val SPLASH_ACTIVITY = "/splash/activity"
 // 测试页面
 const val TEST_ACTIVITY = "/test/activity"
 
+// IM 聊天模块
+const val IM_LOGIN_ACTIVITY = "/im/login/activity"
+const val IM_CONVERSATION_ACTIVITY = "/im/conversation/activity"
+const val IM_CHAT_ACTIVITY = "/im/chat/activity"
+const val IM_USER_LIST_ACTIVITY = "/im/userlist/activity"
+
 //**********************Fragment路由**********************
 /**
  * Fragment路由
@@ -59,3 +65,5 @@ const val PARAM_HINT = "hint"
 const val PARAM_SHOW_SHARE = "showShare"
 const val PARAM_USER_ID = "userId"
 const val PARAM_ANIMATION = "animation"
+const val PARAM_CONVERSATION_ID = "conversationId"
+const val PARAM_TARGET_NAME = "targetName"

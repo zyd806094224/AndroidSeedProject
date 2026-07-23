@@ -3,6 +3,7 @@ package com.demo.shared.usecase
 import com.demo.shared.error.ApiException
 import com.demo.shared.model.ImConversation
 import com.demo.shared.model.ImMessage
+import com.demo.shared.model.SimpleUser
 import com.demo.shared.repository.ChatRepository
 
 /**
@@ -74,11 +75,33 @@ class ChatUseCase(
     }
 
     /**
-     * 拉取历史消息。
+     * 获取或创建会话（新发起聊天时调用）。
+     */
+    suspend fun getOrCreateConversation(targetId: Long): ImConversation? {
+        return try {
+            chatRepository.getOrCreateConversation(targetId)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /**
+     * 拉取历史消息（按 conversation_id 查）。
      */
     suspend fun loadHistory(conversationId: Long, lastMsgId: Long? = null): ListResult<ImMessage> {
         return try {
             ListResult.Success(chatRepository.loadHistory(conversationId, lastMsgId))
+        } catch (e: ApiException) {
+            ListResult.Fail(e.errCode, e.errMsg)
+        }
+    }
+
+    /**
+     * 用户列表（排除自己）。
+     */
+    suspend fun getChatUsers(): ListResult<SimpleUser> {
+        return try {
+            ListResult.Success(chatRepository.getChatUsers())
         } catch (e: ApiException) {
             ListResult.Fail(e.errCode, e.errMsg)
         }

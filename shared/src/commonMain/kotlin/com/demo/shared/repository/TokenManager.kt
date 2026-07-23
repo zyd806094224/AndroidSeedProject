@@ -26,6 +26,16 @@ expect object TokenManager {
     fun getToken(): String
 
     /**
+     * 保存当前登录用户ID
+     */
+    fun saveUserId(userId: String)
+
+    /**
+     * 读取当前登录用户ID，未登录返回空串
+     */
+    fun getUserId(): String
+
+    /**
      * 清除 token（退出登录时调用）
      */
     fun clearToken()

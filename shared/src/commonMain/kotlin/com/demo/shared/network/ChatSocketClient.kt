@@ -65,7 +65,7 @@ private const val ACK_TIMEOUT_MILLIS = 5_000L
 /** 心跳间隔（毫秒） */
 private const val HEARTBEAT_INTERVAL_MILLIS = 30_000L
 
-class ChatSocketClient {
+class ChatSocketClient private constructor() {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -275,5 +275,8 @@ class ChatSocketClient {
 
     companion object {
         private const val TAG = "ChatSocketClient"
+
+        /** 全局单例：所有 Repository/UseCase 共享同一个 WebSocket 连接 */
+        val instance: ChatSocketClient by lazy { ChatSocketClient() }
     }
 }

@@ -47,8 +47,18 @@ class LoginRepository : BaseRepository() {
             throw ApiException(ERROR.PARSE_ERROR)
         }
 
-        // —— 业务逻辑 4：副作用——持久化 token（调 expect/actual 的 TokenManager）——
+        // —— 业务逻辑 4：副作用——持久化 token + userId（调 expect/actual 的 TokenManager）——
         TokenManager.saveToken(response.token)
+
+        // 调 /getInfo 拿 userId（IM 需要），失败不阻塞登录
+        try {
+            val userInfo = Api.getUserInfo()
+            if (!userInfo.isFailed() && userInfo.user != null) {
+                TokenManager.saveUserId(userInfo.user.userId.toString())
+            }
+        } catch (e: Exception) {
+            // getInfo 失败不阻塞登录，后续可重试
+        }
 
         return response.token
     }
@@ -86,8 +96,8 @@ class LoginRepository : BaseRepository() {
         if (password.isBlank()) {
             throw ApiException(ERROR.UNKNOWN.code, "密码不能为空")
         }
-        if (username.length < 3) {
-            throw ApiException(ERROR.UNKNOWN.code, "用户名至少 3 个字符")
+        if (username.length < 2) {
+            throw ApiException(ERROR.UNKNOWN.code, "用户名至少 2 个字符")
         }
         if (password.length < 6) {
             throw ApiException(ERROR.UNKNOWN.code, "密码至少 6 个字符")

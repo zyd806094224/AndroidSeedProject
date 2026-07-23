@@ -94,3 +94,14 @@ data class MarkReadRequest(
 data class UnreadCount(
     val count: Int = 0
 )
+
+/**
+ * 用户精简信息（IM 用户列表用）
+ */
+@Serializable
+data class SimpleUser(
+    val userId: Long = 0L,
+    val nickName: String = "",
+    val userName: String = "",
+    val avatar: String = ""
+)

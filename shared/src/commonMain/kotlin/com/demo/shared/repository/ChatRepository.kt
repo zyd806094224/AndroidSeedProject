@@ -4,6 +4,7 @@ import com.demo.shared.error.ApiException
 import com.demo.shared.error.ERROR
 import com.demo.shared.model.ImConversation
 import com.demo.shared.model.ImMessage
+import com.demo.shared.model.SimpleUser
 import com.demo.shared.network.Api
 import com.demo.shared.network.ChatSocketClient
 import com.demo.shared.network.ConnectionState
@@ -22,7 +23,7 @@ import kotlinx.coroutines.flow.SharedFlow
  */
 class ChatRepository : BaseRepository() {
 
-    private val socketClient = ChatSocketClient()
+    private val socketClient = ChatSocketClient.instance
 
     /**
      * 建立 WebSocket 实时连接（登录成功后调用）。
@@ -87,7 +88,7 @@ class ChatRepository : BaseRepository() {
     }
 
     /**
-     * 历史消息分页。
+     * 历史消息分页（按 conversation_id 查）。
      *
      * @param conversationId 会话ID
      * @param lastMsgId 游标，null 查最新一页
@@ -109,5 +110,12 @@ class ChatRepository : BaseRepository() {
      */
     suspend fun getUnreadCount(): Int {
         return requestResponse { Api.getUnreadCount() }?.count ?: 0
+    }
+
+    /**
+     * IM 用户列表（排除自己）。
+     */
+    suspend fun getChatUsers(): List<SimpleUser> {
+        return requestResponse { Api.getChatUsers() } ?: emptyList()
     }
 }

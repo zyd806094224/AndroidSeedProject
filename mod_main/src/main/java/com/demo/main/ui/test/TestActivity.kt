@@ -178,6 +178,21 @@ class TestActivity : BaseMvvmActivity<ActivityTestBinding, TestViewModel>() {
         mBinding.btnKmpIm.setOnClickListener {
             testKmpIm()
         }
+
+        // 进入正式 IM 聊天界面
+        mBinding.btnEnterIm.setOnClickListener {
+            // 已登录直接进会话列表，未登录先进登录页
+            val token = TokenManager.getToken()
+            if (token.isNotEmpty()) {
+                com.demo.main.ui.im.ImConversationActivity.start(this)
+            } else {
+                com.demo.main.ui.im.ImLoginActivity::class.java.let {
+                    com.alibaba.android.arouter.launcher.ARouter.getInstance()
+                        .build(com.demo.common.constant.IM_LOGIN_ACTIVITY)
+                        .navigation(this)
+                }
+            }
+        }
     }
 
     /**
