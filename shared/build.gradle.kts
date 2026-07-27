@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.github.zyd806094224"
-version = "1.0.0"
+version = "1.0.2"
 
 // KMP shared module：承载跨平台（Android / iOS）的纯 Kotlin 数据模型、业务逻辑与 Ktor 网络栈。
 // 与 lib_network（Retrofit）并行共存：老代码继续用 lib_network，新跨平台代码用 shared。
@@ -96,7 +96,7 @@ android {
 // ---- Maven 发布配置（GitHub Packages）----
 // 发布命令：./gradlew :shared:publish
 // 凭证在 gradle.properties: gpr.user / gpr.key
-// 消费方通过 implementation("com.github.zyd806094224:shared:1.0.0") 引用，
+// 消费方通过 implementation("com.github.zyd806094224:shared:1.0.2") 引用，
 // POM 自动声明所有传递依赖（ktor/coroutines/serialization），无需手动补依赖。
 publishing {
     repositories {
@@ -159,4 +159,9 @@ publishing {
             }
         }
     }
+}
+
+// 手动注册的 Android publication 使用 AAR 文件路径，显式保证发布前先生成最新产物。
+tasks.matching { it.name == "publishAndroidPublicationToGitHubPackagesRepository" }.configureEach {
+    dependsOn("bundleReleaseAar")
 }
