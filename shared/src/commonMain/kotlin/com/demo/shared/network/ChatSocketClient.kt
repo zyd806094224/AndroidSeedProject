@@ -117,7 +117,7 @@ class ChatSocketClient private constructor() {
         connectionJob = scope.launch {
             try {
                 val wsUrl = "$SERVER_WS_URL?token=$token"
-                AppLog.d(TAG, "connect: $wsUrl")
+                AppLog.d(TAG, "connect: $SERVER_WS_URL?token=<redacted>")
                 wsClient.webSocket({
                     this.url(wsUrl)
                 }) {
@@ -240,12 +240,14 @@ class ChatSocketClient private constructor() {
      * 心跳：每 30s 发一次 ping。
      */
     private fun DefaultWebSocketSession.launchHeartbeat(): Job {
-        return scope.launch {
+        return launch {
             while (true) {
                 delay(HEARTBEAT_INTERVAL_MILLIS)
                 try {
                     val json = sharedJson.encodeToString(WsPingOutbound.serializer(), WsPingOutbound())
                     send(Frame.Text(json))
+                } catch (e: CancellationException) {
+                    throw e
                 } catch (e: Exception) {
                     AppLog.e(TAG, "heartbeat 发送失败 ${e.message}")
                     break

@@ -2,8 +2,12 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.androidLibrary)
+    id("org.jetbrains.kotlin.native.cocoapods")
     `maven-publish`
 }
+
+group = "com.github.zyd806094224"
+version = "1.0.0"
 
 // KMP shared module：承载跨平台（Android / iOS）的纯 Kotlin 数据模型、业务逻辑与 Ktor 网络栈。
 // 与 lib_network（Retrofit）并行共存：老代码继续用 lib_network，新跨平台代码用 shared。
@@ -25,6 +29,18 @@ kotlin {
     iosArm64("iosArm64") { configureFramework() }
     iosX64("iosX64") { configureFramework() }
     iosSimulatorArm64("iosSimulatorArm64") { configureFramework() }
+
+    cocoapods {
+        version = project.version.toString()
+        summary = "KMP IM + 业务逻辑共享模块（iOS）"
+        homepage = "https://github.com/zyd806094224/AndroidSeedProject"
+        ios.deploymentTarget = "12.4"
+
+        framework {
+            baseName = "Shared"
+            isStatic = true
+        }
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -82,9 +98,6 @@ android {
 // 凭证在 gradle.properties: gpr.user / gpr.key
 // 消费方通过 implementation("com.github.zyd806094224:shared:1.0.0") 引用，
 // POM 自动声明所有传递依赖（ktor/coroutines/serialization），无需手动补依赖。
-group = "com.github.zyd806094224"
-version = "1.0.0"
-
 publishing {
     repositories {
         maven {

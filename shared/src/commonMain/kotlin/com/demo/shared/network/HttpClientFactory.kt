@@ -41,6 +41,7 @@ import kotlinx.serialization.json.Json
 val sharedJson: Json = Json {
     ignoreUnknownKeys = true      // 忽略服务端多余字段
     isLenient = true              // 宽松语法
+    coerceInputValues = true      // 服务端 null 与非空默认字段不一致时使用模型默认值
     encodeDefaults = true         // 序列化时输出默认值
     explicitNulls = false         // 不强制输出 null 字段
 }
@@ -89,6 +90,7 @@ fun createSharedHttpClient(enableLogging: Boolean = true): HttpClient {
             install(Logging) {
                 logger = SharedHttpLogger
                 level = LogLevel.ALL
+                sanitizeHeader { header -> header == HttpHeaders.Authorization }
             }
         }
 

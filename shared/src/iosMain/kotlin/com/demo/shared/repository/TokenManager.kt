@@ -3,23 +3,26 @@ package com.demo.shared.repository
 import platform.Foundation.NSUserDefaults
 
 /**
- * iOS actual：Token + UserId 存储用 NSUserDefaults。
- * 简单轻量，适合存字符串 token。敏感数据生产环境建议用 Keychain。
+ * iOS actual：Token 仅保存在进程内存中，由宿主 App 的 Keychain 在启动/登录时注入；
+ * UserId 继续使用 NSUserDefaults 保存。
+ *
+ * 避免 KMP 再把宿主已安全保存到 Keychain 的 token 明文复制到 NSUserDefaults。
  */
 actual object TokenManager {
 
-    private const val KEY_TOKEN = "kmp_token"
     private const val KEY_USER_ID = "kmp_user_id"
+
+    private var token: String = ""
 
     private val defaults: NSUserDefaults
         get() = NSUserDefaults.standardUserDefaults()
 
     actual fun saveToken(token: String) {
-        defaults.setObject(token, forKey = KEY_TOKEN)
+        this.token = token
     }
 
     actual fun getToken(): String {
-        return defaults.stringForKey(KEY_TOKEN) ?: ""
+        return token
     }
 
     actual fun saveUserId(userId: String) {
@@ -31,7 +34,7 @@ actual object TokenManager {
     }
 
     actual fun clearToken() {
-        defaults.removeObjectForKey(KEY_TOKEN)
+        token = ""
         defaults.removeObjectForKey(KEY_USER_ID)
     }
 }

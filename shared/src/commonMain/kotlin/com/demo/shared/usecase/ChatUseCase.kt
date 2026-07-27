@@ -5,6 +5,7 @@ import com.demo.shared.model.ImConversation
 import com.demo.shared.model.ImMessage
 import com.demo.shared.model.SimpleUser
 import com.demo.shared.repository.ChatRepository
+import kotlinx.coroutines.CancellationException
 
 /**
  * @Description: IM 聊天用例（commonMain，可选层）。
@@ -23,6 +24,7 @@ class ChatUseCase(
     /**
      * 启动实时连接（登录后调用）。
      */
+    @Throws(Exception::class)
     suspend fun start(token: String) {
         chatRepository.start(token)
     }
@@ -52,10 +54,13 @@ class ChatUseCase(
      * @param content 内容
      * @return [SendResult]：成功带服务端消息ID，失败带错误信息
      */
+    @Throws(Exception::class)
     suspend fun sendMessage(receiverId: Long, msgType: Int, content: String): SendResult {
         return try {
             val msgId = chatRepository.sendMessage(receiverId, msgType, content)
             SendResult.Success(msgId)
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: ApiException) {
             SendResult.Fail(e.errCode, e.errMsg)
         } catch (e: Exception) {
@@ -66,20 +71,28 @@ class ChatUseCase(
     /**
      * 获取会话列表。
      */
+    @Throws(Exception::class)
     suspend fun getConversations(): ListResult<ImConversation> {
         return try {
             ListResult.Success(chatRepository.getConversations())
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: ApiException) {
             ListResult.Fail(e.errCode, e.errMsg)
+        } catch (e: Exception) {
+            ListResult.Fail(-1, e.message ?: "获取会话列表失败")
         }
     }
 
     /**
      * 获取或创建会话（新发起聊天时调用）。
      */
+    @Throws(Exception::class)
     suspend fun getOrCreateConversation(targetId: Long): ImConversation? {
         return try {
             chatRepository.getOrCreateConversation(targetId)
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             null
         }
@@ -88,22 +101,32 @@ class ChatUseCase(
     /**
      * 拉取历史消息（按 conversation_id 查）。
      */
+    @Throws(Exception::class)
     suspend fun loadHistory(conversationId: Long, lastMsgId: Long? = null): ListResult<ImMessage> {
         return try {
             ListResult.Success(chatRepository.loadHistory(conversationId, lastMsgId))
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: ApiException) {
             ListResult.Fail(e.errCode, e.errMsg)
+        } catch (e: Exception) {
+            ListResult.Fail(-1, e.message ?: "加载历史消息失败")
         }
     }
 
     /**
      * 用户列表（排除自己）。
      */
+    @Throws(Exception::class)
     suspend fun getChatUsers(): ListResult<SimpleUser> {
         return try {
             ListResult.Success(chatRepository.getChatUsers())
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: ApiException) {
             ListResult.Fail(e.errCode, e.errMsg)
+        } catch (e: Exception) {
+            ListResult.Fail(-1, e.message ?: "获取聊天用户失败")
         }
     }
 

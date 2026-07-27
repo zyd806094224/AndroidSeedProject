@@ -23,5 +23,8 @@ actual val SERVER_BASE_URL: String
 actual val SERVER_WS_URL: String
     get() = if (IS_DEBUG_ENV) DEV_WS_URL else PROD_WS_URL
 
+// 强制走生产环境（HTTPS）：与 RNHybrid iOS 业务侧（LoginViewController 写死生产地址）保持同源，
+// 避免 Debug 构建走局域网 HTTP（192.168.213.145:8066）连不上导致请求挂起。
+// 与安卓侧 MyApplication 中 SharedAndroidContext.init(this, false) 的处理思路一致。
 actual val IS_DEBUG_ENV: Boolean
-    get() = Platform.isDebugBinary
+    get() = false
