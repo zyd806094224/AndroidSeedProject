@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                = 'shared'
-    spec.version             = '1.0.2'
+    spec.version             = '1.0.3'
     spec.summary             = 'KMP IM + 业务逻辑共享模块（iOS 二进制版本）'
     spec.homepage            = 'https://github.com/zyd806094224/AndroidSeedProject'
     spec.authors             = { 'zyd806094224' => 'zyd806094224@users.noreply.github.com' }
@@ -10,8 +10,8 @@ Pod::Spec.new do |spec|
     }
 
     spec.source = {
-        :http => 'https://github.com/zyd806094224/AndroidSeedProject/releases/download/shared-ios-1.0.2/Shared.xcframework.zip',
-        :sha256 => 'd452c6250366ace56d6c510e4bf125826bde430896802ae968a9e3c82e68dfab'
+        :http => 'https://github.com/zyd806094224/AndroidSeedProject/releases/download/shared-ios-1.0.3/Shared.xcframework.zip',
+        :sha256 => '6b7fa6dbbcf0602399e57ccee261498696a5ae35019e34a26b5aab90b0fa0e5b'
     }
 
     spec.ios.deployment_target = '12.4'

@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'shared'
-    spec.version                  = '1.0.2'
+    spec.version                  = '1.0.3'
     spec.homepage                 = 'https://github.com/zyd806094224/AndroidSeedProject'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
