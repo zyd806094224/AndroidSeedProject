@@ -465,6 +465,21 @@ git checkout 360-replugin-dev
 
 ## 📦 构建与发布
 
+KMP `shared` 模块的 Android Maven 与 iOS XCFramework 发布流程见：
+[KMP Android / iOS 发布指南](docs/KMP_Android_iOS_发布指南.md)。
+
+快速准备新版本：
+
+```bash
+./scripts/publish-kmp.sh 1.0.3
+```
+
+确认后完整发布：
+
+```bash
+./scripts/publish-kmp.sh 1.0.3 --publish
+```
+
 ### 🔨 构建配置
 
 项目使用统一的构建配置：
